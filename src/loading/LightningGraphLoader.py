@@ -204,12 +204,6 @@ def _load_single_ds(name: str):
     elif name in {"computers", "photo"}:
         data = ds[SPLIT_INDEX]
 
-    print(name, data)
-    print(
-        "-----",
-        (data.train_mask & data.val_mask).sum(),  # type: ignore
-        (data.val_mask & data.test_mask).sum(),  # type: ignore
-    )
     return (
         data,
         ds.num_features,

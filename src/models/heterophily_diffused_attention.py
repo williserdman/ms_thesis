@@ -35,7 +35,7 @@ class DiffusionStep(MessagePassing, nn.Module):
 
     def forward(
         self, x, edge_index, edge_weight, old_info: Optional[torch.Tensor] = None
-    ) -> list[torch.Tensor]:
+    ) -> list[torch.Tensor]:  # type: ignore
         """
         Docstring for forward
 
@@ -83,19 +83,19 @@ class DiffusionStep(MessagePassing, nn.Module):
 
         elif self.prop_type == "mlp":
             h = x  # (N, H)
-            h = torch.concat([h, old_info[:, 0, :]], dim=-1)  # (N, 2H)
+            h = torch.concat([h, old_info[:, 0, :]], dim=-1)  # type: ignore (N, 2H)
             h = F.layer_norm(h, h.shape)
             h = self.basis[0](h)
             out = [h]
             for i in range(1, self.K + 1):
-                h = torch.concat([h, old_info[:, 0, :]], dim=-1)  # (N, 2H)
+                h = torch.concat([h, old_info[:, 0, :]], dim=-1)  # type: ignore (N, 2H)
                 h = F.layer_norm(h, h.shape)
                 h = self.basis[i](h)
                 h = self.propagate(edge_index, x=h, edge_weight=edge_weight)
                 out.append(h)
             return out
 
-    def message(self, x_j, edge_weight):
+    def message(self, x_j, edge_weight):  # type: ignore
         """
         Docstring for message
 
@@ -121,7 +121,7 @@ class AttentionBlock(nn.Module):
         self.hidden_dim = hidden_dim
         self.num_heads = num_heads
 
-        assert hidden_dim % num_heads == 0, "hidden_dim % num_heads == 0"
+        assert hidden_dim % num_heads == 0, f"{hidden_dim} % {num_heads} == 0"
 
         self.head_dim = hidden_dim // num_heads
         self.K = K
@@ -159,7 +159,7 @@ class AttentionBlock(nn.Module):
         self.fflm1.reset_parameters()
         self.fflm2.reset_parameters()
         with torch.no_grad():
-            self.local_alpha.data.fill_(1.0 / (self.K + 1))
+            self.local_alpha.data.fill_(1.0 / (self.K + 1))  # type: ignore
 
     def forward(self, N: int, H: int, tokens: torch.Tensor):
         tokens = torch.stack(
@@ -199,38 +199,41 @@ class AttentionBlock(nn.Module):
 
 
 class DiffusedAttention(nn.Module):
-    def __init__(self, dataset, args: MyArgs, attn_layers=2):
-        super(DiffusedAttention, self).__init__()
+    def __init__(
+        self,
+        network_info,
+        hidden_dim: int,
+        dropout_rate: float,
+        K: int,
+    ):
+        super().__init__()
 
-        if args.hidden <= 32:
-            num_heads = 4
+        self.K = K  # args.K
+        self.hidden_dim = hidden_dim
+        self.num_classes = network_info.num_classes
+        self.dropout_rate = dropout_rate
 
-        self.K = 2  # args.K
-        self.hidden_dim = args.hidden_dim
-        self.num_classes = dataset.num_classes
-        self.dprate = args.dprate
-
-        self.encoder = nn.Linear(dataset.num_features, self.hidden_dim)
+        self.encoder = nn.Linear(network_info.num_features, self.hidden_dim)
 
         # self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
         self.mono_diff = DiffusionStep("monomial", self.K, self.hidden_dim)
 
         num_iters = 4
-        self.attn_layers = [
-            AttentionBlock(self.hidden_dim, self.K, self.dprate, 4)
-            for _ in range(num_iters)
-        ]
-        # self.poly_attn = AttentionBlock(self.hidden_dim, self.K, self.dprate, 4)
-        # self.poly_attn2 = AttentionBlock(self.hidden_dim, self.K, self.dprate, 4)
+        self.attn_layers = nn.ModuleList(
+            [
+                AttentionBlock(self.hidden_dim, self.K, self.dropout_rate, 4)
+                for _ in range(num_iters)
+            ]
+        )
 
         self.decoder = nn.Linear(self.hidden_dim, self.num_classes)
 
-        self.dropout = nn.Dropout(args.dropout)
+        self.dropout = nn.Dropout(self.dropout_rate)
 
     def reset_parameters(self):
         self.encoder.reset_parameters()
         self.decoder.reset_parameters()
-        [al.reset_parameters() for al in self.attn_layers]
+        [al.reset_parameters() for al in self.attn_layers]  # type: ignore
 
     def forward(self, data):
         x, edge_index = data.x, data.edge_index
@@ -243,7 +246,7 @@ class DiffusedAttention(nn.Module):
             edge_index, num_nodes=N, add_self_loops=True, dtype=x.dtype
         )
         # Laplacian
-        edge_index, edge_weight = get_laplacian(edge_index, edge_weight, num_nodes=N)
+        edge_index, edge_weight = get_laplacian(edge_index, edge_weight, num_nodes=N)  # type: ignore
 
         for idx, attn_l in enumerate(self.attn_layers):
             # compute diffused messages and stack into (N, K+1, H)

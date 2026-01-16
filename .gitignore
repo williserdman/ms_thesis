@@ -1,0 +1,4 @@
+.venv
+lightning_logs
+optuna_logs
+*_pycache_*
