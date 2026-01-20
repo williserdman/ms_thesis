@@ -248,20 +248,20 @@ class DiffusedAttention(nn.Module):
         # Laplacian
         edge_index, edge_weight = get_laplacian(edge_index, edge_weight, num_nodes=N)  # type: ignore
 
-        for idx, attn_l in enumerate(self.attn_layers):
-            # compute diffused messages and stack into (N, K+1, H)
-            mono_msgs = self.mono_diff(x, edge_index, edge_weight)
-            mono_tokens = torch.stack(mono_msgs, dim=1)  # (N, K+1, H)
-            tokens = F.layer_norm(mono_tokens, mono_tokens.shape)
-            # print(tokens.shape)
+        # compute diffused messages and stack into (N, K+1, H)
+        mono_msgs = self.mono_diff(x, edge_index, edge_weight)
+        mono_tokens = torch.stack(mono_msgs, dim=1)  # (N, K+1, H)
+        tokens = F.layer_norm(mono_tokens, mono_tokens.shape)
+        # print(tokens.shape)
 
+        for _, attn_l in enumerate(self.attn_layers):
             out = attn_l(N, H, tokens)
-            out = torch.sum(out, dim=1)
-            x = out
+            tokens = F.layer_norm(out, out.shape)
 
+        out = torch.sum(out, dim=1)  # type: ignore
         out = F.layer_norm(x, x.shape)
         out = self.decoder(out)
 
         dummy_loss = torch.tensor(0)
 
-        return F.log_softmax(out, dim=-1), dummy_loss
+        return F.softmax(out, dim=-1), dummy_loss
