@@ -119,7 +119,7 @@ class OptunaTrainer:
 
         # Creating trainer instance
         trainer = pl.Trainer(
-            max_epochs=10, accelerator=self.accelerator, devices=[self.device]  # type: ignore
+            max_epochs=4000, accelerator=self.accelerator, devices=[self.device]  # type: ignore
         )
 
         # Training the model with the best hyperparameters
