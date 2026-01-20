@@ -34,7 +34,8 @@ def _objective(trial, network_name):
     learning_rate = trial.suggest_float("learning_rate", 1e-4, 1e-2)
     hidden_dim = trial.suggest_categorical("hidden_dim", [16, 32, 64, 128, 256, 512])
     dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.7)
-    K = trial.suggest_categorical("K", [4, 8, 10])
+    num_layers = trial.suggest_categorical("num_layers", [4, 8, 10])
+    multi = trial.suggest_int("multi", 2, 8)
 
     network = load_datasets([network_name])[network_name]
     network_info = _extract_network_info(network, network_name)
@@ -44,7 +45,8 @@ def _objective(trial, network_name):
         hidden_dim=hidden_dim,
         learning_rate=learning_rate,
         dropout_rate=dropout_rate,
-        K=K,
+        num_layers=num_layers,
+        multi=multi,
     )
 
     # Early stopping callback

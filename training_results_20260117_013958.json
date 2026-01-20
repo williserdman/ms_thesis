@@ -1,0 +1,35 @@
+[
+  {
+    "dataset": "squirrel",
+    "status": "ok",
+    "test": [
+      {
+        "test_loss": 1.6935927867889404,
+        "test_accuracy": 0.2370203286409378
+      }
+    ],
+    "gpu": "cpu"
+  },
+  {
+    "dataset": "chameleon",
+    "status": "ok",
+    "test": [
+      {
+        "test_loss": 1.650525689125061,
+        "test_accuracy": 0.18633539974689484
+      }
+    ],
+    "gpu": "cpu"
+  },
+  {
+    "dataset": "Roman-empire",
+    "status": "ok",
+    "test": [
+      {
+        "test_loss": 2.9285361766815186,
+        "test_accuracy": 0.014472291804850101
+      }
+    ],
+    "gpu": "cpu"
+  }
+]
