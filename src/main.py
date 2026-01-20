@@ -1,6 +1,6 @@
 import torch
 import pytorch_lightning as pl
-from optuna_trainer import run_optimization, test_best_model
+from optuna_trainer import OptunaTrainer
 import datetime
 import multiprocessing
 import time
@@ -37,8 +37,13 @@ ALL_DATASETS = ["squirrel", "chameleon", "Roman-empire"]
 def train_job(network_name, gpu_id, results_list):
     pl.seed_everything(SEED, workers=True)
 
-    study = run_optimization(network_name)
-    results = test_best_model(study, network_name)
+    if isinstance(gpu_id, int):
+        ot = OptunaTrainer("gpu", gpu_id)
+    else:
+        ot = OptunaTrainer("cpu", "auto")
+
+    study = ot.run_optimization(network_name)
+    results = ot.test_best_model(study, network_name)
 
     results_list.append(
         (network_name, {"status": "ok", "test": results, "gpu": gpu_id})
