@@ -80,7 +80,7 @@ class OptunaTrainer:
         )
 
         # Training the model
-        trainer.fit(model, network.data)
+        trainer.fit(model=model, datamodule=network.data)
 
         # Final validation loss
         return trainer.callback_metrics["val_loss"].item()
@@ -127,8 +127,8 @@ class OptunaTrainer:
         )
 
         # Training the model with the best hyperparameters
-        trainer.fit(model, network.data)
+        trainer.fit(model=model, datamodule=network.data)
 
         # Testing the model with the test data
-        results = trainer.test(model, network.data)
+        results = trainer.test(model=model, datamodule=network.data)
         return results
