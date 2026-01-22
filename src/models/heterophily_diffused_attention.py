@@ -259,7 +259,7 @@ class DiffusedAttention(nn.Module):
             tokens = F.layer_norm(out, out.shape)
 
         out = torch.sum(out, dim=1)  # type: ignore
-        out = F.layer_norm(x, x.shape)
+        out = F.layer_norm(out, out.shape)
         out = self.decoder(out)
 
         dummy_loss = torch.tensor(0)
