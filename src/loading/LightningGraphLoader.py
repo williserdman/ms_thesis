@@ -72,7 +72,7 @@ def _load_filtered_dataset(path):
     )
 
 
-class LightningGraph:
+class LightningGraph(LightningDataModule):
     def __init__(self, data, num_features, num_classes, class_weights):
         self.data = data
         self.num_features = num_features
