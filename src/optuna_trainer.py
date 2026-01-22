@@ -43,6 +43,7 @@ class OptunaTrainer:
         )
         dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.7)
         K = trial.suggest_categorical("K", [4, 8, 10])
+        num_iters = trial.suggest_int("num_iters", 1, 3)
 
         network = load_datasets([network_name])[network_name]
         network_info = _extract_network_info(network, network_name)
@@ -53,6 +54,7 @@ class OptunaTrainer:
             learning_rate=learning_rate,
             dropout_rate=dropout_rate,
             K=K,
+            num_iters=num_iters,
         )
 
         # Early stopping callback
@@ -127,7 +129,7 @@ class OptunaTrainer:
 
         # Creating trainer instance
         trainer = pl.Trainer(
-            max_epochs=4000, accelerator=self.accelerator, devices=self.devices  # type: ignore
+            max_epochs=2000, accelerator=self.accelerator, devices=self.devices  # type: ignore
         )
 
         # Training the model with the best hyperparameters

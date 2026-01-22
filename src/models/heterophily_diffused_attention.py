@@ -200,11 +200,7 @@ class AttentionBlock(nn.Module):
 
 class DiffusedAttention(nn.Module):
     def __init__(
-        self,
-        network_info,
-        hidden_dim: int,
-        dropout_rate: float,
-        K: int,
+        self, network_info, hidden_dim: int, dropout_rate: float, K: int, num_iters
     ):
         super().__init__()
 
@@ -218,7 +214,7 @@ class DiffusedAttention(nn.Module):
         # self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
         self.mono_diff = DiffusionStep("monomial", self.K, self.hidden_dim)
 
-        num_iters = 4
+        # num_iters = 4
         self.attn_layers = nn.ModuleList(
             [
                 AttentionBlock(self.hidden_dim, self.K, self.dropout_rate, 4)
