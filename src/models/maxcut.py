@@ -12,9 +12,6 @@ class MaxCutClusters(nn.Module):
     def __init__(self, dataset, args: MyArgs):
         super(MaxCutClusters, self).__init__()
 
-        if args.hidden <= 32:
-            num_heads = 4
-
         self.hidden_dim = args.hidden_dim
         self.num_classes = dataset.num_classes
         self.dprate = args.dprate

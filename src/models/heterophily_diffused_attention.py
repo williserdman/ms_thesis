@@ -200,7 +200,13 @@ class AttentionBlock(nn.Module):
 
 class DiffusedAttention(nn.Module):
     def __init__(
-        self, network_info, hidden_dim: int, dropout_rate: float, K: int, num_iters
+        self,
+        network_info,
+        hidden_dim: int,
+        dropout_rate: float,
+        K: int,
+        num_iters,
+        num_clusters: int,
     ):
         super().__init__()
 
@@ -208,6 +214,11 @@ class DiffusedAttention(nn.Module):
         self.hidden_dim = hidden_dim
         self.num_classes = network_info.num_classes
         self.dropout_rate = dropout_rate
+        self.num_clusters = num_clusters
+
+        self.clusters = nn.Parameter(
+            torch.zeros(network_info.N, self.num_clusters)
+        )  # (N, c)
 
         self.encoder = nn.Linear(network_info.num_features, self.hidden_dim)
 
@@ -242,13 +253,34 @@ class DiffusedAttention(nn.Module):
             edge_index, num_nodes=N, add_self_loops=True, dtype=x.dtype
         )
         # Laplacian
-        edge_index, edge_weight = get_laplacian(edge_index, edge_weight, num_nodes=N)  # type: ignore
+        edge_index_lap, edge_weight_lap = get_laplacian(edge_index, edge_weight, num_nodes=N)  # type: ignore
 
-        # compute diffused messages and stack into (N, K+1, H)
-        mono_msgs = self.mono_diff(x, edge_index, edge_weight)
-        mono_tokens = torch.stack(mono_msgs, dim=1)  # (N, K+1, H)
+        clusters = F.softmax(self.clusters, dim=-1)
+        lap = torch.sparse_coo_tensor(
+            edge_index_lap,
+            edge_weight_lap,
+            (N, N),
+            device=clusters.device,
+            dtype=clusters.dtype,
+        ).coalesce()
+
+        Lc = torch.sparse.mm(lap, clusters)  # (N, c)
+        qtLq = clusters.t() @ Lc  # (c, c)
+        cluster_loss = torch.trace(qtLq)  # scalar
+
+        mono_msgs_per_cluster = []
+        for i in range(self.num_clusters):
+            x_i = x * clusters[:, i].unsqueeze(-1)  # (N, H)
+            msgs_i = self.mono_diff(x_i, edge_index, edge_weight)  # list of (N, H)
+            mono_msgs_per_cluster.append(torch.stack(msgs_i, dim=1))  # (N, K+1, H)
+
+        # stack -> (N, K+1, num_clusters, H)
+        mono_tokens_per_cluster = torch.stack(mono_msgs_per_cluster, dim=2)
+
+        # simple merge across clusters (sum). You can replace with concat + proj or attention across clusters.
+        mono_tokens = torch.sum(mono_tokens_per_cluster, dim=2)  # (N, K+1, H)
+
         tokens = F.layer_norm(mono_tokens, mono_tokens.shape)
-        # print(tokens.shape)
 
         for _, attn_l in enumerate(self.attn_layers):
             out = attn_l(N, H, tokens)
@@ -258,6 +290,4 @@ class DiffusedAttention(nn.Module):
         out = F.layer_norm(out, out.shape)
         out = self.decoder(out)
 
-        dummy_loss = torch.tensor(0)
-
-        return F.softmax(out, dim=-1), dummy_loss
+        return F.softmax(out, dim=-1), cluster_loss
