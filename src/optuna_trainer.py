@@ -48,7 +48,7 @@ class OptunaTrainer:
         num_heads_clusters = trial.suggest_categorical(
             "num_heads_clusters", [2, 4, 8, 16]
         )
-        num_heads_main = trial.suggest_categorical("num_heads_clusters", [2, 4, 8, 16])
+        num_heads_main = trial.suggest_categorical("num_heads_main", [2, 4, 8, 16])
         num_cluster_iters = trial.suggest_int("num_cluster_iters", 1, 3)
 
         network = load_datasets([network_name])[network_name]
