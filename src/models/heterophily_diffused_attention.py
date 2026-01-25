@@ -207,6 +207,9 @@ class DiffusedAttention(nn.Module):
         K: int,
         num_iters,
         num_clusters: int,
+        num_heads_clusters: int,
+        num_heads_main: int,
+        num_cluster_iters: int,
     ):
         super().__init__()
 
@@ -224,11 +227,24 @@ class DiffusedAttention(nn.Module):
 
         # self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
         self.mono_diff = DiffusionStep("monomial", self.K, self.hidden_dim)
+        self.cluster_attn_layers = nn.ModuleList(
+            [
+                AttentionBlock(
+                    self.hidden_dim,
+                    self.num_clusters - 1,
+                    self.dropout_rate,
+                    num_heads_clusters,
+                )
+                for _ in range(num_cluster_iters)
+            ]
+        )
 
         # num_iters = 4
         self.attn_layers = nn.ModuleList(
             [
-                AttentionBlock(self.hidden_dim, self.K, self.dropout_rate, 4)
+                AttentionBlock(
+                    self.hidden_dim, self.K, self.dropout_rate, num_heads_main
+                )
                 for _ in range(num_iters)
             ]
         )
@@ -274,13 +290,22 @@ class DiffusedAttention(nn.Module):
             msgs_i = self.mono_diff(x_i, edge_index, edge_weight)  # list of (N, H)
             mono_msgs_per_cluster.append(torch.stack(msgs_i, dim=1))  # (N, K+1, H)
 
-        # stack -> (N, K+1, num_clusters, H)
-        mono_tokens_per_cluster = torch.stack(mono_msgs_per_cluster, dim=2)
+        # stack -> (N, K+1, num_clusters, H) -> (N*(K+1), num_clusters, H)
+        mono_tokens_per_cluster = torch.stack(mono_msgs_per_cluster, dim=2).reshape(
+            -1, self.num_clusters, H
+        )
 
-        # simple merge across clusters (sum). You can replace with concat + proj or attention across clusters.
-        mono_tokens = torch.sum(mono_tokens_per_cluster, dim=2)  # (N, K+1, H)
+        mono_tokens_per_cluster = F.layer_norm(
+            mono_tokens_per_cluster, mono_tokens_per_cluster.shape
+        )
 
-        tokens = F.layer_norm(mono_tokens, mono_tokens.shape)
+        out = None
+        for _, attn_l in enumerate(self.cluster_attn_layers):
+            out = attn_l(mono_tokens_per_cluster.shape[0], H, mono_tokens_per_cluster)
+            mono_tokens_per_cluster = F.layer_norm(out, out.shape)
+        out = out.reshape(N, self.K + 1, self.num_clusters, H)  # type: ignore
+        tokens = torch.sum(out, dim=2)
+        # attention between those in the clusters
 
         for _, attn_l in enumerate(self.attn_layers):
             out = attn_l(N, H, tokens)

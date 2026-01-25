@@ -45,6 +45,11 @@ class OptunaTrainer:
         K = trial.suggest_categorical("K", [4, 8, 10])
         num_iters = trial.suggest_int("num_iters", 1, 3)
         num_clusters = trial.suggest_int("num_clusters", 2, 10)
+        num_heads_clusters = trial.suggest_categorical(
+            "num_heads_clusters", [2, 4, 8, 16]
+        )
+        num_heads_main = trial.suggest_categorical("num_heads_clusters", [2, 4, 8, 16])
+        num_cluster_iters = trial.suggest_int("num_cluster_iters", 1, 3)
 
         network = load_datasets([network_name])[network_name]
         network_info = _extract_network_info(network, network_name)
@@ -57,6 +62,9 @@ class OptunaTrainer:
             K=K,
             num_iters=num_iters,
             num_clusters=num_clusters,
+            num_heads_clusters=num_heads_clusters,
+            num_heads_main=num_heads_main,
+            num_cluster_iters=num_cluster_iters,
         )
 
         # Early stopping callback
@@ -94,7 +102,7 @@ class OptunaTrainer:
         return trainer.callback_metrics["val_loss"].item()
 
     def run_optimization(self, network_name, n_trials=20):
-        pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=10)
+        pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=50)
         study = optuna.create_study(direction="minimize", pruner=pruner)
         study.optimize(
             lambda trial_num: self._objective(trial_num, network_name),
