@@ -59,7 +59,9 @@ class MyModel(
             loss = self.cse(logits[mask], batch.y[mask]) + inner_loss
             acc = _accuracy(logits[mask], batch.y[mask])
         else:
-            loss = self.cse(logits, batch.y) + inner_loss
+            loss = self.cse(
+                logits, batch.y
+            )  # + inner_loss... ignore inner loss on validation step so that optuna optimzed for what we care about
             acc = _accuracy(logits, batch.y)
 
         self.log("val_loss", loss, prog_bar=True)
