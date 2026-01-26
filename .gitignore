@@ -1,4 +1,4 @@
 .venv
 lightning_logs
 optuna_logs
-*_pycache_*
+__pycache__/
