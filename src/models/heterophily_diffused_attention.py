@@ -229,13 +229,22 @@ class DiffusedAttention(nn.Module):
 
         # self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
         self.mono_diff = DiffusionStep("monomial", self.K, self.hidden_dim)
+        # cluster_attn_layers: num_cluster_iters layers, each with num_heads_clusters heads
         self.cluster_attn_layers = nn.ModuleList(
             [
-                AttentionBlock(
-                    self.hidden_dim,
-                    self.num_clusters - 1,
-                    self.dropout_rate,
-                    num_heads_clusters,
+                nn.MultiheadAttention(
+                    self.hidden_dim, num_heads_clusters, dropout=self.dropout_rate
+                )
+                for _ in range(num_cluster_iters)
+            ]
+        )
+        # one FFN per cluster attention layer
+        self.cluster_ffn = nn.ModuleList(
+            [
+                nn.Sequential(
+                    nn.Linear(self.hidden_dim, self.hidden_dim),
+                    nn.LeakyReLU(),
+                    nn.Linear(self.hidden_dim, self.hidden_dim),
                 )
                 for _ in range(num_cluster_iters)
             ]
@@ -308,8 +317,12 @@ class DiffusedAttention(nn.Module):
         out = out.reshape(N, self.num_clusters, self.K + 1, H)  # type: ignore
         tokens = torch.sum(out, dim=2)
 
-        for _, attn_l in enumerate(self.cluster_attn_layers):
-            out = attn_l(tokens.shape[0], H, tokens)
+        for i, attn_l in enumerate(self.cluster_attn_layers):
+            # nn.MultiheadAttention expects (seq_len, batch, embed_dim)
+            t = tokens.transpose(0, 1)  # (num_clusters, N, H)
+            attn_out, _ = attn_l(t, t, t)
+            attn_out = attn_out.transpose(0, 1)  # (N, num_clusters, H)
+            out = self.cluster_ffn[i](attn_out)
             tokens = F.layer_norm(out, out.shape[-1:])
 
         out = torch.sum(out, dim=1)  # (N, H)
