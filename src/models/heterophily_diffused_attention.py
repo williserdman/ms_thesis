@@ -292,31 +292,30 @@ class DiffusedAttention(nn.Module):
             msgs_i = self.mono_diff(x_i, edge_index, edge_weight)  # list of (N, H)
             mono_msgs_per_cluster.append(torch.stack(msgs_i, dim=1))  # (N, K+1, H)
 
-        # stack -> (N, K+1, num_clusters, H) -> (N*(K+1), num_clusters, H)
-        mono_tokens_per_cluster = torch.stack(mono_msgs_per_cluster, dim=2).reshape(
-            -1, self.num_clusters, H
-        )
+        # stack -> (N, K+1, num_clusters, H)
+        mono_tokens_per_cluster = torch.stack(mono_msgs_per_cluster, dim=2)
 
-        mono_tokens_per_cluster = F.layer_norm(
-            mono_tokens_per_cluster, mono_tokens_per_cluster.shape[-1:]
-        )
+        tokens = mono_tokens_per_cluster.permute(0, 2, 1, 3).reshape(
+            -1, self.K + 1, H
+        )  # (N*num_clusters, K+1, H)
+
+        tokens = F.layer_norm(tokens, tokens.shape[-1:])
 
         out = None
-        for _, attn_l in enumerate(self.cluster_attn_layers):
-            out = attn_l(mono_tokens_per_cluster.shape[0], H, mono_tokens_per_cluster)
-            mono_tokens_per_cluster = F.layer_norm(out, out.shape[-1:])
-        out = out.reshape(N, self.K + 1, self.num_clusters, H)  # type: ignore
-        tokens = torch.sum(out, dim=2)
-        # attention between those in the clusters
-
         for _, attn_l in enumerate(self.attn_layers):
-            out = attn_l(N, H, tokens)
+            out = attn_l(tokens.shape[0], H, tokens)
+            tokens = F.layer_norm(out, out.shape[-1:])
+        out = out.reshape(N, self.num_clusters, self.K + 1, H)  # type: ignore
+        tokens = torch.sum(out, dim=2)
+
+        for _, attn_l in enumerate(self.cluster_attn_layers):
+            out = attn_l(tokens.shape[0], H, tokens)
             tokens = F.layer_norm(out, out.shape[-1:])
 
-        out = torch.sum(out, dim=1)  # type: ignore
+        out = torch.sum(out, dim=1)  # (N, H)
         out = F.layer_norm(out, out.shape[-1:])
         out = self.decoder(out)
 
         cluster_loss = cluster_loss * torch.tensor(self.loss_lambda)
 
-        return F.log_softmax(out, dim=-1), cluster_loss
+        return out, cluster_loss
