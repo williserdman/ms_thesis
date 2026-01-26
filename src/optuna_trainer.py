@@ -38,18 +38,17 @@ class OptunaTrainer:
     def _objective(self, trial, network_name):
         # Set the hyperparameters to optimize
         learning_rate = trial.suggest_float("learning_rate", 1e-4, 1e-2)
-        hidden_dim = trial.suggest_categorical(
-            "hidden_dim", [16, 32, 64, 128, 256, 512]
-        )
+        hidden_dim = trial.suggest_categorical("hidden_dim", [16, 32, 64, 128])
         dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.7)
         K = trial.suggest_categorical("K", [4, 8, 10])
-        num_iters = trial.suggest_int("num_iters", 1, 3)
+        num_iters = trial.suggest_int("num_iters", 1, 2)
         num_clusters = trial.suggest_int("num_clusters", 2, 10)
         num_heads_clusters = trial.suggest_categorical(
             "num_heads_clusters", [2, 4, 8, 16]
         )
         num_heads_main = trial.suggest_categorical("num_heads_main", [2, 4, 8, 16])
-        num_cluster_iters = trial.suggest_int("num_cluster_iters", 1, 3)
+        num_cluster_iters = trial.suggest_int("num_cluster_iters", 1, 2)
+        loss_lambda = trial.suggest_float("loss_lambda", 0, 1)
 
         network = load_datasets([network_name])[network_name]
         network_info = _extract_network_info(network, network_name)
@@ -65,6 +64,7 @@ class OptunaTrainer:
             num_heads_clusters=num_heads_clusters,
             num_heads_main=num_heads_main,
             num_cluster_iters=num_cluster_iters,
+            loss_lambda=loss_lambda,
         )
 
         # Early stopping callback

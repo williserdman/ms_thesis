@@ -84,12 +84,12 @@ class DiffusionStep(MessagePassing, nn.Module):
         elif self.prop_type == "mlp":
             h = x  # (N, H)
             h = torch.concat([h, old_info[:, 0, :]], dim=-1)  # type: ignore (N, 2H)
-            h = F.layer_norm(h, h.shape)
+            h = F.layer_norm(h, h.shape[-1:])
             h = self.basis[0](h)
             out = [h]
             for i in range(1, self.K + 1):
                 h = torch.concat([h, old_info[:, 0, :]], dim=-1)  # type: ignore (N, 2H)
-                h = F.layer_norm(h, h.shape)
+                h = F.layer_norm(h, h.shape[-1:])
                 h = self.basis[i](h)
                 h = self.propagate(edge_index, x=h, edge_weight=edge_weight)
                 out.append(h)
@@ -192,7 +192,7 @@ class AttentionBlock(nn.Module):
             (scores @ Vs).permute(0, 2, 1, 3).reshape(N, self.K + 1, -1)
         )  # (N, heads, K+1, head_dim) -> (N, K+1, heads, head_dim) -> (N, K+1, H)
 
-        out = F.layer_norm(out + tokens, out.shape)
+        out = F.layer_norm(out + tokens, out.shape[-1:])
         out = self.dropout(out)
 
         return self.fflm2(self.fflrelu(self.fflm1(out)))
@@ -210,6 +210,7 @@ class DiffusedAttention(nn.Module):
         num_heads_clusters: int,
         num_heads_main: int,
         num_cluster_iters: int,
+        loss_lambda: float,
     ):
         super().__init__()
 
@@ -218,6 +219,7 @@ class DiffusedAttention(nn.Module):
         self.num_classes = network_info.num_classes
         self.dropout_rate = dropout_rate
         self.num_clusters = num_clusters
+        self.loss_lambda = loss_lambda
 
         self.clusters = nn.Parameter(
             torch.zeros(network_info.N, self.num_clusters)
@@ -296,23 +298,25 @@ class DiffusedAttention(nn.Module):
         )
 
         mono_tokens_per_cluster = F.layer_norm(
-            mono_tokens_per_cluster, mono_tokens_per_cluster.shape
+            mono_tokens_per_cluster, mono_tokens_per_cluster.shape[-1:]
         )
 
         out = None
         for _, attn_l in enumerate(self.cluster_attn_layers):
             out = attn_l(mono_tokens_per_cluster.shape[0], H, mono_tokens_per_cluster)
-            mono_tokens_per_cluster = F.layer_norm(out, out.shape)
+            mono_tokens_per_cluster = F.layer_norm(out, out.shape[-1:])
         out = out.reshape(N, self.K + 1, self.num_clusters, H)  # type: ignore
         tokens = torch.sum(out, dim=2)
         # attention between those in the clusters
 
         for _, attn_l in enumerate(self.attn_layers):
             out = attn_l(N, H, tokens)
-            tokens = F.layer_norm(out, out.shape)
+            tokens = F.layer_norm(out, out.shape[-1:])
 
         out = torch.sum(out, dim=1)  # type: ignore
-        out = F.layer_norm(out, out.shape)
+        out = F.layer_norm(out, out.shape[-1:])
         out = self.decoder(out)
 
-        return F.softmax(out, dim=-1), cluster_loss
+        cluster_loss = cluster_loss * torch.tensor(self.loss_lambda)
+
+        return F.log_softmax(out, dim=-1), cluster_loss
