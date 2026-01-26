@@ -90,7 +90,7 @@ class OptunaTrainer:
         return trainer.callback_metrics["val_loss"].item()
 
     def run_optimization(self, network_name, n_trials=20):
-        pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=10)
+        pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=50)
         study = optuna.create_study(direction="minimize", pruner=pruner)
         study.optimize(
             lambda trial_num: self._objective(trial_num, network_name),
@@ -127,7 +127,7 @@ class OptunaTrainer:
 
         # Creating trainer instance
         trainer = pl.Trainer(
-            max_epochs=4000, accelerator=self.accelerator, devices=self.devices  # type: ignore
+            max_epochs=2000, accelerator=self.accelerator, devices=self.devices  # type: ignore
         )
 
         # Training the model with the best hyperparameters
