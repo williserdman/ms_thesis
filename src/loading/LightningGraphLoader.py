@@ -204,6 +204,7 @@ def _load_single_ds(name: str):
     elif name in {"computers", "photo"}:
         data = ds[SPLIT_INDEX]
 
+    # print(ds.num_features)
     return (
         data,
         ds.num_features,

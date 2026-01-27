@@ -115,6 +115,13 @@ class OptunaTrainer:
         network = load_datasets([network_name])[network_name]
         network_info = _extract_network_info(network, network_name)
 
+        logger = TensorBoardLogger(
+            save_dir=os.getcwd(), name=f"optuna_logs/best_params"
+        )
+        early_stop_callback = EarlyStopping(
+            monitor="val_loss", patience=100, verbose=False, mode="min"
+        )
+
         # Creating the model with the best hyperparameters
         model = MyModel(
             network_info,
@@ -127,7 +134,11 @@ class OptunaTrainer:
 
         # Creating trainer instance
         trainer = pl.Trainer(
-            max_epochs=4000, accelerator=self.accelerator, devices=self.devices  # type: ignore
+            max_epochs=2000,
+            accelerator=self.accelerator,
+            devices=self.devices,  # type: ignore
+            logger=logger,
+            callbacks=[early_stop_callback],
         )
 
         # Training the model with the best hyperparameters
