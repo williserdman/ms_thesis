@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import pytorch_lightning as pl
-from models.heterophily_diffused_attention import DiffusedAttention
+from models.littleRNN import LittleRNN
 from pytorch_lightning.utilities import grad_norm
 
 
@@ -18,7 +18,7 @@ def _accuracy(logits: torch.Tensor, y: torch.Tensor) -> float:
 
 
 class MyModel(
-    DiffusedAttention,
+    LittleRNN,
     pl.LightningModule,
 ):
     def __init__(self, ds_info, learning_rate, **kwargs):
