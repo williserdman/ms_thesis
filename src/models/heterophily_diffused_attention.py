@@ -209,9 +209,7 @@ class DiffusedAttention(nn.Module):
         multi: int,
         num_iters,
         num_clusters: int,
-        num_heads_clusters: int,
         num_heads_main: int,
-        num_cluster_iters: int,
         loss_lambda: float,
     ):
         super().__init__()
@@ -231,32 +229,18 @@ class DiffusedAttention(nn.Module):
 
         self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
 
-        self.cluster_attn_layers = nn.ModuleList(
-            [
-                nn.MultiheadAttention(
-                    self.hidden_dim, num_heads_clusters, dropout=self.dropout_rate
-                )
-                for _ in range(num_cluster_iters)
-            ]
-        )
-        # one FFN per cluster attention layer
-        self.cluster_ffn = nn.ModuleList(
-            [
-                nn.Sequential(
-                    nn.Linear(self.hidden_dim, self.hidden_dim),
-                    nn.LeakyReLU(),
-                    nn.Linear(self.hidden_dim, self.hidden_dim),
-                )
-                for _ in range(num_cluster_iters)
-            ]
-        )
-
         # num_iters = 4
         self.attn_layers = nn.ModuleList(
             [
                 AttentionBlock(self.hidden_dim, self.K, self.dropout_rate, 4, multi)
                 for _ in range(num_iters)
             ]
+        )
+        self.cluster_bias = nn.Sequential(
+            nn.LayerNorm(self.num_clusters),
+            nn.Linear(self.num_clusters, self.hidden_dim),
+            nn.LeakyReLU(),
+            nn.Linear(self.hidden_dim, self.hidden_dim),
         )
 
         self.decoder = nn.Linear(self.hidden_dim, self.num_classes)
@@ -294,35 +278,20 @@ class DiffusedAttention(nn.Module):
         qtLq = clusters.t() @ Lc  # (c, c)
         cluster_loss = torch.trace(qtLq)  # scalar
 
-        mono_msgs_per_cluster = []
-        for i in range(self.num_clusters):
-            x_i = x * clusters[:, i].unsqueeze(-1)  # (N, H)
-            msgs_i = self.cheb_diff(x_i, edge_index, edge_weight)  # list of (N, H)
-            mono_msgs_per_cluster.append(torch.stack(msgs_i, dim=1))  # (N, K+1, H)
+        msgs_i = self.cheb_diff(x, edge_index, edge_weight)  # list of (N, H)
+        msgs = torch.stack(msgs_i, dim=1)  # (N, K+1, H)
 
-        # stack -> (N, K+1, num_clusters, H)
-        mono_tokens_per_cluster = torch.stack(mono_msgs_per_cluster, dim=2)
-
-        tokens = mono_tokens_per_cluster.permute(0, 2, 1, 3).reshape(
-            -1, self.K + 1, H
-        )  # (N*num_clusters, K+1, H)
-
-        tokens = F.layer_norm(tokens, tokens.shape[-1:])
+        tokens = msgs + self.cluster_bias(clusters).reshape(
+            N, 1, H
+        )  # (N, c) -> (N, H) -> (N, 1, H)
+        tokens = F.layer_norm(msgs, tokens.shape[-1:])
 
         out = None
         for _, attn_l in enumerate(self.attn_layers):
             out = attn_l(tokens.shape[0], H, tokens)
             tokens = F.layer_norm(out, out.shape[-1:])
-        out = out.reshape(N, self.num_clusters, self.K + 1, H)  # type: ignore
-        tokens = torch.sum(out, dim=2)
 
-        for i, attn_l in enumerate(self.cluster_attn_layers):
-            # nn.MultiheadAttention expects (seq_len, batch, embed_dim)
-            t = tokens.transpose(0, 1)  # (num_clusters, N, H)
-            attn_out, _ = attn_l(t, t, t)
-            attn_out = attn_out.transpose(0, 1)  # (N, num_clusters, H)
-            out = self.cluster_ffn[i](attn_out)
-            tokens = F.layer_norm(out, out.shape[-1:])
+        out = out.reshape(N, self.K + 1, H)  # type: ignore
 
         out = torch.sum(out, dim=1)  # (N, H)
         out = F.layer_norm(out, out.shape[-1:])

@@ -41,13 +41,9 @@ class OptunaTrainer:
         hidden_dim = trial.suggest_categorical("hidden_dim", [16, 32, 64, 128])
         dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.7)
         K = trial.suggest_categorical("K", [4, 8, 10])
-        num_iters = trial.suggest_int("num_iters", 1, 2)
+        num_iters = trial.suggest_int("num_iters", 1, 3)
         num_clusters = trial.suggest_int("num_clusters", 2, 10)
-        num_heads_clusters = trial.suggest_categorical(
-            "num_heads_clusters", [2, 4, 8, 16]
-        )
         num_heads_main = trial.suggest_categorical("num_heads_main", [2, 4, 8, 16])
-        num_cluster_iters = trial.suggest_int("num_cluster_iters", 1, 2)
         loss_lambda = trial.suggest_float("loss_lambda", 0, 1)
         multi = trial.suggest_int("multi", 1, 4)
 
@@ -62,9 +58,7 @@ class OptunaTrainer:
             K=K,
             num_iters=num_iters,
             num_clusters=num_clusters,
-            num_heads_clusters=num_heads_clusters,
             num_heads_main=num_heads_main,
-            num_cluster_iters=num_cluster_iters,
             loss_lambda=loss_lambda,
             multi=multi,
         )
