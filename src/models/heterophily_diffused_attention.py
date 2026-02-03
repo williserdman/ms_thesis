@@ -11,7 +11,7 @@ from typing import Optional
 class DiffusionStep(MessagePassing, nn.Module):
     """
     Message passing layer for Graph Diffusion based attention.
-    Performs X' = P * X where P is the proppagation matrix.
+    Performs X' = P @ X where P is the proppagation matrix.
     """
 
     def __init__(self, prop_type: str, K: int, hidden_dim):
@@ -84,12 +84,12 @@ class DiffusionStep(MessagePassing, nn.Module):
         elif self.prop_type == "mlp":
             h = x  # (N, H)
             h = torch.concat([h, old_info[:, 0, :]], dim=-1)  # type: ignore (N, 2H)
-            h = F.layer_norm(h, h.shape[-1:])
+            h = F.layer_norm(h, h.shape)
             h = self.basis[0](h)
             out = [h]
             for i in range(1, self.K + 1):
                 h = torch.concat([h, old_info[:, 0, :]], dim=-1)  # type: ignore (N, 2H)
-                h = F.layer_norm(h, h.shape[-1:])
+                h = F.layer_norm(h, h.shape)
                 h = self.basis[i](h)
                 h = self.propagate(edge_index, x=h, edge_weight=edge_weight)
                 out.append(h)
@@ -108,7 +108,7 @@ class DiffusionStep(MessagePassing, nn.Module):
 
 
 class AttentionBlock(nn.Module):
-    def __init__(self, hidden_dim, K, dprate, num_heads):
+    def __init__(self, hidden_dim, K, dprate, num_heads, multi):
         super(AttentionBlock, self).__init__()
         """
         Docstring for __init__
@@ -129,9 +129,10 @@ class AttentionBlock(nn.Module):
         self.linear_layers = nn.ModuleList(
             [
                 nn.Sequential(
-                    nn.Linear(hidden_dim, hidden_dim),
+                    nn.LayerNorm(hidden_dim),
+                    nn.Linear(hidden_dim, hidden_dim * multi),
                     nn.LeakyReLU(),
-                    nn.Linear(hidden_dim, hidden_dim),
+                    nn.Linear(hidden_dim * multi, hidden_dim),
                 )
                 for _ in range(K + 1)
             ]
@@ -205,6 +206,7 @@ class DiffusedAttention(nn.Module):
         hidden_dim: int,
         dropout_rate: float,
         K: int,
+        multi: int,
         num_iters,
         num_clusters: int,
         num_heads_clusters: int,
@@ -227,9 +229,8 @@ class DiffusedAttention(nn.Module):
 
         self.encoder = nn.Linear(network_info.num_features, self.hidden_dim)
 
-        # self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
-        self.mono_diff = DiffusionStep("monomial", self.K, self.hidden_dim)
-        # cluster_attn_layers: num_cluster_iters layers, each with num_heads_clusters heads
+        self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
+
         self.cluster_attn_layers = nn.ModuleList(
             [
                 nn.MultiheadAttention(
@@ -253,9 +254,7 @@ class DiffusedAttention(nn.Module):
         # num_iters = 4
         self.attn_layers = nn.ModuleList(
             [
-                AttentionBlock(
-                    self.hidden_dim, self.K, self.dropout_rate, num_heads_main
-                )
+                AttentionBlock(self.hidden_dim, self.K, self.dropout_rate, 4, multi)
                 for _ in range(num_iters)
             ]
         )
@@ -298,7 +297,7 @@ class DiffusedAttention(nn.Module):
         mono_msgs_per_cluster = []
         for i in range(self.num_clusters):
             x_i = x * clusters[:, i].unsqueeze(-1)  # (N, H)
-            msgs_i = self.mono_diff(x_i, edge_index, edge_weight)  # list of (N, H)
+            msgs_i = self.cheb_diff(x_i, edge_index, edge_weight)  # list of (N, H)
             mono_msgs_per_cluster.append(torch.stack(msgs_i, dim=1))  # (N, K+1, H)
 
         # stack -> (N, K+1, num_clusters, H)
@@ -331,4 +330,4 @@ class DiffusedAttention(nn.Module):
 
         cluster_loss = cluster_loss * torch.tensor(self.loss_lambda)
 
-        return out, cluster_loss
+        return out, -cluster_loss

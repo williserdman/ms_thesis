@@ -75,7 +75,7 @@ class MyModel(
             loss = self.cse(logits[mask], batch.y[mask]) + inner_loss
             acc = _accuracy(logits[mask], batch.y[mask])
         else:
-            loss = self.cse(logits, batch.y) + inner_loss
+            loss = self.cse(logits, batch.y)  # + inner_loss
             acc = _accuracy(logits, batch.y)
 
         self.log("test_loss", loss)

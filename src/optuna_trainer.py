@@ -49,6 +49,7 @@ class OptunaTrainer:
         num_heads_main = trial.suggest_categorical("num_heads_main", [2, 4, 8, 16])
         num_cluster_iters = trial.suggest_int("num_cluster_iters", 1, 2)
         loss_lambda = trial.suggest_float("loss_lambda", 0, 1)
+        multi = trial.suggest_int("multi", 1, 4)
 
         network = load_datasets([network_name])[network_name]
         network_info = _extract_network_info(network, network_name)
@@ -65,6 +66,7 @@ class OptunaTrainer:
             num_heads_main=num_heads_main,
             num_cluster_iters=num_cluster_iters,
             loss_lambda=loss_lambda,
+            multi=multi,
         )
 
         # Early stopping callback
