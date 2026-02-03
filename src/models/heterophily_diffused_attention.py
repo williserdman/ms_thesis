@@ -299,4 +299,4 @@ class DiffusedAttention(nn.Module):
 
         cluster_loss = cluster_loss * torch.tensor(self.loss_lambda)
 
-        return out, -cluster_loss
+        return out, cluster_loss
