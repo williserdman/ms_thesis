@@ -236,11 +236,16 @@ class DiffusedAttention(nn.Module):
                 for _ in range(num_iters)
             ]
         )
-        self.cluster_bias = nn.Sequential(
-            nn.LayerNorm(self.num_clusters),
-            nn.Linear(self.num_clusters, self.hidden_dim),
-            nn.LeakyReLU(),
-            nn.Linear(self.hidden_dim, self.hidden_dim),
+        self.cbs = nn.ModuleList(
+            [
+                nn.Sequential(
+                    nn.LayerNorm(self.num_clusters),
+                    nn.Linear(self.num_clusters, self.hidden_dim),
+                    nn.LeakyReLU(),
+                    nn.Linear(self.hidden_dim, self.hidden_dim),
+                )
+                for _ in range(K + 1)
+            ]
         )
 
         self.decoder = nn.Linear(self.hidden_dim, self.num_classes)
@@ -281,9 +286,9 @@ class DiffusedAttention(nn.Module):
         msgs_i = self.cheb_diff(x, edge_index, edge_weight)  # list of (N, H)
         msgs = torch.stack(msgs_i, dim=1)  # (N, K+1, H)
 
-        tokens = msgs + self.cluster_bias(clusters).reshape(
-            N, 1, H
-        )  # (N, c) -> (N, H) -> (N, 1, H)
+        cbs = torch.stack([l(clusters) for l in self.cbs], dim=1)
+
+        tokens = msgs + cbs
         tokens = F.layer_norm(msgs, tokens.shape[-1:])
 
         out = None
