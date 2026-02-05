@@ -28,8 +28,6 @@ class MyModel(
         self.learning_rate = learning_rate
         self.cse = nn.CrossEntropyLoss(torch.tensor(ds_info.class_weights))
 
-        ### MODEL DEFINITION ###
-
     def on_before_optimizer_step(self, optimizer):
         # Compute the 2-norm for each layer and log them
         # Gradients are unscaled automatically if using mixed precision (AMP)
@@ -54,15 +52,9 @@ class MyModel(
     def validation_step(self, batch):
         logits, inner_loss = self.forward(batch)
         # compute metrics only over validation nodes
-        if hasattr(batch, "val_mask") and batch.val_mask is not None:
-            mask = batch.val_mask
-            loss = self.cse(logits[mask], batch.y[mask]) + inner_loss
-            acc = _accuracy(logits[mask], batch.y[mask])
-        else:
-            loss = self.cse(
-                logits, batch.y
-            )  # + inner_loss... ignore inner loss on validation step so that optuna optimzed for what we care about
-            acc = _accuracy(logits, batch.y)
+        mask = batch.val_mask
+        loss = self.cse(logits[mask], batch.y[mask])  # + inner_loss
+        acc = _accuracy(logits[mask], batch.y[mask])
 
         self.log("val_loss", loss, prog_bar=True)
         self.log("val_accuracy", acc, prog_bar=True)
@@ -72,7 +64,7 @@ class MyModel(
         # compute metrics only over test nodes
         if hasattr(batch, "test_mask") and batch.test_mask is not None:
             mask = batch.test_mask
-            loss = self.cse(logits[mask], batch.y[mask]) + inner_loss
+            loss = self.cse(logits[mask], batch.y[mask])  # + inner_loss
             acc = _accuracy(logits[mask], batch.y[mask])
         else:
             loss = self.cse(logits, batch.y)  # + inner_loss

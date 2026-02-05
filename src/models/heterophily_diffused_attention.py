@@ -136,7 +136,7 @@ class AttentionBlock(nn.Module):
         with torch.no_grad():
             self.local_alpha.data.fill_(1.0 / (self.K + 1))  # type: ignore
 
-    def forward(self, N: int, H: int, tokens: torch.Tensor, cluster_bias: torch.Tensor):
+    def forward(self, N: int, H: int, tokens: torch.Tensor):
         tokens = torch.stack(
             [layer(tokens[:, idx, :]) for idx, layer in enumerate(self.linear_layers)],
             dim=1,
@@ -172,13 +172,12 @@ class AttentionBlock(nn.Module):
         # Assuming cluster_bias is (N, K+1). Reshape to broadcast over heads and dim.
         # Target: (N, 1, K+1, 1)
         N = scores.shape[0]  # Get batch size
-        cluster_bias_broadcast = cluster_bias.view(N, 1, self.K + 1, 1)
 
         # 3. Apply Combined Bias to Values
         # We add the cluster bias to the static bias. This shifts the filter coefficients
         # for each node based on its cluster.
         # Result: (N, heads, K+1, head_dim)
-        Vs = Vs * (static_bias + cluster_bias_broadcast)
+        Vs = Vs * (static_bias)
 
         out = (
             (scores @ Vs).permute(0, 2, 1, 3).reshape(N, self.K + 1, -1)
@@ -223,14 +222,9 @@ class DiffusedAttention(nn.Module):
         # num_iters = 4
         self.attn_layers = nn.ModuleList(
             [
-                AttentionBlock(self.hidden_dim, self.K, self.dropout_rate, 4, multi)
+                AttentionBlock(self.hidden_dim, self.K + 1, self.dropout_rate, 4, multi)
                 for _ in range(num_iters)
             ]
-        )
-        self.cluster_bias_proj = nn.Sequential(
-            nn.Linear(self.num_clusters, self.hidden_dim),
-            nn.LeakyReLU(),
-            nn.Linear(self.hidden_dim, self.K + 1),
         )
 
         self.ffns = nn.ModuleList(
@@ -247,6 +241,12 @@ class DiffusedAttention(nn.Module):
         self.decoder = nn.Linear(self.hidden_dim, self.num_classes)
 
         self.dropout = nn.Dropout(self.dropout_rate)
+
+        self.boundary_proj = nn.Sequential(
+            nn.Linear(self.num_clusters, self.hidden_dim),
+            nn.LeakyReLU(),
+            nn.Linear(self.hidden_dim, self.hidden_dim),
+        )
 
     def reset_parameters(self):
         self.encoder.reset_parameters()
@@ -279,20 +279,28 @@ class DiffusedAttention(nn.Module):
         qtLq = clusters.t() @ Lc  # (c, c)
         cluster_loss = torch.trace(qtLq)  # scalar
 
+        Lc = torch.sparse.mm(lap, clusters)  # (N, num_clusters)
+
+        # 1. Project Lc to the same dimension as your hidden state H
+        boundary_token = self.boundary_proj(Lc)  # (N, H)
+
+        # 2. Reshape to match the token sequence format (N, 1, H)
+        boundary_token = boundary_token.unsqueeze(1)
+
         msgs = self.cheb_diff(x, edge_index, edge_weight)  # list of (N, H)
         msgs = torch.stack(msgs, dim=1)  # (N, K+1, H)
 
-        cluster_bias = self.cluster_bias_proj(clusters)  # (N, K+1)
-
-        tokens = msgs
-        orig_tokens = F.layer_norm(msgs, tokens.shape[-1:])
+        # 3. Append to your existing polynomial tokens (msgs)
+        # msgs was (N, K+1, H) -> now (N, K+2, H)
+        tokens = torch.cat([msgs, boundary_token], dim=1)
+        orig_tokens = F.layer_norm(tokens, tokens.shape[-1:])
 
         out = orig_tokens.clone()
         for idx, attn_l in enumerate(self.attn_layers):
             tokens = F.layer_norm(out, tokens.shape[-1:])
             # print(tokens.shape)
 
-            out = attn_l(N, H, tokens, cluster_bias) + orig_tokens
+            out = attn_l(N, H, tokens) + orig_tokens
             out = F.layer_norm(out, out.shape[-1:])
             out = self.ffns[idx](out) + orig_tokens
 
