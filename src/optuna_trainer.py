@@ -78,7 +78,7 @@ class OptunaTrainer:
 
         # Create trainer
         trainer = pl.Trainer(
-            max_epochs=10,
+            max_epochs=200,
             callbacks=[early_stop_callback, pruning_callback],
             logger=logger,
             enable_progress_bar=False,
@@ -98,7 +98,7 @@ class OptunaTrainer:
         return trainer.callback_metrics["val_loss"].item()
 
     def run_optimization(self, network_name, n_trials=20):
-        pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=200)
+        pruner = optuna.pruners.MedianPruner(n_startup_trials=5, n_warmup_steps=10)
         study = optuna.create_study(direction="minimize", pruner=pruner)
         study.optimize(
             lambda trial_num: self._objective(trial_num, network_name),
