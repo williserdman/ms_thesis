@@ -54,13 +54,9 @@ class MyModel(
     def validation_step(self, batch):
         logits, inner_loss = self.forward(batch)
         # compute metrics only over validation nodes
-        if hasattr(batch, "val_mask") and batch.val_mask is not None:
-            mask = batch.val_mask
-            loss = self.cse(logits[mask], batch.y[mask]) + inner_loss
-            acc = _accuracy(logits[mask], batch.y[mask])
-        else:
-            loss = self.cse(logits, batch.y) + inner_loss
-            acc = _accuracy(logits, batch.y)
+        mask = batch.val_mask
+        loss = self.cse(logits[mask], batch.y[mask])  # + inner_loss
+        acc = _accuracy(logits[mask], batch.y[mask])
 
         self.log("val_loss", loss, prog_bar=True)
         self.log("val_accuracy", acc, prog_bar=True)
@@ -68,13 +64,9 @@ class MyModel(
     def test_step(self, batch):
         logits, inner_loss = self.forward(batch)
         # compute metrics only over test nodes
-        if hasattr(batch, "test_mask") and batch.test_mask is not None:
-            mask = batch.test_mask
-            loss = self.cse(logits[mask], batch.y[mask]) + inner_loss
-            acc = _accuracy(logits[mask], batch.y[mask])
-        else:
-            loss = self.cse(logits, batch.y) + inner_loss
-            acc = _accuracy(logits, batch.y)
+        mask = batch.test_mask
+        loss = self.cse(logits[mask], batch.y[mask])  # + inner_loss
+        acc = _accuracy(logits[mask], batch.y[mask])
 
         self.log("test_loss", loss)
         self.log("test_accuracy", acc)
