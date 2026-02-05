@@ -81,20 +81,6 @@ class DiffusionStep(MessagePassing, nn.Module):
 
             return out
 
-        elif self.prop_type == "mlp":
-            h = x  # (N, H)
-            h = torch.concat([h, old_info[:, 0, :]], dim=-1)  # type: ignore (N, 2H)
-            h = F.layer_norm(h, h.shape)
-            h = self.basis[0](h)
-            out = [h]
-            for i in range(1, self.K + 1):
-                h = torch.concat([h, old_info[:, 0, :]], dim=-1)  # type: ignore (N, 2H)
-                h = F.layer_norm(h, h.shape)
-                h = self.basis[i](h)
-                h = self.propagate(edge_index, x=h, edge_weight=edge_weight)
-                out.append(h)
-            return out
-
     def message(self, x_j, edge_weight):  # type: ignore
         """
         Docstring for message
@@ -140,24 +126,12 @@ class AttentionBlock(nn.Module):
         self.W_K = nn.Linear(hidden_dim, hidden_dim)
         self.W_Q = nn.Linear(hidden_dim, hidden_dim)
 
-        self.fflm1 = nn.Linear(hidden_dim, hidden_dim * 4)
-        self.fflrelu = nn.LeakyReLU()
-        self.fflm2 = nn.Linear(hidden_dim * 4, hidden_dim)
-
         self.dropout = nn.Dropout(dprate)
 
         self.B = nn.Parameter(torch.ones(1, self.K + 1))
         self.head_bias = nn.Parameter(torch.ones(num_heads, self.K + 1))
 
     def reset_parameters(self):
-        """
-        resets parameters for this module
-
-        :param self: Description
-        """
-
-        self.fflm1.reset_parameters()
-        self.fflm2.reset_parameters()
         with torch.no_grad():
             self.local_alpha.data.fill_(1.0 / (self.K + 1))  # type: ignore
 
@@ -195,7 +169,7 @@ class AttentionBlock(nn.Module):
         out = F.layer_norm(out + tokens, out.shape)
         out = self.dropout(out)
 
-        return self.fflm2(self.fflrelu(self.fflm1(out)))
+        return out
 
 
 class DiffusedAttention(nn.Module):
@@ -205,6 +179,7 @@ class DiffusedAttention(nn.Module):
         hidden_dim: int,
         dropout_rate: float,
         K: int,
+        multi: int,
     ):
         super().__init__()
 
@@ -215,13 +190,24 @@ class DiffusedAttention(nn.Module):
 
         self.encoder = nn.Linear(network_info.num_features, self.hidden_dim)
 
-        # self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
-        self.mono_diff = DiffusionStep("monomial", self.K, self.hidden_dim)
+        self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
+        # self.mono_diff = DiffusionStep("monomial", self.K, self.hidden_dim)
 
         num_iters = 4
         self.attn_layers = nn.ModuleList(
             [
                 AttentionBlock(self.hidden_dim, self.K, self.dropout_rate, 4)
+                for _ in range(num_iters)
+            ]
+        )
+
+        self.ffns = nn.ModuleList(
+            [
+                nn.Sequential(
+                    nn.Linear(self.hidden_dim, self.hidden_dim * multi),
+                    nn.LeakyReLU(),
+                    nn.Linear(self.hidden_dim * multi, self.hidden_dim),
+                )
                 for _ in range(num_iters)
             ]
         )
@@ -250,12 +236,14 @@ class DiffusedAttention(nn.Module):
 
         for idx, attn_l in enumerate(self.attn_layers):
             # compute diffused messages and stack into (N, K+1, H)
-            mono_msgs = self.mono_diff(x, edge_index, edge_weight)
+            mono_msgs = self.cheb_diff(x, edge_index, edge_weight)
             mono_tokens = torch.stack(mono_msgs, dim=1)  # (N, K+1, H)
             tokens = F.layer_norm(mono_tokens, mono_tokens.shape)
             # print(tokens.shape)
 
-            out = attn_l(N, H, tokens)
+            out = attn_l(N, H, tokens) + tokens
+            out = F.layer_norm(out, out.shape)
+            out = self.ffns[idx](out) + tokens
             out = torch.sum(out, dim=1)
             x = out
 

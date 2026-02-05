@@ -43,6 +43,7 @@ class OptunaTrainer:
         )
         dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.7)
         K = trial.suggest_categorical("K", [4, 8, 10])
+        multi = trial.suggest_int("multi", 1, 4)
 
         network = load_datasets([network_name])[network_name]
         network_info = _extract_network_info(network, network_name)
@@ -53,6 +54,7 @@ class OptunaTrainer:
             learning_rate=learning_rate,
             dropout_rate=dropout_rate,
             K=K,
+            multi=multi,
         )
 
         # Early stopping callback
