@@ -136,7 +136,7 @@ class AttentionBlock(nn.Module):
         with torch.no_grad():
             self.local_alpha.data.fill_(1.0 / (self.K + 1))  # type: ignore
 
-    def forward(self, N: int, H: int, tokens: torch.Tensor):
+    def forward(self, N: int, H: int, tokens: torch.Tensor, cluster_bias: torch.Tensor):
         tokens = torch.stack(
             [layer(tokens[:, idx, :]) for idx, layer in enumerate(self.linear_layers)],
             dim=1,
@@ -156,12 +156,29 @@ class AttentionBlock(nn.Module):
             0, 2, 1, 3
         )  # (N, heads, K+1, head_dim)
 
-        score_logit = (Qs @ Ks) / self.head_dim**0.5  # (N, heads, K+1, K+1)
+        # (N, heads, K+1, K+1)
+        # Note: Ensure Ks is transposed if it isn't already: (Qs @ Ks.transpose(-1, -2))
+        score_logit = (Qs @ Ks) / self.head_dim**0.5
         scores = torch.tanh(score_logit)
         scores = self.dropout(scores)
 
-        bias = self.B * self.head_bias  # (num_heads, K+1)
-        Vs = Vs * bias.reshape(1, self.num_heads, self.K + 1, 1)
+        # 1. Prepare Static Bias (Global)
+        # self.B: (K+1) -> (num_heads, K+1)
+        static_bias = self.B * self.head_bias
+        # Broadcast to: (1, num_heads, K+1, 1) to match Vs
+        static_bias = static_bias.reshape(1, self.num_heads, self.K + 1, 1)
+
+        # 2. Prepare Cluster Bias (Node-Specific)
+        # Assuming cluster_bias is (N, K+1). Reshape to broadcast over heads and dim.
+        # Target: (N, 1, K+1, 1)
+        N = scores.shape[0]  # Get batch size
+        cluster_bias_broadcast = cluster_bias.view(N, 1, self.K + 1, 1)
+
+        # 3. Apply Combined Bias to Values
+        # We add the cluster bias to the static bias. This shifts the filter coefficients
+        # for each node based on its cluster.
+        # Result: (N, heads, K+1, head_dim)
+        Vs = Vs * (static_bias + cluster_bias_broadcast)
 
         out = (
             (scores @ Vs).permute(0, 2, 1, 3).reshape(N, self.K + 1, -1)
@@ -181,13 +198,10 @@ class DiffusedAttention(nn.Module):
         dropout_rate: float,
         K: int,
         multi: int,
-<<<<<<< HEAD
         num_iters,
         num_clusters: int,
         num_heads_main: int,
         loss_lambda: float,
-=======
->>>>>>> main
     ):
         super().__init__()
 
@@ -205,10 +219,6 @@ class DiffusedAttention(nn.Module):
         self.encoder = nn.Linear(network_info.num_features, self.hidden_dim)
 
         self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
-<<<<<<< HEAD
-=======
-        # self.mono_diff = DiffusionStep("monomial", self.K, self.hidden_dim)
->>>>>>> main
 
         # num_iters = 4
         self.attn_layers = nn.ModuleList(
@@ -217,16 +227,10 @@ class DiffusedAttention(nn.Module):
                 for _ in range(num_iters)
             ]
         )
-        self.cbs = nn.ModuleList(
-            [
-                nn.Sequential(
-                    nn.LayerNorm(self.num_clusters),
-                    nn.Linear(self.num_clusters, self.hidden_dim),
-                    nn.LeakyReLU(),
-                    nn.Linear(self.hidden_dim, self.hidden_dim),
-                )
-                for _ in range(K + 1)
-            ]
+        self.cluster_bias_proj = nn.Sequential(
+            nn.Linear(self.num_clusters, self.hidden_dim),
+            nn.LeakyReLU(),
+            nn.Linear(self.hidden_dim, self.K + 1),
         )
 
         self.ffns = nn.ModuleList(
@@ -262,7 +266,6 @@ class DiffusedAttention(nn.Module):
         # Laplacian
         edge_index_lap, edge_weight_lap = get_laplacian(edge_index, edge_weight, num_nodes=N)  # type: ignore
 
-<<<<<<< HEAD
         clusters = F.softmax(self.clusters, dim=-1)
         lap = torch.sparse_coo_tensor(
             edge_index_lap,
@@ -275,35 +278,23 @@ class DiffusedAttention(nn.Module):
         Lc = torch.sparse.mm(lap, clusters)  # (N, c)
         qtLq = clusters.t() @ Lc  # (c, c)
         cluster_loss = torch.trace(qtLq)  # scalar
-=======
+
+        msgs = self.cheb_diff(x, edge_index, edge_weight)  # list of (N, H)
+        msgs = torch.stack(msgs, dim=1)  # (N, K+1, H)
+
+        cluster_bias = self.cluster_bias_proj(clusters)  # (N, K+1)
+
+        tokens = msgs
+        orig_tokens = F.layer_norm(msgs, tokens.shape[-1:])
+
+        out = orig_tokens.clone()
         for idx, attn_l in enumerate(self.attn_layers):
-            # compute diffused messages and stack into (N, K+1, H)
-            mono_msgs = self.cheb_diff(x, edge_index, edge_weight)
-            mono_tokens = torch.stack(mono_msgs, dim=1)  # (N, K+1, H)
-            tokens = F.layer_norm(mono_tokens, mono_tokens.shape)
+            tokens = F.layer_norm(out, tokens.shape[-1:])
             # print(tokens.shape)
 
-            out = attn_l(N, H, tokens) + tokens
-            out = F.layer_norm(out, out.shape)
-            out = self.ffns[idx](out) + tokens
-            out = torch.sum(out, dim=1)
-            x = out
->>>>>>> main
-
-        msgs_i = self.cheb_diff(x, edge_index, edge_weight)  # list of (N, H)
-        msgs = torch.stack(msgs_i, dim=1)  # (N, K+1, H)
-
-        cbs = torch.stack([l(clusters) for l in self.cbs], dim=1)
-
-        tokens = msgs + cbs
-        tokens = F.layer_norm(msgs, tokens.shape[-1:])
-
-        out = None
-        for _, attn_l in enumerate(self.attn_layers):
-            out = attn_l(tokens.shape[0], H, tokens)
-            tokens = F.layer_norm(out, out.shape[-1:])
-
-        out = out.reshape(N, self.K + 1, H)  # type: ignore
+            out = attn_l(N, H, tokens, cluster_bias) + orig_tokens
+            out = F.layer_norm(out, out.shape[-1:])
+            out = self.ffns[idx](out) + orig_tokens
 
         out = torch.sum(out, dim=1)  # (N, H)
         out = F.layer_norm(out, out.shape[-1:])
