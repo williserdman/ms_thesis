@@ -1,0 +1,24 @@
+[
+  {
+    "dataset": "squirrel",
+    "status": "ok",
+    "test": [
+      {
+        "test_loss": 1.6482653617858887,
+        "test_accuracy": 0.31376975774765015
+      }
+    ],
+    "gpu": "cpu"
+  },
+  {
+    "dataset": "Cora",
+    "status": "ok",
+    "test": [
+      {
+        "test_loss": 1.6947729587554932,
+        "test_accuracy": 0.4399999976158142
+      }
+    ],
+    "gpu": "cpu"
+  }
+]

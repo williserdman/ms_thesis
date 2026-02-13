@@ -31,7 +31,7 @@ ALL_DATASETS = [
     "Minesweeper",
 ]
 
-ALL_DATASETS = ["squirrel", "chameleon", "Roman-empire"]
+ALL_DATASETS = ["squirrel", "Cora"]  # , "Roman-empire"]
 
 
 def train_job(network_name, gpu_id, results_list):

@@ -41,7 +41,7 @@ class OptunaTrainer:
         hidden_dim = trial.suggest_categorical(
             "hidden_dim", [16, 32, 64, 128, 256, 512]
         )
-        dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.7)
+        dropout_rate = trial.suggest_float("dropout_rate", 0.3, 0.7)
         K = trial.suggest_categorical("K", [4, 8, 10])
 
         network = load_datasets([network_name])[network_name]

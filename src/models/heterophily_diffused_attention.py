@@ -107,95 +107,132 @@ class DiffusionStep(MessagePassing, nn.Module):
         return edge_weight.reshape(-1, 1) * x_j
 
 
-class AttentionBlock(nn.Module):
-    def __init__(self, hidden_dim, K, dprate, num_heads):
-        super(AttentionBlock, self).__init__()
-        """
-        Docstring for __init__
+class PolyAttn(nn.Module):
+    def __init__(self, hidden_dim, num_heads, K, dropout_rate, q=0.25, multi=4.0):
+        super(PolyAttn, self).__init__()
+        self.K = K + 1
+        self.norm = nn.LayerNorm(hidden_dim)
+        self.n_head = num_heads
+        self.multi = multi
+        self.d_head = hidden_dim // num_heads
 
-        :param self: Description
-        :param hidden_dim: will be used for both input and output
-        :param max_hops: number of hops
-        :param num_heads: number of heads, size of head dim == hidden_dim // num_heads
-        """
-        self.hidden_dim = hidden_dim
-        self.num_heads = num_heads
-
-        assert hidden_dim % num_heads == 0, f"{hidden_dim} % {num_heads} == 0"
-
-        self.head_dim = hidden_dim // num_heads
-        self.K = K
-
-        self.linear_layers = nn.ModuleList(
+        self.token_wise_network = nn.ModuleList(
             [
                 nn.Sequential(
-                    nn.Linear(hidden_dim, hidden_dim),
-                    nn.LeakyReLU(),
-                    nn.Linear(hidden_dim, hidden_dim),
+                    nn.Linear(hidden_dim, int(hidden_dim * self.multi)),
+                    nn.ReLU(),
+                    nn.Linear(int(hidden_dim * self.multi), hidden_dim),
                 )
-                for _ in range(K + 1)
+                for _ in range(self.K)
             ]
         )
 
-        self.W_K = nn.Linear(hidden_dim, hidden_dim)
-        self.W_Q = nn.Linear(hidden_dim, hidden_dim)
+        self.W_Q = nn.Linear(hidden_dim, self.n_head * self.d_head, bias=False)
+        self.W_K = nn.Linear(hidden_dim, self.n_head * self.d_head, bias=False)
 
-        self.fflm1 = nn.Linear(hidden_dim, hidden_dim * 4)
-        self.fflrelu = nn.LeakyReLU()
-        self.fflm2 = nn.Linear(hidden_dim * 4, hidden_dim)
+        self.bias_scale = nn.Parameter(torch.ones(self.n_head, self.K))
+        self.bias = torch.tensor([((j + 1) ** q) ** (-1) for j in range(self.K)])
+        self.register_buffer("bias_buffer", self.bias)
 
-        self.dropout = nn.Dropout(dprate)
-
-        self.B = nn.Parameter(torch.ones(1, self.K + 1))
-        self.head_bias = nn.Parameter(torch.ones(num_heads, self.K + 1))
+        self.dprate = dropout_rate
+        self.reset_parameters()
 
     def reset_parameters(self):
-        """
-        resets parameters for this module
+        for layer in self.token_wise_network:
+            layer[0].reset_parameters()  # type: ignore
+            layer[2].reset_parameters()  # type: ignore
+        self.W_Q.reset_parameters()
+        self.W_K.reset_parameters()
 
-        :param self: Description
-        """
-
-        self.fflm1.reset_parameters()
-        self.fflm2.reset_parameters()
-        with torch.no_grad():
-            self.local_alpha.data.fill_(1.0 / (self.K + 1))  # type: ignore
-
-    def forward(self, N: int, H: int, tokens: torch.Tensor):
-        tokens = torch.stack(
-            [layer(tokens[:, idx, :]) for idx, layer in enumerate(self.linear_layers)],
+    def forward(self, src):
+        batch_size = src.shape[0]
+        origin_src = src
+        src = self.norm(src)
+        token = src
+        value = src
+        token = torch.stack(
+            [
+                layer(token[:, idx, :])
+                for idx, layer in enumerate(self.token_wise_network)
+            ],
             dim=1,
         )
+        query = self.W_Q(token)
+        key = self.W_K(token)
+        q_heads = query.view(batch_size, self.K, self.n_head, self.d_head).transpose(
+            1, 2
+        )  # [n,n_head,k,d_head]
+        k_heads = key.view(batch_size, self.K, self.n_head, self.d_head).transpose(1, 2)
+        v_heads = value.view(batch_size, self.K, self.n_head, -1).transpose(1, 2)
+        attention_scores = torch.matmul(q_heads, k_heads.transpose(-2, -1)) / (
+            self.d_head**0.5
+        )
+        attention_scores = torch.tanh(attention_scores)
+        attn_mask = torch.einsum("hk,k->hk", self.bias_scale, self.bias_buffer)
+        attention_scores = torch.einsum("nhij,hj->nhij", attention_scores, attn_mask)
+        attention_scores = F.dropout(
+            attention_scores, p=self.dprate, training=self.training
+        )
+        context_heads = torch.matmul(attention_scores, v_heads)
+        context_sequence = (
+            context_heads.transpose(1, 2).contiguous().view(batch_size, self.K, -1)
+        )
+        src = F.dropout(context_sequence, p=self.dprate, training=self.training)
+        src = src + origin_src
+        return src
 
-        Qs = (
-            self.W_Q(tokens.reshape(-1, H))
-            .reshape(N, self.K + 1, self.num_heads, self.head_dim)
-            .transpose(1, 2)
-        )  # (N, heads, K+1, d_head)
-        Ks = (
-            self.W_K(tokens.reshape(-1, H))
-            .reshape(N, self.K + 1, self.num_heads, self.head_dim)
-            .permute(0, 2, 3, 1)
-        )  # (N, heads, d_head, K+1)
-        Vs = tokens.reshape(N, self.K + 1, self.num_heads, self.head_dim).permute(
-            0, 2, 1, 3
-        )  # (N, heads, K+1, head_dim)
 
-        score_logit = (Qs @ Ks) / self.head_dim**0.5  # (N, heads, K+1, K+1)
-        scores = torch.tanh(score_logit)
-        scores = self.dropout(scores)
+class FFNNetwork(nn.Module):
+    def __init__(self, hidden_dim, ffn_dim):
+        super(FFNNetwork, self).__init__()
+        self.lin1 = nn.Linear(hidden_dim, ffn_dim)
+        self.gelu = nn.GELU()
+        self.lin2 = nn.Linear(ffn_dim, hidden_dim)
+        self.reset_parameters()
 
-        bias = self.B * self.head_bias  # (num_heads, K+1)
-        Vs = Vs * bias.reshape(1, self.num_heads, self.K + 1, 1)
+    def reset_parameters(self):
+        self.lin1.reset_parameters()
+        self.lin2.reset_parameters()
 
-        out = (
-            (scores @ Vs).permute(0, 2, 1, 3).reshape(N, self.K + 1, -1)
-        )  # (N, heads, K+1, head_dim) -> (N, K+1, heads, head_dim) -> (N, K+1, H)
+    def forward(self, x):
+        x = self.lin1(x)
+        x = self.gelu(x)
+        x = self.lin2(x)
+        return x
 
-        out = F.layer_norm(out + tokens, out.shape)
-        out = self.dropout(out)
 
-        return self.fflm2(self.fflrelu(self.fflm1(out)))
+class FFN(nn.Module):
+    def __init__(self, hidden_dim, dropout_rate, d_ffn=None):
+        super(FFN, self).__init__()
+        if d_ffn is None:
+            d_ffn = hidden_dim * 4
+        self.dropout = dropout_rate
+        self.ffn_norm = nn.LayerNorm(hidden_dim)
+        self.ffn_net = FFNNetwork(hidden_dim, d_ffn)
+
+    def forward(self, src):
+        origin_src = src
+        src = self.ffn_norm(src)
+        src = self.ffn_net(src)
+        src = F.dropout(src, p=self.dropout, training=self.training)
+        src = src + origin_src
+        return src
+
+
+class PolyFormerBlock(nn.Module):
+    def __init__(self, hidden_dim, K, dropout_rate, num_heads):
+        super(PolyFormerBlock, self).__init__()
+        self.attnmodule = PolyAttn(hidden_dim, num_heads, K, dropout_rate)
+        self.ffnmodule = FFN(hidden_dim, dropout_rate)
+
+    def reset_parameters(self):
+        self.attnmodule.reset_parameters()
+        self.ffnmodule.ffn_net.reset_parameters()
+
+    def forward(self, src):
+        src = self.attnmodule(src)
+        src = self.ffnmodule(src)
+        return src
 
 
 class DiffusedAttention(nn.Module):
@@ -215,13 +252,13 @@ class DiffusedAttention(nn.Module):
 
         self.encoder = nn.Linear(network_info.num_features, self.hidden_dim)
 
-        # self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
-        self.mono_diff = DiffusionStep("monomial", self.K, self.hidden_dim)
+        self.cheb_diff = DiffusionStep("chebyshev", self.K, self.hidden_dim)
+        # self.mono_diff = DiffusionStep("monomial", self.K, self.hidden_dim)
 
         num_iters = 4
         self.attn_layers = nn.ModuleList(
             [
-                AttentionBlock(self.hidden_dim, self.K, self.dropout_rate, 4)
+                PolyFormerBlock(self.hidden_dim, self.K, self.dropout_rate, 4)
                 for _ in range(num_iters)
             ]
         )
@@ -246,20 +283,21 @@ class DiffusedAttention(nn.Module):
             edge_index, num_nodes=N, add_self_loops=True, dtype=x.dtype
         )
         # Laplacian
-        edge_index, edge_weight = get_laplacian(edge_index, edge_weight, num_nodes=N)  # type: ignore
+        # edge_index, edge_weight = get_laplacian(edge_index, edge_weight, num_nodes=N)  # type: ignore
 
         # compute diffused messages and stack into (N, K+1, H)
-        mono_msgs = self.mono_diff(x, edge_index, edge_weight)
+        mono_msgs = self.cheb_diff(x, edge_index, edge_weight)
         mono_tokens = torch.stack(mono_msgs, dim=1)  # (N, K+1, H)
-        tokens = F.layer_norm(mono_tokens, mono_tokens.shape)
+        tokens = F.layer_norm(mono_tokens, (H,))
         # print(tokens.shape)
 
         for _, attn_l in enumerate(self.attn_layers):
-            out = attn_l(N, H, tokens)
-            tokens = F.layer_norm(out, out.shape)
+            tokens = attn_l(tokens)
+            # tokens = F.layer_norm(out, out.shape) # PolyFormer block handles normalization internally
 
-        out = torch.sum(out, dim=1)  # type: ignore
-        out = F.layer_norm(x, x.shape)
+        # Pool over K
+        out = torch.sum(tokens, dim=1)  # type: ignore
+        out = F.layer_norm(out, (H,))
         out = self.decoder(out)
 
         dummy_loss = torch.tensor(0)
