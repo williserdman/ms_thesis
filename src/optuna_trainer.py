@@ -1,12 +1,12 @@
 import optuna
-from optuna.integration import PyTorchLightningPruningCallback  # TODO
+from optuna.integration import PyTorchLightningPruningCallback
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.loggers import TensorBoardLogger
 import pytorch_lightning as pl
 import os
-from loading.LightningGraphLoader import load_datasets
-from models.MyModel import MyModel
-from loading.DatasetInfo import DatasetInfo
+from src.loading.LightningGraphLoader import load_datasets
+from src.models.MyModel import MyModel
+from src.loading.DatasetInfo import DatasetInfo
 import torch
 
 
@@ -41,10 +41,17 @@ class OptunaTrainer:
         hidden_dim = trial.suggest_categorical("hidden_dim", [16, 32, 64, 128])
         dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.7)
         K = trial.suggest_categorical("K", [4, 8, 10])
-        num_iters = trial.suggest_int("num_iters", 1, 3)
         num_clusters = trial.suggest_int("num_clusters", 2, 10)
+        loss_lambda = trial.suggest_float("loss_lambda", 0.0, 1.0)
+
+        # New Arnoldi & Clustering specific parameters
+        alpha = trial.suggest_float("alpha", 0.05, 0.5)
+        homophily = trial.suggest_categorical("homophily", [True, False])
+        cut_type = trial.suggest_categorical("cut_type", ["mincut", "maxcut"])
+
+        # Parameters from your previous attention model (kept to avoid breaking MyModel kwargs)
+        num_iters = trial.suggest_int("num_iters", 1, 3)
         num_heads_main = trial.suggest_categorical("num_heads_main", [2, 4, 8, 16])
-        loss_lambda = trial.suggest_float("loss_lambda", 0, 1)
         multi = trial.suggest_int("multi", 1, 4)
 
         network = load_datasets([network_name])[network_name]
@@ -56,10 +63,14 @@ class OptunaTrainer:
             learning_rate=learning_rate,
             dropout_rate=dropout_rate,
             K=K,
-            num_iters=num_iters,
             num_clusters=num_clusters,
-            num_heads_main=num_heads_main,
             loss_lambda=loss_lambda,
+            alpha=alpha,
+            homophily=homophily,
+            cut_type=cut_type,
+            # Legacy kwargs (safely absorbed by **kwargs in your model)
+            num_iters=num_iters,
+            num_heads_main=num_heads_main,
             multi=multi,
         )
 

@@ -1,6 +1,7 @@
 import torch
 import pytorch_lightning as pl
-from optuna_trainer import OptunaTrainer
+from src.optuna_trainer import OptunaTrainer
+from src.two_stage_trainer import TwoStageTrainer
 import datetime
 import multiprocessing
 import time
@@ -33,6 +34,12 @@ ALL_DATASETS = [
 
 ALL_DATASETS = ["squirrel", "chameleon", "Roman-empire"]
 
+# Set to True to use the two-stage cluster-GArnoldi pipeline,
+# False to use the original single-stage DiffusedAttention pipeline.
+TWO_STAGE = True
+# "mincut" groups tightly-connected nodes; "maxcut" pushes towards bipartiteness.
+CUT_TYPE = "mincut"
+
 
 def train_job(network_name, gpu_id, results_list):
     pl.seed_everything(SEED, workers=True)
@@ -52,11 +59,48 @@ def train_job(network_name, gpu_id, results_list):
     return
 
 
+def train_job_two_stage(network_name, gpu_id, results_list, cut_type="mincut"):
+    """Two-stage cluster-GArnoldi pipeline."""
+    pl.seed_everything(SEED, workers=True)
+
+    if isinstance(gpu_id, int):
+        tst = TwoStageTrainer("gpu", gpu_id)
+    else:
+        tst = TwoStageTrainer("cpu", "auto")
+
+    study_s2, clusters, num_clusters = tst.run_optimization(
+        network_name, cut_type=cut_type
+    )
+    results = tst.test_best_model(study_s2, network_name, clusters, num_clusters)
+
+    results_list.append(
+        (
+            network_name,
+            {
+                "status": "ok",
+                "test": results,
+                "gpu": gpu_id,
+                "cut_type": cut_type,
+                "pipeline": "two_stage",
+            },
+        )
+    )
+
+    return
+
+
 def main():
     gpu_count = torch.cuda.device_count() if torch.cuda.is_available() else 0
 
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    out_filename = f"training_results_{timestamp}.json"
+    pipeline_tag = "twostage" if TWO_STAGE else "singlestage"
+    out_filename = f"training_results_{pipeline_tag}_{timestamp}.json"
+
+    job_fn = (
+        (lambda name, gpu, res: train_job_two_stage(name, gpu, res, CUT_TYPE))
+        if TWO_STAGE
+        else train_job
+    )
 
     manager = multiprocessing.Manager()
     results = manager.list()
@@ -64,7 +108,7 @@ def main():
     if gpu_count <= 0:
         # fallback: run sequentially on CPU
         for d in ALL_DATASETS:
-            train_job(d, "cpu", results)
+            job_fn(d, "cpu", results)
     else:
         print(1)
         free_gpus = list(range(gpu_count))
@@ -82,7 +126,7 @@ def main():
                     time.sleep(1)
 
             gpu = free_gpus.pop(0)
-            p = multiprocessing.Process(target=train_job, args=(d, gpu, results))
+            p = multiprocessing.Process(target=job_fn, args=(d, gpu, results))
             p.start()
             processes[p] = gpu
 
