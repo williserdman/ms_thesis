@@ -96,11 +96,16 @@ def main():
     pipeline_tag = "twostage" if TWO_STAGE else "singlestage"
     out_filename = f"training_results_{pipeline_tag}_{timestamp}.json"
 
-    job_fn = (
-        (lambda name, gpu, res: train_job_two_stage(name, gpu, res, CUT_TYPE))
-        if TWO_STAGE
-        else train_job
-    )
+    # --- THE FIX ---
+    # Define the target function and keyword arguments cleanly
+    # instead of using an unpicklable lambda.
+    if TWO_STAGE:
+        target_fn = train_job_two_stage
+        process_kwargs = {"cut_type": CUT_TYPE}
+    else:
+        target_fn = train_job
+        process_kwargs = {}
+    # ---------------
 
     manager = multiprocessing.Manager()
     results = manager.list()
@@ -108,7 +113,8 @@ def main():
     if gpu_count <= 0:
         # fallback: run sequentially on CPU
         for d in ALL_DATASETS:
-            job_fn(d, "cpu", results)
+            # Unpack kwargs here for the CPU fallback
+            target_fn(d, "cpu", results, **process_kwargs)
     else:
         print(1)
         free_gpus = list(range(gpu_count))
@@ -126,7 +132,11 @@ def main():
                     time.sleep(1)
 
             gpu = free_gpus.pop(0)
-            p = multiprocessing.Process(target=job_fn, args=(d, gpu, results))
+
+            # Pass the function directly to 'target' and use 'kwargs' for extra arguments
+            p = multiprocessing.Process(
+                target=target_fn, args=(d, gpu, results), kwargs=process_kwargs
+            )
             p.start()
             processes[p] = gpu
 
@@ -148,6 +158,7 @@ def main():
         entry = {"dataset": dataset_name}
         entry.update(info)
         output.append(entry)
+
     with open(out_filename, "w") as fh:
         json.dump(output, fh, indent=2, default=str)
     print(f"Wrote results to {out_filename}")
