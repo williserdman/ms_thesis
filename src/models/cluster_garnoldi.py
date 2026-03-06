@@ -71,7 +71,7 @@ class ClusterStage1(nn.Module):
         dropout_rate: float,
         num_clusters: int,
         loss_lambda: float,
-        cut_type: str = "mincut",
+        cut_type: str = "maxcut",
     ):
         super().__init__()
 
