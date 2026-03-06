@@ -149,7 +149,9 @@ class TwoStageTrainer:
         hidden_dim = trial.suggest_categorical("s2_hidden_dim", [32, 64, 128])
         dropout_rate = trial.suggest_float("s2_dropout_rate", 0.0, 0.7)
         K = trial.suggest_categorical("s2_K", [4, 8, 10])
-        Init = trial.suggest_categorical("s2_Init", ["Chebyshev", "Legendre", "Jacobi"])
+        Init = trial.suggest_categorical(
+            "s2_Init", ["Chebyshev"]
+        )  # , "Legendre", "Jacobi"
         homophily = trial.suggest_categorical("s2_homophily", [True, False])
 
         network = load_datasets([network_name])[network_name]

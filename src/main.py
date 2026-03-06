@@ -38,7 +38,7 @@ ALL_DATASETS = ["squirrel", "chameleon", "Roman-empire"]
 # False to use the original single-stage DiffusedAttention pipeline.
 TWO_STAGE = True
 # "mincut" groups tightly-connected nodes; "maxcut" pushes towards bipartiteness.
-CUT_TYPE = "mincut"
+CUT_TYPE = "maxcut"
 
 
 def train_job(network_name, gpu_id, results_list):
