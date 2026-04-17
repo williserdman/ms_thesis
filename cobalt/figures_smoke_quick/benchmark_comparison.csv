@@ -1,0 +1,3 @@
+dataset,our_best_accuracy_pct,g_arnoldi_reported_pct,arnoldi_reported_pct,best_reported_pct,delta_vs_g_arnoldi,delta_vs_best_reported
+Cora,12.999999523162842,82.33,80.25,82.33,-69.33000047683716,-69.33000047683716
+texas,16.21621549129486,66.2,63.2,66.2,-49.98378450870514,-49.98378450870514

@@ -1,0 +1,150 @@
+[
+  {
+    "dataset": "Cora",
+    "status": "ok",
+    "pipeline": "two_stage",
+    "cut_type": "maxcut",
+    "accelerator": "mps",
+    "split_index": 1,
+    "split_seed": 42,
+    "optuna_seed": 42,
+    "n_trials_s1": 1,
+    "n_trials_s2": 1,
+    "trial_max_epochs": 10,
+    "retrain_max_epochs": 20,
+    "best_stage2_val_loss": 1.9836753606796265,
+    "best_stage2_params": {
+      "s2_learning_rate": 0.0001698670453505509,
+      "s2_hidden_dim": 32,
+      "s2_dropout_rate": 0.22899733906779782,
+      "s2_K": 4,
+      "s2_Init": "Chebyshev",
+      "s2_homophily": false,
+      "s2_filter_profile": "mixed"
+    },
+    "num_clusters": 3,
+    "test": {
+      "test_metrics": [
+        {
+          "test_loss": 1.921617031097412,
+          "test_accuracy": 0.12999999523162842
+        }
+      ],
+      "filter_coefficients": {
+        "cluster_0 (g_low_pass)": [
+          4.540643692016602,
+          -4.765509128570557,
+          1.7580443620681763,
+          -0.15779165923595428
+        ],
+        "cluster_1 (g_high_pass)": [
+          -3.5406782627105713,
+          4.765518665313721,
+          -1.7580395936965942,
+          0.15862266719341278
+        ],
+        "cluster_2 (g_3)": [
+          -29.010238647460938,
+          32.70763397216797,
+          -15.650066375732422,
+          1.8650758266448975
+        ]
+      },
+      "cluster_stats": {
+        "num_nodes": 2708,
+        "num_clusters": 3,
+        "mean_membership": [
+          0.3332771360874176,
+          0.3333262801170349,
+          0.3333965837955475
+        ],
+        "hard_counts": [
+          865,
+          920,
+          923
+        ],
+        "hard_fractions": [
+          0.31942394375801086,
+          0.33973410725593567,
+          0.34084194898605347
+        ],
+        "mean_assignment_entropy": 1.098490595817566,
+        "normalized_assignment_entropy": 0.9998892303938349
+      }
+    }
+  },
+  {
+    "dataset": "texas",
+    "status": "ok",
+    "pipeline": "two_stage",
+    "cut_type": "maxcut",
+    "accelerator": "mps",
+    "split_index": 1,
+    "split_seed": 42,
+    "optuna_seed": 42,
+    "n_trials_s1": 1,
+    "n_trials_s2": 1,
+    "trial_max_epochs": 10,
+    "retrain_max_epochs": 20,
+    "best_stage2_val_loss": 1.500844955444336,
+    "best_stage2_params": {
+      "s2_learning_rate": 0.0001698670453505509,
+      "s2_hidden_dim": 32,
+      "s2_dropout_rate": 0.22899733906779782,
+      "s2_K": 4,
+      "s2_Init": "Chebyshev",
+      "s2_homophily": false,
+      "s2_filter_profile": "mixed"
+    },
+    "num_clusters": 3,
+    "test": {
+      "test_metrics": [
+        {
+          "test_loss": 1.517805814743042,
+          "test_accuracy": 0.1621621549129486
+        }
+      ],
+      "filter_coefficients": {
+        "cluster_0 (g_low_pass)": [
+          4.53902006149292,
+          -4.767190933227539,
+          1.7566204071044922,
+          -0.1599162369966507
+        ],
+        "cluster_1 (g_high_pass)": [
+          -3.5390408039093018,
+          4.767197132110596,
+          -1.7566149234771729,
+          0.16027970612049103
+        ],
+        "cluster_2 (g_3)": [
+          -29.008882522583008,
+          32.709373474121094,
+          -15.648859024047852,
+          1.8640849590301514
+        ]
+      },
+      "cluster_stats": {
+        "num_nodes": 183,
+        "num_clusters": 3,
+        "mean_membership": [
+          0.33397406339645386,
+          0.3316403031349182,
+          0.33438560366630554
+        ],
+        "hard_counts": [
+          72,
+          33,
+          78
+        ],
+        "hard_fractions": [
+          0.39344263076782227,
+          0.1803278625011444,
+          0.4262295067310333
+        ],
+        "mean_assignment_entropy": 1.0985187292099,
+        "normalized_assignment_entropy": 0.9999148385111154
+      }
+    }
+  }
+]

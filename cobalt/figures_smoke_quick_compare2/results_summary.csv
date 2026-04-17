@@ -1,0 +1,3 @@
+dataset,pipeline,test_accuracy,test_loss,best_val_loss,filter_profile,source_file
+Cora,two_stage,0.12999999523162842,1.921617031097412,1.9836753606796265,mixed,smoke_results_quick.json
+Texas,two_stage,0.1621621549129486,1.517805814743042,1.500844955444336,mixed,smoke_results_quick.json

@@ -1,0 +1,16 @@
+dataset,paper_best_method,paper_best_score,ours_best_method,ours_best_score
+Cora,G-Arnoldi-GCN,82.33,two_stage,12.999999523162842
+Citeseer,G-Arnoldi-GCN,69.88,,
+Pubmed,G-Arnoldi-GCN,85.23,,
+Photo,G-Arnoldi-GCN,92.46,,
+Computers,G-Arnoldi-GCN,83.81,,
+Texas,G-Arnoldi-GCN,66.2,two_stage,16.21621549129486
+Cornell,G-Arnoldi-GCN,55.87,,
+Actor,BernNet,28.85,,
+Chameleon,G-Arnoldi-GCN,43.35,,
+Squirrel,JacobiConv,32.23,,
+Roman-empire,G-Arnoldi-GCN,69.63,,
+Amazon-ratings,G-Arnoldi-GCN,48.68,,
+Minesweeper,G-Arnoldi-GCN,88.52,,
+Tolokers,GCN,73.11,,
+Questions,G-Arnoldi-GCN,66.18,,

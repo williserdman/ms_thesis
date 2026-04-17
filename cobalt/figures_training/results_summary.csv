@@ -1,0 +1,7 @@
+dataset,pipeline,test_accuracy,test_loss,best_val_loss,filter_profile,source_file
+squirrel,single_stage,0.32731378078460693,7.008068561553955,,,training_results_20260203_111622.json
+chameleon,single_stage,0.38509318232536316,5.371581077575684,,,training_results_20260203_111622.json
+Roman-empire,single_stage,0.7144370079040527,2.947397232055664,,,training_results_20260203_111622.json
+squirrel,single_stage,0.32731378078460693,7.158078670501709,,,training_results_20260204_113646.json
+chameleon,single_stage,0.4409937858581543,5.377081394195557,,,training_results_20260204_113646.json
+Roman-empire,single_stage,0.5728909373283386,1.5912457704544067,,,training_results_20260204_113646.json

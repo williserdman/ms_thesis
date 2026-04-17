@@ -1,0 +1,30 @@
+[
+  {
+    "dataset": "cora",
+    "condition_id": "hnone_s1_d1_syn0",
+    "synthetic": false,
+    "homophily_target": null,
+    "sparsity_keep": 1.0,
+    "degree_gamma": 1.0,
+    "split_index": 0,
+    "split_seed": 42,
+    "run1_best_val_acc": 0.322,
+    "run1_test_at_best": 0.334,
+    "run2_best_val_acc": 0.556,
+    "run2_test_at_best": 0.593,
+    "run1_checkpoint": "/Users/williserdman/Documents/school/Koyuturk/pformer_lmc/gcn_modeconnect/checkpoints/cora/hnone_s1_d1_syn0/gcn_run1_seed1941488137.pt",
+    "run2_checkpoint": "/Users/williserdman/Documents/school/Koyuturk/pformer_lmc/gcn_modeconnect/checkpoints/cora/hnone_s1_d1_syn0/gcn_run2_seed4198936517.pt",
+    "linear_barrier": 0.004386246204376221,
+    "bezier_barrier": 0.0,
+    "endpoint_a_val_loss": 1.9365400075912476,
+    "endpoint_b_val_loss": 1.9298920631408691,
+    "num_nodes": 2708.0,
+    "num_directed_edges": 10556.0,
+    "num_undirected_edges": 5278.0,
+    "edge_density": 0.0014399999126942077,
+    "edge_homophily": 0.8099659085273743,
+    "degree_mean": 3.8980798721313477,
+    "degree_std": 5.227818489074707,
+    "output_dir": "/Users/williserdman/Documents/school/Koyuturk/pformer_lmc/gcn_modeconnect/outputs/cora/hnone_s1_d1_syn0"
+  }
+]
