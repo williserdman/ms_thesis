@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+node_classification/__pycache__/
+node_classification/layers/__pycache__/
+node_classification/dataloader/__pycache__/
+node_classification/data
+node_classification/datasets/
+node_classification/saved_models/
+node_classification/bases/
