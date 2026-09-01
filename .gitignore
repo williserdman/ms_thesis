@@ -1,5 +1,6 @@
 .venv
 .venv*
+.worktrees/
 lightning_logs
 optuna_logs
 __pycache__/
