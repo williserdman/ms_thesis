@@ -1,0 +1,32 @@
+{
+  "dataset": "chameleon",
+  "seed": 42,
+  "model": {
+    "K": 10,
+    "filters": [
+      "g_low_pass",
+      "g_high_pass"
+    ],
+    "hidden_dim": 64,
+    "learning_rate": 0.0018785426399210619,
+    "dropout_rate": 0.473931655089634,
+    "weight_decay": 1.5339162591163623e-06
+  },
+  "training": {
+    "max_epochs": 150,
+    "patience": 25
+  },
+  "selection": {
+    "metric": "val_loss",
+    "value": 1.4832754135131836,
+    "n_trials": 8,
+    "best_trial": 5,
+    "seed": 42
+  },
+  "test_metrics": {
+    "test_loss": 1.4421812295913696,
+    "test_accuracy": 0.4534161686897278
+  },
+  "created_at": "2026-09-16T03:01:30.587481+00:00",
+  "source_commit": "e5199f2cf9b504698909f121943395923eea285e"
+}
