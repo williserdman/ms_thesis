@@ -7,26 +7,26 @@
       "g_low_pass",
       "g_high_pass"
     ],
-    "hidden_dim": 32,
-    "learning_rate": 0.02241323437810113,
-    "dropout_rate": 0.7725056264596475,
-    "weight_decay": 0.0017123375973163992
+    "hidden_dim": 128,
+    "learning_rate": 0.008319514671870785,
+    "dropout_rate": 0.7515991532513513,
+    "weight_decay": 0.003795853142670641
   },
   "training": {
-    "max_epochs": 150,
-    "patience": 25
+    "max_epochs": 500,
+    "patience": 500
   },
   "selection": {
     "metric": "val_loss",
-    "value": 1.099994421005249,
-    "n_trials": 8,
-    "best_trial": 6,
+    "value": 1.0434298515319824,
+    "n_trials": 20,
+    "best_trial": 9,
     "seed": 42
   },
   "test_metrics": {
-    "test_loss": 1.0789235830307007,
-    "test_accuracy": 0.5890000462532043
+    "test_loss": 1.0007528066635132,
+    "test_accuracy": 0.6320000290870667
   },
-  "created_at": "2026-09-16T03:01:34.993477+00:00",
-  "source_commit": "e5199f2cf9b504698909f121943395923eea285e"
+  "created_at": "2026-09-17T19:27:04.754287+00:00",
+  "source_commit": "e83484b0f7d52c5c4216c5577dc41832b29e8cdf"
 }

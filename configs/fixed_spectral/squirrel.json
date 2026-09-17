@@ -8,25 +8,25 @@
       "g_high_pass"
     ],
     "hidden_dim": 32,
-    "learning_rate": 0.02241323437810113,
-    "dropout_rate": 0.7725056264596475,
-    "weight_decay": 0.0017123375973163992
+    "learning_rate": 0.017717227285453805,
+    "dropout_rate": 0.7896816884225217,
+    "weight_decay": 0.001107320396163833
   },
   "training": {
-    "max_epochs": 150,
-    "patience": 25
+    "max_epochs": 500,
+    "patience": 500
   },
   "selection": {
     "metric": "val_loss",
-    "value": 1.5590530633926392,
-    "n_trials": 8,
-    "best_trial": 6,
+    "value": 1.5535410642623901,
+    "n_trials": 20,
+    "best_trial": 11,
     "seed": 42
   },
   "test_metrics": {
-    "test_loss": 1.5371209383010864,
-    "test_accuracy": 0.2460496723651886
+    "test_loss": 1.5316022634506226,
+    "test_accuracy": 0.2753950357437134
   },
-  "created_at": "2026-09-16T03:01:20.018727+00:00",
-  "source_commit": "e5199f2cf9b504698909f121943395923eea285e"
+  "created_at": "2026-09-17T19:02:40.608047+00:00",
+  "source_commit": "e83484b0f7d52c5c4216c5577dc41832b29e8cdf"
 }
