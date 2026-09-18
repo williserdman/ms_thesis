@@ -1,0 +1,250 @@
+{
+  "Cora": {
+    "report": "runs/cora-repair/report.json",
+    "model": {
+      "in_channels": 1433,
+      "out_channels": 7,
+      "hidden_channels": 64,
+      "depth": 2,
+      "dropout": 0.5
+    },
+    "data": {
+      "name": "Cora",
+      "loader": "/home/wge3/ms_thesis/src/loading/LightningGraphLoader.py",
+      "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+      "data_root": "/home/wge3/ms_thesis/data",
+      "data_seed": 0,
+      "num_nodes": 2708,
+      "num_edges": 10556,
+      "num_features": 1433,
+      "num_classes": 7,
+      "split_counts": {
+        "train": 140,
+        "val": 500,
+        "test": 1000
+      },
+      "split_sha256": "6bd8cc27013b1270c884603c41a93723dd92bf413c1e43b55cf5401c9cc13a2e",
+      "split_policy": "Unmodified thesis loader masks; public Planetoid split, fixed index 1 where supported, seeded random Amazon splits.",
+      "preprocessing": "Unmodified thesis loader features and edge_index; GCNConv adds self-loops and symmetric normalization.",
+      "class_weighting": "Unweighted cross entropy; loader class weights are not used."
+    },
+    "test_barriers": {
+      "linear": {
+        "barrier_mean": 0.3422500391801198,
+        "barrier_std": 0.026034379333216767,
+        "n_pairs": 3
+      },
+      "aligned": {
+        "barrier_mean": 0.04801777998606364,
+        "barrier_std": 0.009413380387061096,
+        "n_pairs": 3
+      },
+      "repaired": {
+        "barrier_mean": 0.033269452055295266,
+        "barrier_std": 0.00854363191385759,
+        "n_pairs": 3
+      },
+      "bezier": {
+        "barrier_mean": 0.0024990240732828775,
+        "barrier_std": 0.003534153737133501,
+        "n_pairs": 3
+      }
+    },
+    "endpoint_test_accuracy_mean": 0.8128333191076914,
+    "midpoint_test_accuracy_mean": {
+      "linear": 0.7996666630109152,
+      "aligned": 0.803000013033549,
+      "repaired": 0.8036666711171468,
+      "bezier": 0.7913333376248678
+    },
+    "repaired_midpoint_replay_max_abs_error": 0.0,
+    "baseline_seconds": 93.80914317350835,
+    "repair_seconds": 29.67376583442092
+  },
+  "chameleon": {
+    "report": "runs/dataset-sweep-20260918/chameleon/repair/report.json",
+    "model": {
+      "in_channels": 2325,
+      "out_channels": 5,
+      "hidden_channels": 64,
+      "depth": 2,
+      "dropout": 0.5
+    },
+    "data": {
+      "name": "chameleon",
+      "loader": "/home/wge3/ms_thesis/src/loading/LightningGraphLoader.py",
+      "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+      "data_root": "/home/wge3/ms_thesis/data",
+      "data_seed": 0,
+      "num_nodes": 890,
+      "num_edges": 13584,
+      "num_features": 2325,
+      "num_classes": 5,
+      "split_counts": {
+        "train": 427,
+        "val": 302,
+        "test": 161
+      },
+      "split_sha256": "3df216c1db9ef1083f86fddedfe6d221b50606be1cf7f8e7c594c67648c93456",
+      "split_policy": "Unmodified thesis loader masks; public Planetoid split, fixed index 1 where supported, seeded random Amazon splits.",
+      "preprocessing": "Unmodified thesis loader features and edge_index; GCNConv adds self-loops and symmetric normalization.",
+      "class_weighting": "Unweighted cross entropy; loader class weights are not used."
+    },
+    "test_barriers": {
+      "linear": {
+        "barrier_mean": 0.0,
+        "barrier_std": 0.0,
+        "n_pairs": 3
+      },
+      "aligned": {
+        "barrier_mean": 0.0,
+        "barrier_std": 0.0,
+        "n_pairs": 3
+      },
+      "repaired": {
+        "barrier_mean": 0.0,
+        "barrier_std": 0.0,
+        "n_pairs": 3
+      },
+      "bezier": {
+        "barrier_mean": 2.6418565114339194,
+        "barrier_std": 0.06523891646049808,
+        "n_pairs": 3
+      }
+    },
+    "endpoint_test_accuracy_mean": 0.3799171894788742,
+    "midpoint_test_accuracy_mean": {
+      "linear": 0.3788819909095764,
+      "aligned": 0.37474119663238525,
+      "repaired": 0.3788819909095764,
+      "bezier": 0.33954450488090515
+    },
+    "repaired_midpoint_replay_max_abs_error": 2.384185791015625e-07,
+    "baseline_seconds": 286.1585654411465,
+    "repair_seconds": 9.848030334338546
+  },
+  "squirrel": {
+    "report": "runs/dataset-sweep-20260918/squirrel/repair/report.json",
+    "model": {
+      "in_channels": 2089,
+      "out_channels": 5,
+      "hidden_channels": 64,
+      "depth": 2,
+      "dropout": 0.5
+    },
+    "data": {
+      "name": "squirrel",
+      "loader": "/home/wge3/ms_thesis/src/loading/LightningGraphLoader.py",
+      "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+      "data_root": "/home/wge3/ms_thesis/data",
+      "data_seed": 0,
+      "num_nodes": 2223,
+      "num_edges": 65718,
+      "num_features": 2089,
+      "num_classes": 5,
+      "split_counts": {
+        "train": 1080,
+        "val": 700,
+        "test": 443
+      },
+      "split_sha256": "c939f177af32b334543763c465dd3c5881a70bca01f1bc82f25e20c122709210",
+      "split_policy": "Unmodified thesis loader masks; public Planetoid split, fixed index 1 where supported, seeded random Amazon splits.",
+      "preprocessing": "Unmodified thesis loader features and edge_index; GCNConv adds self-loops and symmetric normalization.",
+      "class_weighting": "Unweighted cross entropy; loader class weights are not used."
+    },
+    "test_barriers": {
+      "linear": {
+        "barrier_mean": 0.004871269067128499,
+        "barrier_std": 0.0038112659874506103,
+        "n_pairs": 3
+      },
+      "aligned": {
+        "barrier_mean": 0.00012932221094767252,
+        "barrier_std": 0.00018288922463827284,
+        "n_pairs": 3
+      },
+      "repaired": {
+        "barrier_mean": 0.0008568406105041356,
+        "barrier_std": 0.0006823747112691619,
+        "n_pairs": 3
+      },
+      "bezier": {
+        "barrier_mean": 1.8522218267122905,
+        "barrier_std": 0.10007135887487467,
+        "n_pairs": 3
+      }
+    },
+    "endpoint_test_accuracy_mean": 0.35139202574888867,
+    "midpoint_test_accuracy_mean": {
+      "linear": 0.344620019197464,
+      "aligned": 0.3401053448518117,
+      "repaired": 0.3401053349177043,
+      "bezier": 0.3325808842976888
+    },
+    "repaired_midpoint_replay_max_abs_error": 1.1920928955078125e-07,
+    "baseline_seconds": 406.24727179296315,
+    "repair_seconds": 30.34219206497073
+  },
+  "Roman-empire": {
+    "report": "runs/dataset-sweep-20260918/Roman-empire/repair/report.json",
+    "model": {
+      "in_channels": 300,
+      "out_channels": 18,
+      "hidden_channels": 64,
+      "depth": 2,
+      "dropout": 0.5
+    },
+    "data": {
+      "name": "Roman-empire",
+      "loader": "/home/wge3/ms_thesis/src/loading/LightningGraphLoader.py",
+      "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+      "data_root": "/home/wge3/ms_thesis/data",
+      "data_seed": 0,
+      "num_nodes": 22662,
+      "num_edges": 65854,
+      "num_features": 300,
+      "num_classes": 18,
+      "split_counts": {
+        "train": 11331,
+        "val": 5665,
+        "test": 5666
+      },
+      "split_sha256": "a3a172af36f96a338161be357714d68c9cd31cfeeca5e0cf6ec74ae2412772c2",
+      "split_policy": "Unmodified thesis loader masks; public Planetoid split, fixed index 1 where supported, seeded random Amazon splits.",
+      "preprocessing": "Unmodified thesis loader features and edge_index; GCNConv adds self-loops and symmetric normalization.",
+      "class_weighting": "Unweighted cross entropy; loader class weights are not used."
+    },
+    "test_barriers": {
+      "linear": {
+        "barrier_mean": 0.028559168179829914,
+        "barrier_std": 0.009636366018619287,
+        "n_pairs": 3
+      },
+      "aligned": {
+        "barrier_mean": 0.002190669377644857,
+        "barrier_std": 0.0014035549552775114,
+        "n_pairs": 3
+      },
+      "repaired": {
+        "barrier_mean": 0.002213160196940104,
+        "barrier_std": 0.001405182844531972,
+        "n_pairs": 3
+      },
+      "bezier": {
+        "barrier_mean": 0.0,
+        "barrier_std": 0.0,
+        "n_pairs": 3
+      }
+    },
+    "endpoint_test_accuracy_mean": 0.14107542236646017,
+    "midpoint_test_accuracy_mean": {
+      "linear": 0.17825626333554587,
+      "aligned": 0.1604306399822235,
+      "repaired": 0.1604306399822235,
+      "bezier": 0.17984468738238016
+    },
+    "repaired_midpoint_replay_max_abs_error": 0.0,
+    "baseline_seconds": 580.6351389382035,
+    "repair_seconds": 61.73017414845526
+  }
+}
