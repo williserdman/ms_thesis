@@ -1,0 +1,32 @@
+{
+  "dataset": "squirrel",
+  "seed": 42,
+  "model": {
+    "K": 10,
+    "filters": [
+      "g_low_pass"
+    ],
+    "hidden_dim": 32,
+    "learning_rate": 0.029868920394155993,
+    "dropout_rate": 0.7976929588732409,
+    "weight_decay": 0.004498640389851475
+  },
+  "training": {
+    "max_epochs": 500,
+    "patience": 500
+  },
+  "selection": {
+    "metric": "val_loss",
+    "value": 1.4593126773834229,
+    "n_trials": 20,
+    "best_trial": 15,
+    "seed": 42,
+    "checkpoint": "/home/wge3/ms_thesis/.worktrees/fixed-spectral-config/spectral_runs/single_filter_epochs500/20260918T175254Z/low-pass/squirrel/20260918T182733_216045Z/trial_015/checkpoints/best.ckpt"
+  },
+  "test_metrics": {
+    "test_loss": 1.4321584701538086,
+    "test_accuracy": 0.43792325258255005
+  },
+  "created_at": "2026-09-18T18:35:57.488511+00:00",
+  "source_commit": "71a371d68d8c8729f366eecfb99f2a11f499c1f0"
+}
