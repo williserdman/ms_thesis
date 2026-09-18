@@ -1,0 +1,3189 @@
+{
+  "schema_version": 1,
+  "scope": "Fixed full reference-preset comparator; no endpoint hyperparameter search",
+  "paper_reproduction": false,
+  "run_root": "runs/reference-full-20260918",
+  "verification": {
+    "reports_expected": 16,
+    "reports_found": 16,
+    "all_passed": true,
+    "loss_tolerance": 2e-05,
+    "accuracy_tolerance": 1e-06,
+    "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+    "split_sha256": {
+      "Cora": "6bd8cc27013b1270c884603c41a93723dd92bf413c1e43b55cf5401c9cc13a2e",
+      "Roman-empire": "a3a172af36f96a338161be357714d68c9cd31cfeeca5e0cf6ec74ae2412772c2",
+      "squirrel": "c939f177af32b334543763c465dd3c5881a70bca01f1bc82f25e20c122709210",
+      "chameleon": "3df216c1db9ef1083f86fddedfe6d221b50606be1cf7f8e7c594c67648c93456"
+    },
+    "max_endpoint_path_loss_deviation": 3.5762786865234375e-07,
+    "max_endpoint_path_accuracy_deviation": 0.0
+  },
+  "runs": {
+    "Cora": {
+      "gcn": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/Cora/gcn/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "6bd8cc27013b1270c884603c41a93723dd92bf413c1e43b55cf5401c9cc13a2e",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 3,
+          "dropout": 0.7,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 500,
+        "elapsed_seconds": 44.65052331984043,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 14247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 5.960464477539063e-08,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              0,
+              1
+            ],
+            "method": "bezier",
+            "endpoint_seed": 1,
+            "split": "test",
+            "metric": "loss",
+            "endpoint_value": 0.7665542960166931,
+            "path_value": 0.7665542364120483
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.7880000472068787,
+            "std": 0.007234174260123396,
+            "min": 0.7730000615119934,
+            "max": 0.796000063419342
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.7930000424385071,
+            "std": 0.008386507564391058,
+            "min": 0.784000039100647,
+            "max": 0.8100000619888306
+          },
+          "selected_epochs": [
+            79,
+            94,
+            85,
+            219,
+            132,
+            112
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 1.174753025950243,
+                  "std": 0.06350943236882856,
+                  "min": 1.113558178767562,
+                  "max": 1.262285192962736
+                },
+                "min_accuracy": {
+                  "mean": 0.5023809472719828,
+                  "std": 0.006734335846666677,
+                  "min": 0.4928571581840515,
+                  "max": 0.5071428418159485
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.5806851983070374,
+                  "std": 0.0351495718059529,
+                  "min": 0.5468567311763763,
+                  "max": 0.6291424930095673
+                },
+                "min_accuracy": {
+                  "mean": 0.41866669058799744,
+                  "std": 0.014636326181702616,
+                  "min": 0.398000031709671,
+                  "max": 0.4300000071525574
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.6308054029941559,
+                  "std": 0.03904826202231366,
+                  "min": 0.6001352369785309,
+                  "max": 0.6859105229377747
+                },
+                "min_accuracy": {
+                  "mean": 0.4506666958332062,
+                  "std": 0.01126449437963235,
+                  "min": 0.4350000321865082,
+                  "max": 0.4610000252723694
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.3867671887079875,
+                  "std": 0.028458894159470213,
+                  "min": 1.3603768348693848,
+                  "max": 1.4262782335281372
+                },
+                "accuracy": {
+                  "mean": 0.4516666928927104,
+                  "std": 0.012229285341952957,
+                  "min": 0.4350000321865082,
+                  "max": 0.46400001645088196
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 1.0,
+                  "std": 0.0,
+                  "min": 1.0,
+                  "max": 1.0
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 2.8583630273739495,
+                  "std": 0.4984678404901016,
+                  "min": 2.2046556919813156,
+                  "max": 3.4137015342712402
+                },
+                "min_accuracy": {
+                  "mean": 0.7460000316301981,
+                  "std": 0.010708236862135389,
+                  "min": 0.7320000529289246,
+                  "max": 0.7580000162124634
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 2.6434657355149587,
+                  "std": 0.3430638892243646,
+                  "min": 2.16274237036705,
+                  "max": 2.94055512547493
+                },
+                "min_accuracy": {
+                  "mean": 0.7520000338554382,
+                  "std": 0.011860290961065587,
+                  "min": 0.737000048160553,
+                  "max": 0.7660000324249268
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 3.3920023441314697,
+                  "std": 0.3634795155227234,
+                  "min": 2.8808345794677734,
+                  "max": 3.69456148147583
+                },
+                "accuracy": {
+                  "mean": 0.7613333662350973,
+                  "std": 0.004027674532679294,
+                  "min": 0.7580000162124634,
+                  "max": 0.7670000195503235
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/Cora/gcn/report.json",
+          "png": "results/reference-full-20260918/Cora/gcn/connectivity.png",
+          "pdf": "results/reference-full-20260918/Cora/gcn/connectivity.pdf"
+        }
+      },
+      "mlp": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/Cora/mlp/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "6bd8cc27013b1270c884603c41a93723dd92bf413c1e43b55cf5401c9cc13a2e",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 3,
+          "dropout": 0.7,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 500,
+        "elapsed_seconds": 39.90313345193863,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 14247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 0.0,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": null,
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.5181666910648346,
+            "std": 0.025569617977649232,
+            "min": 0.4740000367164612,
+            "max": 0.5550000071525574
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.5223333537578583,
+            "std": 0.0338903499037335,
+            "min": 0.4780000150203705,
+            "max": 0.5760000348091125
+          },
+          "selected_epochs": [
+            500,
+            261,
+            459,
+            496,
+            412,
+            208
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 0.8722736436563233,
+                  "std": 0.057902577153835046,
+                  "min": 0.8120742867467925,
+                  "max": 0.9504471271648072
+                },
+                "min_accuracy": {
+                  "mean": 0.8095238208770752,
+                  "std": 0.09153516229939475,
+                  "min": 0.7214285731315613,
+                  "max": 0.9357143044471741
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.2920000155766805,
+                  "std": 0.041085282572892526,
+                  "min": 0.2600000202655792,
+                  "max": 0.3500000238418579
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.30900002519289654,
+                  "std": 0.04047221370882535,
+                  "min": 0.2760000228881836,
+                  "max": 0.3660000264644623
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.6414739688237507,
+                  "std": 0.053975060578485695,
+                  "min": 1.5713928937911987,
+                  "max": 1.7027145624160767
+                },
+                "accuracy": {
+                  "mean": 0.3126666843891144,
+                  "std": 0.03785352557375579,
+                  "min": 0.28200000524520874,
+                  "max": 0.3660000264644623
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 1.0,
+                  "std": 0.0,
+                  "min": 1.0,
+                  "max": 1.0
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 3.059168161948522,
+                  "std": 0.7031809282578391,
+                  "min": 2.064905524253845,
+                  "max": 3.572927236557007
+                },
+                "min_accuracy": {
+                  "mean": 0.4826666812102,
+                  "std": 0.015860497983732114,
+                  "min": 0.4660000205039978,
+                  "max": 0.5040000081062317
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 2.989145306746165,
+                  "std": 0.6669410579182908,
+                  "min": 2.0514529228210447,
+                  "max": 3.5461124777793884
+                },
+                "min_accuracy": {
+                  "mean": 0.48700002829233807,
+                  "std": 0.021924110202575408,
+                  "min": 0.45600003004074097,
+                  "max": 0.503000020980835
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 5.038256009419759,
+                  "std": 0.6735792554716924,
+                  "min": 4.138767719268799,
+                  "max": 5.75957727432251
+                },
+                "accuracy": {
+                  "mean": 0.5220000247160593,
+                  "std": 0.03688722372525939,
+                  "min": 0.4820000231266022,
+                  "max": 0.5710000395774841
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/Cora/mlp/report.json",
+          "png": "results/reference-full-20260918/Cora/mlp/connectivity.png",
+          "pdf": "results/reference-full-20260918/Cora/mlp/connectivity.pdf"
+        }
+      },
+      "graphsage": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/Cora/graphsage/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "6bd8cc27013b1270c884603c41a93723dd92bf413c1e43b55cf5401c9cc13a2e",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 256,
+          "depth": 3,
+          "dropout": 0.7,
+          "architecture": "graphsage",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 500,
+        "elapsed_seconds": 49.70983078330755,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 14247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 9.313225746154785e-10,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              2,
+              3
+            ],
+            "method": "bezier",
+            "endpoint_seed": 2,
+            "split": "train",
+            "metric": "loss",
+            "endpoint_value": 0.0031788970809429884,
+            "path_value": 0.0031788961496204138
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.7818333705266317,
+            "std": 0.006693697334585713,
+            "min": 0.7710000276565552,
+            "max": 0.7900000214576721
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.7833333611488342,
+            "std": 0.016069298106753338,
+            "min": 0.7540000081062317,
+            "max": 0.8040000200271606
+          },
+          "selected_epochs": [
+            169,
+            463,
+            160,
+            480,
+            464,
+            225
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 0.7640624653431587,
+                  "std": 0.03724398323963806,
+                  "min": 0.714720691437833,
+                  "max": 0.8046930967248045
+                },
+                "min_accuracy": {
+                  "mean": 0.961904764175415,
+                  "std": 0.04416010472364762,
+                  "min": 0.8999999761581421,
+                  "max": 1.0
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.08773464957873027,
+                  "std": 0.0620378985282599,
+                  "min": 0.0,
+                  "max": 0.13175922632217407
+                },
+                "min_accuracy": {
+                  "mean": 0.643333355585734,
+                  "std": 0.05018190597072184,
+                  "min": 0.578000009059906,
+                  "max": 0.7000000476837158
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.1565130054950714,
+                  "std": 0.049931001945621376,
+                  "min": 0.08678051829338074,
+                  "max": 0.2010069489479065
+                },
+                "min_accuracy": {
+                  "mean": 0.6616666913032532,
+                  "std": 0.06650481255485428,
+                  "min": 0.5740000009536743,
+                  "max": 0.7350000143051147
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.1438949505488079,
+                  "std": 0.0372147005275967,
+                  "min": 1.097747802734375,
+                  "max": 1.1888827085494995
+                },
+                "accuracy": {
+                  "mean": 0.672000010808309,
+                  "std": 0.0702329524206268,
+                  "min": 0.5740000009536743,
+                  "max": 0.7350000143051147
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 1.0,
+                  "std": 0.0,
+                  "min": 1.0,
+                  "max": 1.0
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 2.358396797378858,
+                  "std": 0.5412791911654232,
+                  "min": 1.7960285067558288,
+                  "max": 3.0893377363681793
+                },
+                "min_accuracy": {
+                  "mean": 0.7446667154630026,
+                  "std": 0.014817413073271717,
+                  "min": 0.7280000448226929,
+                  "max": 0.7640000581741333
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 2.245177752772967,
+                  "std": 0.463690960843429,
+                  "min": 1.6922866076231002,
+                  "max": 2.8269878566265105
+                },
+                "min_accuracy": {
+                  "mean": 0.7533333698908488,
+                  "std": 0.01562760632966451,
+                  "min": 0.7330000400543213,
+                  "max": 0.7710000276565552
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 3.1917599042256675,
+                  "std": 0.4768553069424092,
+                  "min": 2.639356851577759,
+                  "max": 3.8029608726501465
+                },
+                "accuracy": {
+                  "mean": 0.7586666941642761,
+                  "std": 0.012256530491539176,
+                  "min": 0.7440000176429749,
+                  "max": 0.7740000486373901
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/Cora/graphsage/report.json",
+          "png": "results/reference-full-20260918/Cora/graphsage/connectivity.png",
+          "pdf": "results/reference-full-20260918/Cora/graphsage/connectivity.pdf"
+        }
+      },
+      "gat": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/Cora/gat/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "6bd8cc27013b1270c884603c41a93723dd92bf413c1e43b55cf5401c9cc13a2e",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 3,
+          "dropout": 0.2,
+          "architecture": "gat",
+          "normalization": "none",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 500,
+        "elapsed_seconds": 42.938858427107334,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 14247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 5.960464477539063e-08,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              2,
+              3
+            ],
+            "method": "bezier",
+            "endpoint_seed": 2,
+            "split": "val",
+            "metric": "loss",
+            "endpoint_value": 0.8576116561889648,
+            "path_value": 0.8576115965843201
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.7946667075157166,
+            "std": 0.006289313493132194,
+            "min": 0.7830000519752502,
+            "max": 0.8030000329017639
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.7936667005221049,
+            "std": 0.004533822100635096,
+            "min": 0.7860000133514404,
+            "max": 0.800000011920929
+          },
+          "selected_epochs": [
+            40,
+            107,
+            497,
+            368,
+            81,
+            42
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 1.0229672639785956,
+                  "std": 0.09379581867332927,
+                  "min": 0.9515062851132825,
+                  "max": 1.1554783288156614
+                },
+                "min_accuracy": {
+                  "mean": 0.7809523741404215,
+                  "std": 0.09041351275188816,
+                  "min": 0.6714285612106323,
+                  "max": 0.8928571343421936
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.43685290614763894,
+                  "std": 0.11597167239051102,
+                  "min": 0.33216723799705505,
+                  "max": 0.5985338687896729
+                },
+                "min_accuracy": {
+                  "mean": 0.5340000291665395,
+                  "std": 0.06393747441703725,
+                  "min": 0.47200003266334534,
+                  "max": 0.6220000386238098
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.45938120285669964,
+                  "std": 0.09604797914141258,
+                  "min": 0.3519830107688904,
+                  "max": 0.5851014256477356
+                },
+                "min_accuracy": {
+                  "mean": 0.5640000104904175,
+                  "std": 0.06912791211396309,
+                  "min": 0.5,
+                  "max": 0.6600000262260437
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.2893123229344685,
+                  "std": 0.09781951251377329,
+                  "min": 1.2135801315307617,
+                  "max": 1.4274353981018066
+                },
+                "accuracy": {
+                  "mean": 0.5640000104904175,
+                  "std": 0.06912791211396309,
+                  "min": 0.5,
+                  "max": 0.6600000262260437
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.04666604960414891,
+                  "std": 0.06526303617748463,
+                  "min": 0.0,
+                  "max": 0.1389599741785787
+                },
+                "min_accuracy": {
+                  "mean": 0.9952381054560343,
+                  "std": 0.006734335846666677,
+                  "min": 0.985714316368103,
+                  "max": 1.0
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 5.443271541595459,
+                  "std": 1.5565535037082714,
+                  "min": 4.037048798799515,
+                  "max": 7.613076955080032
+                },
+                "min_accuracy": {
+                  "mean": 0.7360000212987264,
+                  "std": 0.029977779922773472,
+                  "min": 0.6940000057220459,
+                  "max": 0.7620000243186951
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 5.330488228797913,
+                  "std": 1.7517128810572091,
+                  "min": 3.9688950896263124,
+                  "max": 7.803572475910187
+                },
+                "min_accuracy": {
+                  "mean": 0.7493333617846171,
+                  "std": 0.024444947417703797,
+                  "min": 0.7150000333786011,
+                  "max": 0.7700000405311584
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 6.157588640848796,
+                  "std": 1.7612019350945798,
+                  "min": 4.818802833557129,
+                  "max": 8.645906448364258
+                },
+                "accuracy": {
+                  "mean": 0.755666712919871,
+                  "std": 0.03012567322938784,
+                  "min": 0.7150000333786011,
+                  "max": 0.7870000600814819
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/Cora/gat/report.json",
+          "png": "results/reference-full-20260918/Cora/gat/connectivity.png",
+          "pdf": "results/reference-full-20260918/Cora/gat/connectivity.pdf"
+        }
+      }
+    },
+    "Roman-empire": {
+      "gcn": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/Roman-empire/gcn/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "a3a172af36f96a338161be357714d68c9cd31cfeeca5e0cf6ec74ae2412772c2",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 512,
+          "depth": 9,
+          "dropout": 0.5,
+          "architecture": "gcn",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 2500,
+        "elapsed_seconds": 1343.7484484687448,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 62247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 5.960464477539063e-08,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              0,
+              1
+            ],
+            "method": "linear",
+            "endpoint_seed": 0,
+            "split": "test",
+            "metric": "loss",
+            "endpoint_value": 0.6305020451545715,
+            "path_value": 0.6305019855499268
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.8464524944623312,
+            "std": 0.003109125398432329,
+            "min": 0.8409812450408936,
+            "max": 0.8512177467346191
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.8469843765099844,
+            "std": 0.0017096900714756425,
+            "min": 0.8450132012367249,
+            "max": 0.8499558568000793
+          },
+          "selected_epochs": [
+            2426,
+            2332,
+            2361,
+            2252,
+            2213,
+            2470
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 4.080279184194903,
+                  "std": 0.10334818816227409,
+                  "min": 4.001802294515073,
+                  "max": 4.226299206726253
+                },
+                "min_accuracy": {
+                  "mean": 0.18577354649702707,
+                  "std": 0.0054721928531764556,
+                  "min": 0.1780954897403717,
+                  "max": 0.190450981259346
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 3.5952990353107452,
+                  "std": 0.15571174664781787,
+                  "min": 3.4782684445381165,
+                  "max": 3.8153603076934814
+                },
+                "min_accuracy": {
+                  "mean": 0.17834656437238058,
+                  "std": 0.008802949799546898,
+                  "min": 0.16681376099586487,
+                  "max": 0.18817298114299774
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 3.5410539309183755,
+                  "std": 0.11734208828828172,
+                  "min": 3.4487845301628113,
+                  "max": 3.706639528274536
+                },
+                "min_accuracy": {
+                  "mean": 0.187257319688797,
+                  "std": 0.004796755262528392,
+                  "min": 0.18055064976215363,
+                  "max": 0.19149310886859894
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 4.151514848073323,
+                  "std": 0.11320179871211433,
+                  "min": 4.067747116088867,
+                  "max": 4.311547756195068
+                },
+                "accuracy": {
+                  "mean": 0.187257319688797,
+                  "std": 0.004796755262528392,
+                  "min": 0.18055064976215363,
+                  "max": 0.19149310886859894
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.4781040902249515,
+                  "std": 0.02040489882875221,
+                  "min": 0.45621814848855136,
+                  "max": 0.505334909632802
+                },
+                "min_accuracy": {
+                  "mean": 0.8260818719863892,
+                  "std": 0.007105853371196114,
+                  "min": 0.816874086856842,
+                  "max": 0.8341717720031738
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.026589991648991895,
+                  "std": 0.01373446166319294,
+                  "min": 0.007173210382461548,
+                  "max": 0.0367395281791687
+                },
+                "min_accuracy": {
+                  "mean": 0.7879376212755839,
+                  "std": 0.005126928060612152,
+                  "min": 0.7807590365409851,
+                  "max": 0.7924095392227173
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.02808880607287086,
+                  "std": 0.013461654023973058,
+                  "min": 0.009527492523193293,
+                  "max": 0.04103448987007141
+                },
+                "min_accuracy": {
+                  "mean": 0.7892693082491556,
+                  "std": 0.0038854669077348124,
+                  "min": 0.783798098564148,
+                  "max": 0.7924461364746094
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 0.6303624312082926,
+                  "std": 0.020955651206055047,
+                  "min": 0.6153247952461243,
+                  "max": 0.6599971055984497
+                },
+                "accuracy": {
+                  "mean": 0.7910342216491699,
+                  "std": 0.005560630316836077,
+                  "min": 0.7839745879173279,
+                  "max": 0.7975643873214722
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/Roman-empire/gcn/report.json",
+          "png": "results/reference-full-20260918/Roman-empire/gcn/connectivity.png",
+          "pdf": "results/reference-full-20260918/Roman-empire/gcn/connectivity.pdf"
+        }
+      },
+      "mlp": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/Roman-empire/mlp/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "a3a172af36f96a338161be357714d68c9cd31cfeeca5e0cf6ec74ae2412772c2",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 512,
+          "depth": 9,
+          "dropout": 0.5,
+          "architecture": "mlp",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 2500,
+        "elapsed_seconds": 688.6303728818893,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 62247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 0.0,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": null,
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.6519884566466013,
+            "std": 0.0012946143025627127,
+            "min": 0.6494881510734558,
+            "max": 0.6531944870948792
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.6507502098878225,
+            "std": 0.0018840535946798946,
+            "min": 0.6478375792503357,
+            "max": 0.6533097624778748
+          },
+          "selected_epochs": [
+            2165,
+            2439,
+            2301,
+            2432,
+            2460,
+            2271
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 1.0115827918052673,
+                  "std": 0.03501397920645405,
+                  "min": 0.9629998207092285,
+                  "max": 1.0441651940345764
+                },
+                "min_accuracy": {
+                  "mean": 0.2569940835237503,
+                  "std": 0.013298478573560235,
+                  "min": 0.24049068987369537,
+                  "max": 0.2730562090873718
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.9943987528483073,
+                  "std": 0.036889535271331805,
+                  "min": 0.9422321319580078,
+                  "max": 1.020971417427063
+                },
+                "min_accuracy": {
+                  "mean": 0.25030890107154846,
+                  "std": 0.013832722053524506,
+                  "min": 0.23248013854026794,
+                  "max": 0.2661959230899811
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.9928949673970541,
+                  "std": 0.04059889666469513,
+                  "min": 0.9360736012458801,
+                  "max": 1.0284404158592224
+                },
+                "min_accuracy": {
+                  "mean": 0.25220613181591034,
+                  "std": 0.009993216911861228,
+                  "min": 0.2393222600221634,
+                  "max": 0.26367807388305664
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 2.067629098892212,
+                  "std": 0.03855445223525479,
+                  "min": 2.0131397247314453,
+                  "max": 2.096561908721924
+                },
+                "accuracy": {
+                  "mean": 0.27232614656289417,
+                  "std": 0.031085534657248923,
+                  "min": 0.2393222600221634,
+                  "max": 0.3139781057834625
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.32926741441090895,
+                  "std": 0.037301947349082765,
+                  "min": 0.30251779556274405,
+                  "max": 0.3820185661315918
+                },
+                "min_accuracy": {
+                  "mean": 0.5585561792055765,
+                  "std": 0.02355073664658052,
+                  "min": 0.5253728628158569,
+                  "max": 0.5776189565658569
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.2881701151529948,
+                  "std": 0.034469043641648635,
+                  "min": 0.2621605396270752,
+                  "max": 0.33687922954559335
+                },
+                "min_accuracy": {
+                  "mean": 0.5550455848375956,
+                  "std": 0.024287636727607007,
+                  "min": 0.5207414031028748,
+                  "max": 0.573698103427887
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.29101928273836775,
+                  "std": 0.03472644925531678,
+                  "min": 0.2655348062515259,
+                  "max": 0.3401180267333985
+                },
+                "min_accuracy": {
+                  "mean": 0.5610071619351705,
+                  "std": 0.02482002323241864,
+                  "min": 0.5259442329406738,
+                  "max": 0.5799505710601807
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.3619008461634319,
+                  "std": 0.02930933582455395,
+                  "min": 1.3386967182159424,
+                  "max": 1.403247356414795
+                },
+                "accuracy": {
+                  "mean": 0.56606658299764,
+                  "std": 0.02191971189267378,
+                  "min": 0.535121738910675,
+                  "max": 0.5831274390220642
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/Roman-empire/mlp/report.json",
+          "png": "results/reference-full-20260918/Roman-empire/mlp/connectivity.png",
+          "pdf": "results/reference-full-20260918/Roman-empire/mlp/connectivity.pdf"
+        }
+      },
+      "graphsage": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/Roman-empire/graphsage/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "a3a172af36f96a338161be357714d68c9cd31cfeeca5e0cf6ec74ae2412772c2",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 256,
+          "depth": 9,
+          "dropout": 0.3,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": false,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 2500,
+        "elapsed_seconds": 314.31406132504344,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 62247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 1.1920928955078125e-07,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              4,
+              5
+            ],
+            "method": "linear",
+            "endpoint_seed": 4,
+            "split": "test",
+            "metric": "loss",
+            "endpoint_value": 0.7780987620353699,
+            "path_value": 0.7780986428260803
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.8412754336992899,
+            "std": 0.0038635954391468817,
+            "min": 0.8363925218582153,
+            "max": 0.8469820022583008
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.8452485799789429,
+            "std": 0.004026189385830168,
+            "min": 0.8418357968330383,
+            "max": 0.8518975973129272
+          },
+          "selected_epochs": [
+            2414,
+            2477,
+            2418,
+            2476,
+            2381,
+            2451
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 2.5369374183549858,
+                  "std": 0.12764918210608409,
+                  "min": 2.358088919427246,
+                  "max": 2.6476074053207412
+                },
+                "min_accuracy": {
+                  "mean": 0.4341482122739156,
+                  "std": 0.035040832711393785,
+                  "min": 0.39555203914642334,
+                  "max": 0.4803636074066162
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 1.866355150938034,
+                  "std": 0.12046584213413936,
+                  "min": 1.696680098772049,
+                  "max": 1.9644520580768585
+                },
+                "min_accuracy": {
+                  "mean": 0.4188290635744731,
+                  "std": 0.029404410284930727,
+                  "min": 0.38305383920669556,
+                  "max": 0.4550750255584717
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 1.80844450990359,
+                  "std": 0.12288018020242755,
+                  "min": 1.6410288214683533,
+                  "max": 1.9325045347213745
+                },
+                "min_accuracy": {
+                  "mean": 0.4226379493872325,
+                  "std": 0.030534309435337,
+                  "min": 0.3900458812713623,
+                  "max": 0.4634662866592407
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 2.61128560702006,
+                  "std": 0.12292256548684165,
+                  "min": 2.4431285858154297,
+                  "max": 2.733539342880249
+                },
+                "accuracy": {
+                  "mean": 0.4226379493872325,
+                  "std": 0.030534309435337,
+                  "min": 0.3900458812713623,
+                  "max": 0.4634662866592407
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.5527994615181039,
+                  "std": 0.03055534780487719,
+                  "min": 0.5187065050471574,
+                  "max": 0.5928393444279209
+                },
+                "min_accuracy": {
+                  "mean": 0.8041655818621317,
+                  "std": 0.008626610854027026,
+                  "min": 0.7919865846633911,
+                  "max": 0.8108728528022766
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.7640482187271118,
+                  "std": 0.008030435846460243,
+                  "min": 0.752691924571991,
+                  "max": 0.7698146104812622
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.7650311589241028,
+                  "std": 0.0034834472367839112,
+                  "min": 0.7605012059211731,
+                  "max": 0.7689728140830994
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 0.6690303087234497,
+                  "std": 0.02431828948302919,
+                  "min": 0.6351643800735474,
+                  "max": 0.691149115562439
+                },
+                "accuracy": {
+                  "mean": 0.7810918688774109,
+                  "std": 0.006291846397917892,
+                  "min": 0.7762089371681213,
+                  "max": 0.7899752855300903
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/Roman-empire/graphsage/report.json",
+          "png": "results/reference-full-20260918/Roman-empire/graphsage/connectivity.png",
+          "pdf": "results/reference-full-20260918/Roman-empire/graphsage/connectivity.pdf"
+        }
+      },
+      "gat": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/Roman-empire/gat/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "a3a172af36f96a338161be357714d68c9cd31cfeeca5e0cf6ec74ae2412772c2",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 512,
+          "depth": 10,
+          "dropout": 0.3,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 2500,
+        "elapsed_seconds": 1549.4246760122478,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 62247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 2.384185791015625e-07,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              2,
+              3
+            ],
+            "method": "linear",
+            "endpoint_seed": 3,
+            "split": "val",
+            "metric": "loss",
+            "endpoint_value": 1.758753776550293,
+            "path_value": 1.7587535381317139
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.7613542576630911,
+            "std": 0.014267587453903599,
+            "min": 0.7308506965637207,
+            "max": 0.7756794691085815
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.7608708242575327,
+            "std": 0.014688070031821014,
+            "min": 0.7309796810150146,
+            "max": 0.7795233726501465
+          },
+          "selected_epochs": [
+            2066,
+            2451,
+            2384,
+            2453,
+            2291,
+            2037
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 2.474741030042651,
+                  "std": 0.11342764850109273,
+                  "min": 2.3229230040857374,
+                  "max": 2.595507733695513
+                },
+                "min_accuracy": {
+                  "mean": 0.5001912315686544,
+                  "std": 0.02512360952393648,
+                  "min": 0.4705674946308136,
+                  "max": 0.5319918990135193
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.9875107804934183,
+                  "std": 0.14059170913146174,
+                  "min": 0.8699022531509399,
+                  "max": 1.1851502656936646
+                },
+                "min_accuracy": {
+                  "mean": 0.48414238293965656,
+                  "std": 0.02327167882988,
+                  "min": 0.4540158808231354,
+                  "max": 0.5106796026229858
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 1.0351052681605022,
+                  "std": 0.13782431614782734,
+                  "min": 0.9253771901130676,
+                  "max": 1.2294796109199524
+                },
+                "min_accuracy": {
+                  "mean": 0.4777032434940338,
+                  "std": 0.02298696408985485,
+                  "min": 0.44758206605911255,
+                  "max": 0.5033532977104187
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 2.768479108810425,
+                  "std": 0.11792680590785364,
+                  "min": 2.6454951763153076,
+                  "max": 2.927522659301758
+                },
+                "accuracy": {
+                  "mean": 0.4777032434940338,
+                  "std": 0.02298696408985485,
+                  "min": 0.44758206605911255,
+                  "max": 0.5033532977104187
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.6655324920222029,
+                  "std": 0.1275826283803488,
+                  "min": 0.5077977480479149,
+                  "max": 0.8202668759722656
+                },
+                "min_accuracy": {
+                  "mean": 0.7680110732714335,
+                  "std": 0.040799090099445275,
+                  "min": 0.721383810043335,
+                  "max": 0.8207572102546692
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.718152383963267,
+                  "std": 0.023271693222327652,
+                  "min": 0.6916151642799377,
+                  "max": 0.7482789158821106
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.7176138162612915,
+                  "std": 0.025054715114753295,
+                  "min": 0.6902576684951782,
+                  "max": 0.7507941722869873
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 0.7786864439646403,
+                  "std": 0.030738817159362365,
+                  "min": 0.7366799712181091,
+                  "max": 0.8093801140785217
+                },
+                "accuracy": {
+                  "mean": 0.7401458621025085,
+                  "std": 0.011108525330222286,
+                  "min": 0.730674147605896,
+                  "max": 0.7557359337806702
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/Roman-empire/gat/report.json",
+          "png": "results/reference-full-20260918/Roman-empire/gat/connectivity.png",
+          "pdf": "results/reference-full-20260918/Roman-empire/gat/connectivity.pdf"
+        }
+      }
+    },
+    "squirrel": {
+      "gcn": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/squirrel/gcn/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "c939f177af32b334543763c465dd3c5881a70bca01f1bc82f25e20c122709210",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 4,
+          "dropout": 0.7,
+          "architecture": "gcn",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 500,
+        "elapsed_seconds": 41.52288802713156,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 14247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 2.384185791015625e-07,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              4,
+              5
+            ],
+            "method": "bezier",
+            "endpoint_seed": 5,
+            "split": "val",
+            "metric": "loss",
+            "endpoint_value": 1.5940927267074585,
+            "path_value": 1.5940924882888794
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.41234011948108673,
+            "std": 0.02046873142199262,
+            "min": 0.3905192017555237,
+            "max": 0.45372462272644043
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.43738094965616864,
+            "std": 0.010543616613856551,
+            "min": 0.4214285612106323,
+            "max": 0.44857141375541687
+          },
+          "selected_epochs": [
+            35,
+            31,
+            35,
+            30,
+            30,
+            32
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 0.25138787726561224,
+                  "std": 0.034986831402798,
+                  "min": 0.20248499512672424,
+                  "max": 0.2823584169149398
+                },
+                "min_accuracy": {
+                  "mean": 0.5632716019948324,
+                  "std": 0.0075727639703284865,
+                  "min": 0.5537036657333374,
+                  "max": 0.5722222328186035
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.39714285731315613,
+                  "std": 0.015297510123030414,
+                  "min": 0.37714284658432007,
+                  "max": 0.41428571939468384
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.3679458300272624,
+                  "std": 0.0063847136893193076,
+                  "min": 0.3634311556816101,
+                  "max": 0.3769751787185669
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.4302206834157307,
+                  "std": 0.03435141093008882,
+                  "min": 1.3928790092468262,
+                  "max": 1.475803017616272
+                },
+                "accuracy": {
+                  "mean": 0.3837471803029378,
+                  "std": 0.00664541282797806,
+                  "min": 0.3769751787185669,
+                  "max": 0.3927765190601349
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.6206790010134379,
+                  "std": 0.007572738867508023,
+                  "min": 0.6111111044883728,
+                  "max": 0.6296296119689941
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 5.226227422555287,
+                  "std": 0.2759757658753911,
+                  "min": 4.886288404464722,
+                  "max": 5.562254250049591
+                },
+                "min_accuracy": {
+                  "mean": 0.3576190372308095,
+                  "std": 0.007499056437414362,
+                  "min": 0.3471428453922272,
+                  "max": 0.3642857074737549
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 4.987508455912272,
+                  "std": 0.22900703244826,
+                  "min": 4.806617617607117,
+                  "max": 5.310602128505707
+                },
+                "min_accuracy": {
+                  "mean": 0.33935291568438214,
+                  "std": 0.007448828289055025,
+                  "min": 0.3295711278915405,
+                  "max": 0.3476298153400421
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 6.620968659718831,
+                  "std": 0.2095200581799898,
+                  "min": 6.4476823806762695,
+                  "max": 6.915762901306152
+                },
+                "accuracy": {
+                  "mean": 0.3408578038215637,
+                  "std": 0.0092155323069032,
+                  "min": 0.3295711278915405,
+                  "max": 0.3521444797515869
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/squirrel/gcn/report.json",
+          "png": "results/reference-full-20260918/squirrel/gcn/connectivity.png",
+          "pdf": "results/reference-full-20260918/squirrel/gcn/connectivity.pdf"
+        }
+      },
+      "mlp": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/squirrel/mlp/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "c939f177af32b334543763c465dd3c5881a70bca01f1bc82f25e20c122709210",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 4,
+          "dropout": 0.7,
+          "architecture": "mlp",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 500,
+        "elapsed_seconds": 25.752007100731134,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 14247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 0.0,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": null,
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.3856282929579417,
+            "std": 0.010213593441217084,
+            "min": 0.3702031672000885,
+            "max": 0.3995485305786133
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.3988095223903656,
+            "std": 0.008306075203871407,
+            "min": 0.38285714387893677,
+            "max": 0.4099999964237213
+          },
+          "selected_epochs": [
+            12,
+            17,
+            16,
+            17,
+            16,
+            16
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 0.15091043710708618,
+                  "std": 0.02685458922723391,
+                  "min": 0.11466056108474731,
+                  "max": 0.17884421348571777
+                },
+                "min_accuracy": {
+                  "mean": 0.467592587073644,
+                  "std": 0.008519854608463598,
+                  "min": 0.4555555582046509,
+                  "max": 0.4740740656852722
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.026433827479680334,
+                  "std": 0.00863145751842256,
+                  "min": 0.015115827322006226,
+                  "max": 0.03605265617370601
+                },
+                "min_accuracy": {
+                  "mean": 0.3761904736359914,
+                  "std": 0.0024280958133077644,
+                  "min": 0.37285715341567993,
+                  "max": 0.37857142090797424
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.00641640027364095,
+                  "std": 0.002684327023323092,
+                  "min": 0.004081666469573975,
+                  "max": 0.010176098346710294
+                },
+                "min_accuracy": {
+                  "mean": 0.36418359478314716,
+                  "std": 0.002815393217384556,
+                  "min": 0.3611738085746765,
+                  "max": 0.3679458200931549
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.4355408350626628,
+                  "std": 0.007633084573521352,
+                  "min": 1.4284720420837402,
+                  "max": 1.4461406469345093
+                },
+                "accuracy": {
+                  "mean": 0.3686982790629069,
+                  "std": 0.0038367386780656905,
+                  "min": 0.3634311556816101,
+                  "max": 0.3724605143070221
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.4972222149372101,
+                  "std": 0.009472845786260835,
+                  "min": 0.4851851761341095,
+                  "max": 0.5083333253860474
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 4.291584988435109,
+                  "std": 0.17023304781488502,
+                  "min": 4.145862698554993,
+                  "max": 4.530406057834625
+                },
+                "min_accuracy": {
+                  "mean": 0.2680952350298564,
+                  "std": 0.007126970274206651,
+                  "min": 0.25857141613960266,
+                  "max": 0.27571427822113037
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 3.909597978989283,
+                  "std": 0.16742943198281088,
+                  "min": 3.7769534587860107,
+                  "max": 4.145781934261322
+                },
+                "min_accuracy": {
+                  "mean": 0.3107599715391795,
+                  "std": 0.005630786434769112,
+                  "min": 0.30474039912223816,
+                  "max": 0.31828442215919495
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 5.344373385111491,
+                  "std": 0.1600981929905181,
+                  "min": 5.217041969299316,
+                  "max": 5.570172309875488
+                },
+                "accuracy": {
+                  "mean": 0.31527464588483173,
+                  "std": 0.005924761875535239,
+                  "min": 0.30699774622917175,
+                  "max": 0.32054176926612854
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/squirrel/mlp/report.json",
+          "png": "results/reference-full-20260918/squirrel/mlp/connectivity.png",
+          "pdf": "results/reference-full-20260918/squirrel/mlp/connectivity.pdf"
+        }
+      },
+      "graphsage": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/squirrel/graphsage/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "c939f177af32b334543763c465dd3c5881a70bca01f1bc82f25e20c122709210",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 3,
+          "dropout": 0.7,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 500,
+        "elapsed_seconds": 43.696924567222595,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 14247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 1.1920928955078125e-07,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              0,
+              1
+            ],
+            "method": "linear",
+            "endpoint_seed": 0,
+            "split": "test",
+            "metric": "loss",
+            "endpoint_value": 1.3988869190216064,
+            "path_value": 1.398887038230896
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.39653875927130383,
+            "std": 0.011033019516783042,
+            "min": 0.3747178316116333,
+            "max": 0.4063205420970917
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.3888095219930013,
+            "std": 0.0054968542956651475,
+            "min": 0.3814285695552826,
+            "max": 0.3985714316368103
+          },
+          "selected_epochs": [
+            11,
+            20,
+            19,
+            12,
+            10,
+            10
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 0.19693357149759919,
+                  "std": 0.06672260486404959,
+                  "min": 0.10695378780364972,
+                  "max": 0.2665321588516236
+                },
+                "min_accuracy": {
+                  "mean": 0.5256172815958658,
+                  "std": 0.04100876127751789,
+                  "min": 0.470370352268219,
+                  "max": 0.5685185194015503
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.003565927346547445,
+                  "std": 0.0050429828159245,
+                  "min": 0.0,
+                  "max": 0.010697782039642334
+                },
+                "min_accuracy": {
+                  "mean": 0.37714285651842755,
+                  "std": 0.006060913501159612,
+                  "min": 0.3685714304447174,
+                  "max": 0.3814285695552826
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.0036596357822418213,
+                  "std": 0.005175506556592255,
+                  "min": 0.0,
+                  "max": 0.010978907346725464
+                },
+                "min_accuracy": {
+                  "mean": 0.3769751787185669,
+                  "std": 0.00487640409579486,
+                  "min": 0.3702031672000885,
+                  "max": 0.3814898431301117
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.401614745457967,
+                  "std": 0.010220454661818871,
+                  "min": 1.3895089626312256,
+                  "max": 1.4145067930221558
+                },
+                "accuracy": {
+                  "mean": 0.4055681029955546,
+                  "std": 0.007673467614935347,
+                  "min": 0.3950338661670685,
+                  "max": 0.41309255361557007
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.5564814805984497,
+                  "std": 0.039116023829095604,
+                  "min": 0.5037037134170532,
+                  "max": 0.5972222089767456
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 5.794855872790019,
+                  "std": 0.20645129625099667,
+                  "min": 5.560715913772583,
+                  "max": 6.06297904253006
+                },
+                "min_accuracy": {
+                  "mean": 0.2914285659790039,
+                  "std": 0.0023328521017295448,
+                  "min": 0.28857141733169556,
+                  "max": 0.29428571462631226
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 5.096123397350311,
+                  "std": 0.09707231638763097,
+                  "min": 4.97264564037323,
+                  "max": 5.2098188400268555
+                },
+                "min_accuracy": {
+                  "mean": 0.33032355705897015,
+                  "std": 0.01489765657811005,
+                  "min": 0.31376975774765015,
+                  "max": 0.3498871326446533
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 6.532105286916097,
+                  "std": 0.06804993773224909,
+                  "min": 6.44359016418457,
+                  "max": 6.609073638916016
+                },
+                "accuracy": {
+                  "mean": 0.3355906804402669,
+                  "std": 0.014783216762775019,
+                  "min": 0.31828442215919495,
+                  "max": 0.3544018268585205
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/squirrel/graphsage/report.json",
+          "png": "results/reference-full-20260918/squirrel/graphsage/connectivity.png",
+          "pdf": "results/reference-full-20260918/squirrel/graphsage/connectivity.pdf"
+        }
+      },
+      "gat": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/squirrel/gat/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "c939f177af32b334543763c465dd3c5881a70bca01f1bc82f25e20c122709210",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 512,
+          "depth": 7,
+          "dropout": 0.5,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 500,
+        "elapsed_seconds": 103.71305934712291,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 14247,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 1.1920928955078125e-07,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              2,
+              3
+            ],
+            "method": "bezier",
+            "endpoint_seed": 3,
+            "split": "test",
+            "metric": "loss",
+            "endpoint_value": 1.511117935180664,
+            "path_value": 1.5111180543899536
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.4115876754124959,
+            "std": 0.019272013494624835,
+            "min": 0.3837471902370453,
+            "max": 0.44243794679641724
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.4290476143360138,
+            "std": 0.013136298153996065,
+            "min": 0.4099999964237213,
+            "max": 0.44999998807907104
+          },
+          "selected_epochs": [
+            76,
+            22,
+            70,
+            91,
+            87,
+            134
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 0.2778879503409068,
+                  "std": 0.0278458329910281,
+                  "min": 0.2517291009426117,
+                  "max": 0.3164599537849426
+                },
+                "min_accuracy": {
+                  "mean": 0.43796295921007794,
+                  "std": 0.04049448233073698,
+                  "min": 0.3870370388031006,
+                  "max": 0.4861111044883728
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.029846100012461314,
+                  "std": 0.02738563142525983,
+                  "min": 0.0,
+                  "max": 0.06614359617233267
+                },
+                "min_accuracy": {
+                  "mean": 0.3733333349227905,
+                  "std": 0.022747749893379268,
+                  "min": 0.34142857789993286,
+                  "max": 0.3928571343421936
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.02863547603289292,
+                  "std": 0.03512609163427271,
+                  "min": 0.0,
+                  "max": 0.07810674309730548
+                },
+                "min_accuracy": {
+                  "mean": 0.3566591441631317,
+                  "std": 0.022346484867165076,
+                  "min": 0.32731378078460693,
+                  "max": 0.3814898431301117
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.4261871178944905,
+                  "std": 0.04209911724130319,
+                  "min": 1.393352746963501,
+                  "max": 1.4856151342391968
+                },
+                "accuracy": {
+                  "mean": 0.36945071816444397,
+                  "std": 0.02542775057913285,
+                  "min": 0.3340857923030853,
+                  "max": 0.3927765190601349
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.5052469174067179,
+                  "std": 0.05510275644734455,
+                  "min": 0.4314814805984497,
+                  "max": 0.5638889074325562
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 4.981280394395192,
+                  "std": 0.8509331280154434,
+                  "min": 3.785744273662567,
+                  "max": 5.698005676269531
+                },
+                "min_accuracy": {
+                  "mean": 0.3704761862754822,
+                  "std": 0.007939684291653657,
+                  "min": 0.3628571331501007,
+                  "max": 0.3814285695552826
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 5.107665042082469,
+                  "std": 1.0160309363868838,
+                  "min": 3.7613914608955383,
+                  "max": 6.215702831745148
+                },
+                "min_accuracy": {
+                  "mean": 0.3634311556816101,
+                  "std": 0.016892351339279736,
+                  "min": 0.3408578038215637,
+                  "max": 0.3814898431301117
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 6.532705624898274,
+                  "std": 1.0115908100807152,
+                  "min": 5.1746439933776855,
+                  "max": 7.601255893707275
+                },
+                "accuracy": {
+                  "mean": 0.3724605143070221,
+                  "std": 0.018152501604993303,
+                  "min": 0.3476298153400421,
+                  "max": 0.3905192017555237
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/squirrel/gat/report.json",
+          "png": "results/reference-full-20260918/squirrel/gat/connectivity.png",
+          "pdf": "results/reference-full-20260918/squirrel/gat/connectivity.pdf"
+        }
+      }
+    },
+    "chameleon": {
+      "gcn": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/chameleon/gcn/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "3df216c1db9ef1083f86fddedfe6d221b50606be1cf7f8e7c594c67648c93456",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 512,
+          "depth": 5,
+          "dropout": 0.2,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 200,
+        "elapsed_seconds": 33.72925006598234,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 7047,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 2.384185791015625e-07,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              2,
+              3
+            ],
+            "method": "linear",
+            "endpoint_seed": 2,
+            "split": "test",
+            "metric": "loss",
+            "endpoint_value": 2.286257028579712,
+            "path_value": 2.286256790161133
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.3892339617013931,
+            "std": 0.021714475704143678,
+            "min": 0.34161490201950073,
+            "max": 0.403726726770401
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.3912803481022517,
+            "std": 0.007506328007731463,
+            "min": 0.3807947039604187,
+            "max": 0.40066224336624146
+          },
+          "selected_epochs": [
+            113,
+            181,
+            146,
+            131,
+            177,
+            129
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 1.2536770701408386,
+                  "std": 0.04426051838584164,
+                  "min": 1.2205958664417267,
+                  "max": 1.3162363171577454
+                },
+                "min_accuracy": {
+                  "mean": 0.30288835366566974,
+                  "std": 0.002920881752785292,
+                  "min": 0.29976579546928406,
+                  "max": 0.3067915439605713
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.24061810473601022,
+                  "std": 0.0062437676034241265,
+                  "min": 0.23178808391094208,
+                  "max": 0.2450331151485443
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.2774327298005422,
+                  "std": 0.005855953376851135,
+                  "min": 0.2732919454574585,
+                  "max": 0.2857142984867096
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.9812426964441936,
+                  "std": 0.017622937013751616,
+                  "min": 1.9629648923873901,
+                  "max": 2.005054473876953
+                },
+                "accuracy": {
+                  "mean": 0.27950311700503033,
+                  "std": 0.005071404387735216,
+                  "min": 0.2732919454574585,
+                  "max": 0.2857142984867096
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.1423426767190297,
+                  "std": 0.10150039123331854,
+                  "min": 0.013132259249687195,
+                  "max": 0.26109578609466544
+                },
+                "min_accuracy": {
+                  "mean": 0.6213895082473755,
+                  "std": 0.026101894653301805,
+                  "min": 0.5925058126449585,
+                  "max": 0.6557376980781555
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 5.909933058420817,
+                  "std": 1.887265336926497,
+                  "min": 4.309662222862244,
+                  "max": 8.559934854507446
+                },
+                "min_accuracy": {
+                  "mean": 0.3245033125082652,
+                  "std": 0.007153137865051625,
+                  "min": 0.31456953287124634,
+                  "max": 0.33112582564353943
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 6.022168914477031,
+                  "std": 2.47159197612359,
+                  "min": 3.891831636428833,
+                  "max": 9.487212061882019
+                },
+                "min_accuracy": {
+                  "mean": 0.3498964806397756,
+                  "std": 0.007746703472173664,
+                  "min": 0.34161490201950073,
+                  "max": 0.3602484464645386
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 8.26375150680542,
+                  "std": 2.4151281871824337,
+                  "min": 6.303848743438721,
+                  "max": 11.666171073913574
+                },
+                "accuracy": {
+                  "mean": 0.3830227851867676,
+                  "std": 0.022868235277581053,
+                  "min": 0.3540372848510742,
+                  "max": 0.40993788838386536
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/chameleon/gcn/report.json",
+          "png": "results/reference-full-20260918/chameleon/gcn/connectivity.png",
+          "pdf": "results/reference-full-20260918/chameleon/gcn/connectivity.pdf"
+        }
+      },
+      "mlp": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/chameleon/mlp/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "3df216c1db9ef1083f86fddedfe6d221b50606be1cf7f8e7c594c67648c93456",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 512,
+          "depth": 5,
+          "dropout": 0.2,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 200,
+        "elapsed_seconds": 23.65907522663474,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 7047,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 0.0,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": null,
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.3799171944459279,
+            "std": 0.01877676659021191,
+            "min": 0.3540372848510742,
+            "max": 0.403726726770401
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.3631346523761749,
+            "std": 0.010926593055119954,
+            "min": 0.3509933650493622,
+            "max": 0.38410595059394836
+          },
+          "selected_epochs": [
+            7,
+            20,
+            94,
+            161,
+            27,
+            20
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 0.819777907182773,
+                  "std": 0.3822595742621993,
+                  "min": 0.4148631989955902,
+                  "max": 1.332423321157694
+                },
+                "min_accuracy": {
+                  "mean": 0.2841529945532481,
+                  "std": 0.14207221112520232,
+                  "min": 0.15690866112709045,
+                  "max": 0.48243558406829834
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.24061810473601022,
+                  "std": 0.06179044620598573,
+                  "min": 0.19205297529697418,
+                  "max": 0.32781457901000977
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.24844720462958017,
+                  "std": 0.05485565098408843,
+                  "min": 0.19254659116268158,
+                  "max": 0.3229813575744629
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.6001665194829304,
+                  "std": 0.08158799363565097,
+                  "min": 1.53678560256958,
+                  "max": 1.7153557538986206
+                },
+                "accuracy": {
+                  "mean": 0.287784680724144,
+                  "std": 0.05877875785141557,
+                  "min": 0.20496894419193268,
+                  "max": 0.3354037404060364
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.023712401340405146,
+                  "std": 0.03353439957203492,
+                  "min": 0.0,
+                  "max": 0.07113720402121544
+                },
+                "min_accuracy": {
+                  "mean": 0.6510538458824158,
+                  "std": 0.2581641908709486,
+                  "min": 0.33723652362823486,
+                  "max": 0.9695550203323364
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 124.95280347267787,
+                  "std": 112.02560628022032,
+                  "min": 23.0617738366127,
+                  "max": 280.9614814519882
+                },
+                "min_accuracy": {
+                  "mean": 0.30022074778874713,
+                  "std": 0.01584182714959343,
+                  "min": 0.2781457006931305,
+                  "max": 0.31456953287124634
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 71.45300791660945,
+                  "std": 38.97212592230805,
+                  "min": 27.405770540237427,
+                  "max": 122.16670429706573
+                },
+                "min_accuracy": {
+                  "mean": 0.31884058316548664,
+                  "std": 0.03299663958476104,
+                  "min": 0.27950310707092285,
+                  "max": 0.3602484464645386
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 73.28837966918945,
+                  "std": 39.12070735112193,
+                  "min": 29.05173110961914,
+                  "max": 124.18141174316406
+                },
+                "accuracy": {
+                  "mean": 0.3333333432674408,
+                  "std": 0.03452035451747527,
+                  "min": 0.2857142984867096,
+                  "max": 0.3664596378803253
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/chameleon/mlp/report.json",
+          "png": "results/reference-full-20260918/chameleon/mlp/connectivity.png",
+          "pdf": "results/reference-full-20260918/chameleon/mlp/connectivity.pdf"
+        }
+      },
+      "graphsage": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/chameleon/graphsage/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "3df216c1db9ef1083f86fddedfe6d221b50606be1cf7f8e7c594c67648c93456",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 4,
+          "dropout": 0.7,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 200,
+        "elapsed_seconds": 30.438161201775074,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 7047,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 1.1920928955078125e-07,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              0,
+              1
+            ],
+            "method": "linear",
+            "endpoint_seed": 0,
+            "split": "test",
+            "metric": "loss",
+            "endpoint_value": 1.3752119541168213,
+            "path_value": 1.3752120733261108
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.4244306484858195,
+            "std": 0.024233333069414328,
+            "min": 0.3788819909095764,
+            "max": 0.45962733030319214
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.33498895665009815,
+            "std": 0.013708324272040938,
+            "min": 0.31456953287124634,
+            "max": 0.3576158881187439
+          },
+          "selected_epochs": [
+            12,
+            12,
+            14,
+            9,
+            13,
+            13
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 0.18790749013423916,
+                  "std": 0.017076107600103686,
+                  "min": 0.1687494754791259,
+                  "max": 0.21021905541419983
+                },
+                "min_accuracy": {
+                  "mean": 0.5511319239934286,
+                  "std": 0.012143911950938934,
+                  "min": 0.533957839012146,
+                  "max": 0.5597189664840698
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.31456953287124634,
+                  "std": 0.0071531332664559084,
+                  "min": 0.3079470098018646,
+                  "max": 0.3245033025741577
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.03669910033543903,
+                  "std": 0.009201984134873371,
+                  "min": 0.02932745814323412,
+                  "max": 0.04967249035835275
+                },
+                "min_accuracy": {
+                  "mean": 0.3850931723912557,
+                  "std": 0.028236402101203956,
+                  "min": 0.3478260934352875,
+                  "max": 0.4161490797996521
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.4248734315236409,
+                  "std": 0.0040573828296460645,
+                  "min": 1.420173168182373,
+                  "max": 1.430073857307434
+                },
+                "accuracy": {
+                  "mean": 0.4057971040407817,
+                  "std": 0.010556981772914741,
+                  "min": 0.3913043439388275,
+                  "max": 0.4161490797996521
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.5909445484479269,
+                  "std": 0.013832984030766732,
+                  "min": 0.5714285373687744,
+                  "max": 0.601873517036438
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 5.843593617280324,
+                  "std": 0.2525237848877979,
+                  "min": 5.578714966773987,
+                  "max": 6.183474183082581
+                },
+                "min_accuracy": {
+                  "mean": 0.2891832192738851,
+                  "std": 0.005628060445097909,
+                  "min": 0.28145694732666016,
+                  "max": 0.2947019934654236
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 5.063774406909943,
+                  "std": 0.10916618653721004,
+                  "min": 4.916210651397705,
+                  "max": 5.176857531070709
+                },
+                "min_accuracy": {
+                  "mean": 0.3105590144793193,
+                  "std": 0.005071404387735216,
+                  "min": 0.30434784293174744,
+                  "max": 0.31677019596099854
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 6.453986803690593,
+                  "std": 0.10795848852489869,
+                  "min": 6.305286407470703,
+                  "max": 6.558315277099609
+                },
+                "accuracy": {
+                  "mean": 0.31677019596099854,
+                  "std": 0.010142808775460702,
+                  "min": 0.30434784293174744,
+                  "max": 0.32919254899024963
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/chameleon/graphsage/report.json",
+          "png": "results/reference-full-20260918/chameleon/graphsage/connectivity.png",
+          "pdf": "results/reference-full-20260918/chameleon/graphsage/connectivity.pdf"
+        }
+      },
+      "gat": {
+        "passed": true,
+        "report": "runs/reference-full-20260918/chameleon/gat/report.json",
+        "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+        "split_sha256": "3df216c1db9ef1083f86fddedfe6d221b50606be1cf7f8e7c594c67648c93456",
+        "source_commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 2,
+          "dropout": 0.7,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "profile_epochs": 200,
+        "elapsed_seconds": 22.21750658005476,
+        "checks": {
+          "source_config_matches": true,
+          "source_provenance_matches": true,
+          "selected_epochs_match": true,
+          "finite_metrics": true,
+          "finite_numeric_values_checked": 7047,
+          "artifact_counts": {
+            "endpoint_checkpoints": 6,
+            "curve_checkpoints": 3,
+            "figures": 2
+          }
+        },
+        "endpoint_path_deviation": {
+          "comparisons": 72,
+          "max_abs_loss": 3.5762786865234375e-07,
+          "max_abs_accuracy": 0.0,
+          "loss_tolerance": 2e-05,
+          "accuracy_tolerance": 1e-06,
+          "within_tolerance": true,
+          "worst_loss": {
+            "pair": [
+              0,
+              1
+            ],
+            "method": "bezier",
+            "endpoint_seed": 1,
+            "split": "val",
+            "metric": "loss",
+            "endpoint_value": 1.7427914142608643,
+            "path_value": 1.742791771888733
+          },
+          "worst_accuracy": null
+        },
+        "metrics": {
+          "endpoint_test_accuracy": {
+            "mean": 0.42132506271203357,
+            "std": 0.028331118137660673,
+            "min": 0.37267082929611206,
+            "max": 0.44720497727394104
+          },
+          "endpoint_validation_accuracy": {
+            "mean": 0.3476821184158325,
+            "std": 0.01493128873395698,
+            "min": 0.32781457901000977,
+            "max": 0.3675496578216553
+          },
+          "selected_epochs": [
+            10,
+            13,
+            19,
+            12,
+            4,
+            8
+          ],
+          "paths": {
+            "linear": {
+              "train": {
+                "barrier": {
+                  "mean": 0.22388993601004284,
+                  "std": 0.020631988676690485,
+                  "min": 0.1947120308876038,
+                  "max": 0.2385552078485489
+                },
+                "min_accuracy": {
+                  "mean": 0.7189695239067078,
+                  "std": 0.08489259000660138,
+                  "min": 0.5995315909385681,
+                  "max": 0.7892271280288696
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.32119205594062805,
+                  "std": 0.0071531332664559084,
+                  "min": 0.3112582862377167,
+                  "max": 0.32781457901000977
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.3933747510115306,
+                  "std": 0.023966542698810805,
+                  "min": 0.3602484464645386,
+                  "max": 0.4161490797996521
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 1.3257584969202678,
+                  "std": 0.003402097349365544,
+                  "min": 1.322927474975586,
+                  "max": 1.330543041229248
+                },
+                "accuracy": {
+                  "mean": 0.4182194570700328,
+                  "std": 0.020495848860935764,
+                  "min": 0.3913043439388275,
+                  "max": 0.4409937858581543
+                }
+              }
+            },
+            "bezier": {
+              "train": {
+                "barrier": {
+                  "mean": 0.0,
+                  "std": 0.0,
+                  "min": 0.0,
+                  "max": 0.0
+                },
+                "min_accuracy": {
+                  "mean": 0.7595628102620443,
+                  "std": 0.0989228464670326,
+                  "min": 0.6206088662147522,
+                  "max": 0.8430913090705872
+                }
+              },
+              "val": {
+                "barrier": {
+                  "mean": 4.0470395882924395,
+                  "std": 0.25056856657093435,
+                  "min": 3.7664466500282288,
+                  "max": 4.374759674072266
+                },
+                "min_accuracy": {
+                  "mean": 0.2947019835313161,
+                  "std": 0.01430627573010325,
+                  "min": 0.27483442425727844,
+                  "max": 0.3079470098018646
+                }
+              },
+              "test": {
+                "barrier": {
+                  "mean": 3.908714512983958,
+                  "std": 0.4972008497200229,
+                  "min": 3.470209002494812,
+                  "max": 4.603990077972412
+                },
+                "min_accuracy": {
+                  "mean": 0.3561076720555623,
+                  "std": 0.007746703472173664,
+                  "min": 0.3478260934352875,
+                  "max": 0.3664596378803253
+                }
+              },
+              "test_midpoint": {
+                "loss": {
+                  "mean": 5.358397006988525,
+                  "std": 0.4624864253824831,
+                  "min": 4.938586235046387,
+                  "max": 6.002652168273926
+                },
+                "accuracy": {
+                  "mean": 0.36231885353724164,
+                  "std": 0.0077467061271796565,
+                  "min": 0.3540372848510742,
+                  "max": 0.37267082929611206
+                }
+              }
+            }
+          }
+        },
+        "copied_artifacts": {
+          "report": "results/reference-full-20260918/chameleon/gat/report.json",
+          "png": "results/reference-full-20260918/chameleon/gat/connectivity.png",
+          "pdf": "results/reference-full-20260918/chameleon/gat/connectivity.pdf"
+        }
+      }
+    }
+  },
+  "failures": []
+}

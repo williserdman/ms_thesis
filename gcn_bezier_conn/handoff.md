@@ -27,11 +27,25 @@ baseline runs exist. Extending REPAIR to reference models or other architectures
 remains deferred. REPAIR still applies only to legacy GCN linear paths, with the
 saved Bézier path as comparator.
 
-The implementation is complete. All 25 tests pass. All 16 architecture/dataset
-smoke jobs completed, and four Cora runs used the source endpoint budgets with
-one pair each. See [architecture verification](docs/architecture_verification.md)
-for the replay evidence and numerical caveat. Full-budget runs on the other three
-datasets and three-pair reference comparisons remain deferred.
+All 16 fixed reference-preset configurations have now completed full endpoint
+budgets and three seed pairs each (Slurm 3834822). See
+[full reference results](docs/reference_full_results.md). The earlier Cora pilots
+and smoke checks remain archived separately.
+
+The user requested Optuna and explicitly chose endpoint models only. The existing
+thesis hook now supports the four architectures, persistent studies, and cached
+best parameters. All 34 tests pass. A real Cora repeat reused its two-trial study
+with zero new trials. The full tuned matrix is running as Slurm array 3834945,
+under `runs/tuned-endpoints-20260918/`, with 20 trials/configuration and three final
+endpoint pairs. Check its state before claiming completion. Bézier settings stay
+fixed; tuning uses validation accuracy and never computes test metrics.
+
+Cache location: `runs/optuna-cache/<dataset>/<architecture>/<context-hash>/`.
+Keep `study.sqlite3` and `best.json`; deleting these discards reusable searches.
+Identical completed budgets are reused; raising the trial budget extends the
+study. Data, training/search settings, source implementation, runtime, and tuning
+seed changes create new contexts. Do not alter tuning implementation while the
+matrix is running; source hashes are part of cache identity.
 
 The Cora Bézier paths have zero sampled training-loss barriers and relatively
 flat test accuracy, but substantially higher validation/test cross-entropy than
@@ -55,6 +69,8 @@ extending REPAIR. No settings were selected using test metrics. The labeled
   alignment semantics. The sibling [REPAIR handoff](../repair/handoff.md) covers
   that package's earlier work.
 - [Saved results](results/gcn-four-datasets/README.md): tracked figures and reports.
+- [Cached tuning design](docs/superpowers/specs/2026-09-18-endpoint-tuning.md):
+  endpoint-only scope, search dimensions, objective, and cache identity.
 
 A bounded first-party search found no public repository from the
 mode-connectivity authors. This is not proof that none exists. Appendix B refers
@@ -104,7 +120,8 @@ location recorded in the report, or an explicit compatible `--thesis-root`.
 Raw `runs/` artifacts and model checkpoints remain local and ignored. Compact
 figures and JSON reports are tracked under `results/gcn-four-datasets/` and
 `results/reference-architectures/`; those copies do not include model weights.
-No experiment jobs remain running.
+The tuned matrix is currently running; inspect Slurm array 3834945. Other user
+jobs may share the account and must be left alone.
 
 Before this extension, all 11 legacy GCN/REPAIR tests passed in 0.377 seconds
 after imports. The dataset-sweep record documents successful Slurm jobs and

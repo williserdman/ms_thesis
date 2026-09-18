@@ -48,6 +48,10 @@ class Config:
     heads: int = 1
     selection: str = "val_loss"
     overrides: dict = field(default_factory=dict)
+    tune_endpoints: bool = False
+    tuning_trials: int = 20
+    tuning_seed: int = 42
+    tuning_cache: str = "runs/optuna-cache"
 
 
 def resolved_config(config: Config, dataset: str):
@@ -61,6 +65,10 @@ def resolved_config(config: Config, dataset: str):
     elif config.preset != "legacy" or config.architecture != "gcn":
         raise ValueError("Non-GCN architectures require --preset reference.")
     effective = replace(effective, **config.overrides)
+    if effective.tune_endpoints and effective.preset != "reference":
+        raise ValueError("Endpoint tuning requires --preset reference.")
+    if effective.tuning_trials < 1 or effective.tuning_seed < 0:
+        raise ValueError("Tuning trials must be positive and tuning seed nonnegative.")
     if effective.smoke:
         effective = replace(effective, epochs=min(effective.epochs, 5),
                             curve_epochs=min(effective.curve_epochs, 5),
@@ -86,9 +94,9 @@ def cpu_state(state):
     return {name: value.detach().cpu().clone() for name, value in state.items()}
 
 
-def metrics(logits, graph):
+def metrics(logits, graph, splits=("train", "val", "test")):
     result = {}
-    for split in ("train", "val", "test"):
+    for split in splits:
         mask = getattr(graph, f"{split}_mask")
         loss = F.cross_entropy(logits[mask], graph.y[mask])
         if not torch.isfinite(loss):
@@ -100,7 +108,19 @@ def metrics(logits, graph):
     return result
 
 
-def train_endpoint(graph, model_config, config, seed):
+def model_configuration(metadata, config):
+    result = {
+        "in_channels": metadata["num_features"], "out_channels": metadata["num_classes"],
+        "hidden_channels": config.hidden_channels, "depth": config.depth, "dropout": config.dropout,
+    }
+    if config.preset == "reference":
+        result.update({name: getattr(config, name) for name in
+                       ("architecture", "normalization", "residual", "pre_linear", "heads")})
+        result["family"] = "tunedgnn"
+    return result
+
+
+def train_endpoint(graph, model_config, config, seed, *, evaluate_test=True, epoch_callback=None):
     seed_everything(seed)
     model = build_model(model_config).to(config.device)
     if model_config.get("family") == "tunedgnn":
@@ -131,14 +151,17 @@ def train_endpoint(graph, model_config, config, seed):
             best_score, best_epoch = score, epoch
             best_state = cpu_state(model.state_dict())
         history.append({"epoch": epoch, "train_loss_with_dropout": float(loss.detach()), "val_loss": val_loss, "val_accuracy": val_accuracy})
+        if epoch_callback is not None:
+            epoch_callback(epoch, val_loss, val_accuracy)
     if best_state is None:
         raise FloatingPointError("No finite validation checkpoint was produced.")
     model.load_state_dict(best_state)
     model.eval()
+    splits = ("train", "val", "test") if evaluate_test else ("train", "val")
     with torch.no_grad():
-        selected_metrics = metrics(model(graph.x, graph.edge_index), graph)
+        selected_metrics = metrics(model(graph.x, graph.edge_index), graph, splits)
         calibrate_batchnorm(model, graph)
-        endpoint_metrics = metrics(model(graph.x, graph.edge_index), graph)
+        endpoint_metrics = metrics(model(graph.x, graph.edge_index), graph, splits)
     return model, {"seed": seed, "selected_epoch": best_epoch, "selection": config.selection,
                    "metrics_before_calibration": selected_metrics, "metrics": endpoint_metrics, "history": history}
 
@@ -242,16 +265,13 @@ def run(config: Config, output: str | Path):
         dataset_dir.mkdir()
         torch.save({name: getattr(graph, name).cpu().clone() for name in ("train_mask", "val_mask", "test_mask")}, dataset_dir / "split.pt")
         graph = graph.to(config.device)
-        model_config = {
-            "in_channels": metadata["num_features"], "out_channels": metadata["num_classes"],
-            "hidden_channels": effective.hidden_channels, "depth": effective.depth, "dropout": effective.dropout,
-        }
-        if effective.preset == "reference":
-            model_config.update({name: getattr(effective, name) for name in
-                                 ("architecture", "normalization", "residual", "pre_linear", "heads")})
-            model_config["family"] = "tunedgnn"
+        tuning = None
+        if effective.tune_endpoints:
+            from .tuning import tune_endpoints
+            effective, tuning = tune_endpoints(graph, metadata, effective)
+        model_config = model_configuration(metadata, effective)
         dataset_result = {"data": metadata, "model": model_config, "config": asdict(effective),
-                          "source": source, "endpoints": [], "pairs": []}
+                          "source": source, "tuning": tuning, "endpoints": [], "pairs": []}
         states = {}
         for seed in dict.fromkeys(chain.from_iterable(effective.pairs)):
             print(f"[{metadata['name']}] endpoint seed={seed}", flush=True)

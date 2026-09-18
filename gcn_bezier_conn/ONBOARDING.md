@@ -109,6 +109,48 @@ reference MLP uses the matching GCN profile and replaces each graph convolution
 with a linear layer. This is a local implementation choice because no upstream
 MLP recipe was found.
 
+## Tune and cache endpoint hyperparameters
+
+The existing thesis `src/optuna_trainer.py` supplies the common search dimensions,
+sampler/pruner, and study runner. Enable its GNN endpoint objective with:
+
+```bash
+$PY -m gcn_mc run --preset reference --architecture gcn --datasets Cora \
+  --thesis-root /home/wge3/ms_thesis --tune-endpoints --tuning-trials 20 \
+  --tuning-cache runs/optuna-cache --output runs/tuned-cora-gcn
+```
+
+Searches maximize validation accuracy of the selected, calibrated endpoint.
+Training uses train-mask labels; tuning does not compute test metrics. It varies
+learning rate, hidden width, dropout, depth, and weight decay. Normalization,
+residuals, input projection, and attention heads retain their reference settings.
+Explicit CLI overrides fix the corresponding search dimensions. The reference
+configuration is the first trial. The default is 20 trials with tuning seed 42
+and the dataset's full endpoint epoch budget; intermediate validation accuracy
+supports pruning every ten epochs. These are best observed parameters within a
+bounded search, not guaranteed global optima.
+
+Each dataset/architecture/context gets `study.sqlite3` and `best.json` under the
+cache directory. Matching completed studies run zero new trials. Increasing
+`--tuning-trials` adds only the remaining trials; interrupted studies resume.
+The cache persists independently of experiment output directories. A per-study
+lock prevents simultaneous duplicate searches. Data, split, model/search settings,
+training implementation, runtime, and tuning seed changes create distinct studies.
+Final endpoint seeds, test targets, output paths, and Bézier settings do not.
+Smoke searches use a separate identity and cannot supply full-budget parameters.
+
+Final experiments retrain seeds 0–5 with the selected parameters and compare
+three independent endpoint pairs. Bézier hyperparameters remain fixed, per the
+user's request. Reports contain cache identity, hit/miss, best parameters,
+validation score, and trial counts. The ignored cache databases remain local;
+archived reports preserve the selected settings.
+
+```bash
+sbatch --array=0-15%4 --time=04:00:00 scripts/reference_baselines.sbatch \
+  runs/tuned-matrix full --tune-endpoints --tuning-trials 20 \
+  --tuning-cache runs/optuna-cache
+```
+
 ## Compare REPAIR with existing paths
 
 ```bash
