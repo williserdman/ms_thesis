@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 
-from .experiment import Config, run
+from .experiment import Config, resolved_config, run
 
 
 def seed_pair(value):
@@ -18,18 +18,25 @@ def seed_pair(value):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="Core GCN mode connectivity replication using the existing thesis loader.")
+    parser = argparse.ArgumentParser(description="GNN mode connectivity baselines using the existing thesis loader.")
     commands = parser.add_subparsers(dest="command", required=True)
     runner = commands.add_parser("run", help="Train endpoints, fit Bézier controls, and save path metrics.")
     runner.add_argument("--datasets", nargs="+", default=["Cora"])
     runner.add_argument("--pairs", nargs="+", type=seed_pair, default=[(0, 1), (2, 3), (4, 5)], help="Independent endpoint seed pairs; default: 0:1 2:3 4:5")
-    runner.add_argument("--hidden-channels", type=int, default=64)
-    runner.add_argument("--depth", type=int, default=2)
-    runner.add_argument("--dropout", type=float, default=0.5)
-    runner.add_argument("--epochs", type=int, default=200)
+    runner.add_argument("--preset", choices=("legacy", "reference"), default="legacy")
+    runner.add_argument("--architecture", choices=("gcn", "mlp", "graphsage", "gat"), default="gcn")
+    runner.add_argument("--hidden-channels", type=int)
+    runner.add_argument("--depth", type=int)
+    runner.add_argument("--dropout", type=float)
+    runner.add_argument("--epochs", type=int)
     runner.add_argument("--curve-epochs", type=int, default=200)
-    runner.add_argument("--lr", type=float, default=0.01)
-    runner.add_argument("--weight-decay", type=float, default=5e-4)
+    runner.add_argument("--lr", type=float)
+    runner.add_argument("--weight-decay", type=float)
+    runner.add_argument("--normalization", choices=("none", "batch", "layer"))
+    runner.add_argument("--residual", action=argparse.BooleanOptionalAction, default=None)
+    runner.add_argument("--pre-linear", action=argparse.BooleanOptionalAction, default=None)
+    runner.add_argument("--heads", type=int)
+    runner.add_argument("--selection", choices=("val_loss", "val_accuracy"))
     runner.add_argument("--curve-lr", type=float, default=0.01)
     runner.add_argument("--curve-samples", type=int, default=1, help="Uniform t samples averaged per curve optimizer step.")
     runner.add_argument("--points", type=int, default=21)
@@ -71,22 +78,16 @@ def main(argv=None):
     output = values.pop("output")
     no_plots = values.pop("no_plots")
     values.pop("command")
+    profile_fields = ("hidden_channels", "depth", "dropout", "epochs", "lr", "weight_decay",
+                      "normalization", "residual", "pre_linear", "heads", "selection")
+    overrides = {name: values.pop(name) for name in profile_fields}
+    values["overrides"] = {name: value for name, value in overrides.items() if value is not None}
     config = Config(**values)
-    if config.smoke:
-        config.epochs = min(config.epochs, 5)
-        config.curve_epochs = min(config.curve_epochs, 5)
-        config.hidden_channels = min(config.hidden_channels, 8)
-        config.points = min(config.points, 5)
-        config.pairs = config.pairs[:1]
-    for name in ("hidden_channels", "epochs", "curve_epochs", "curve_samples", "threads"):
-        if getattr(config, name) < 1:
-            parser.error(f"--{name.replace('_', '-')} must be positive")
-    if config.depth < 2 or config.points < 3:
-        parser.error("--depth must be >=2 and --points >=3")
-    if not 0 <= config.dropout < 1:
-        parser.error("--dropout must be in [0, 1)")
-    if config.lr <= 0 or config.curve_lr <= 0 or config.weight_decay < 0:
-        parser.error("Learning rates must be positive and weight decay nonnegative")
+    try:
+        for dataset in config.datasets:
+            resolved_config(config, dataset)
+    except ValueError as exc:
+        parser.error(str(exc))
     if config.data_seed < 0 or config.curve_seed < 0:
         parser.error("Seeds must be nonnegative")
     if len({tuple(sorted(pair)) for pair in config.pairs}) != len(config.pairs):

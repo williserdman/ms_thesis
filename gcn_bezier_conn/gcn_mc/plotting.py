@@ -44,17 +44,20 @@ def plot_report(report_path):
                     ax.set_ylim(0, 1)
                 if column == 0:
                     ax.set_ylabel("Cross entropy" if metric == "loss" else "Accuracy")
-        note = "smoke test" if report["config"]["smoke"] else "core GCN experiment"
+        note = "smoke test" if report["config"]["smoke"] else "linear/Bézier baseline"
         if report.get("experiment") == "gnn_repair":
             note = "GCN REPAIR comparison" + (", smoke endpoints" if report["config"]["smoke"] else "")
         n_pairs = len(dataset["pairs"])
         model = dataset.get("model", report["config"])
+        model_name = {"gcn": "GCN", "mlp": "MLP", "graphsage": "GraphSAGE", "gat": "GAT"}[model.get("architecture", "gcn")]
         architecture = (
-            f"GCN, depth {model['depth']}, hidden width {model['hidden_channels']}, "
+            f"{model_name}, depth {model['depth']}, hidden width {model['hidden_channels']}, "
             f"dropout {model['dropout']}"
         )
+        if model.get("family") == "tunedgnn":
+            architecture += f", norm {model['normalization']}, residual {model['residual']}"
         figure.suptitle(
-            f"{dataset['data']['name']}: {architecture}; {note}, {n_pairs} endpoint pair(s)"
+            f"{dataset['data']['name']}: {architecture}\n{note}, {n_pairs} endpoint pair(s)"
         )
         handles, labels = axes[0, 0].get_legend_handles_labels()
         figure.legend(handles, labels, loc="lower center", ncol=len(labels), frameon=False)

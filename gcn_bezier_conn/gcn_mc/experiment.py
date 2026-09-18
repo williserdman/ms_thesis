@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from itertools import chain
 import json
 from pathlib import Path
@@ -15,8 +15,9 @@ from torch.nn import functional as F
 import torch_geometric
 
 from .data import load_graph, seed_everything
-from .model import GCN
-from .paths import clone_parameters, make_control, path_logits, summarize_path
+from .model import build_model
+from .paths import calibrate_batchnorm, clone_parameters, make_control, path_logits, summarize_path
+from .presets import reference_profile
 
 
 @dataclass
@@ -39,6 +40,46 @@ class Config:
     threads: int = 1
     thesis_root: str | None = None
     smoke: bool = False
+    architecture: str = "gcn"
+    preset: str = "legacy"
+    normalization: str = "none"
+    residual: bool = False
+    pre_linear: bool = False
+    heads: int = 1
+    selection: str = "val_loss"
+    overrides: dict = field(default_factory=dict)
+
+
+def resolved_config(config: Config, dataset: str):
+    """Apply the dataset recipe, explicit overrides, then smoke limits."""
+    source = None
+    effective = replace(config)
+    if config.preset == "reference":
+        profile = reference_profile(dataset, config.architecture)
+        effective = replace(effective, **profile["model"], **profile["training"])
+        source = profile["source"]
+    elif config.preset != "legacy" or config.architecture != "gcn":
+        raise ValueError("Non-GCN architectures require --preset reference.")
+    effective = replace(effective, **config.overrides)
+    if effective.smoke:
+        effective = replace(effective, epochs=min(effective.epochs, 5),
+                            curve_epochs=min(effective.curve_epochs, 5),
+                            hidden_channels=min(effective.hidden_channels, 8),
+                            points=min(effective.points, 5), pairs=effective.pairs[:1])
+    for name in ("hidden_channels", "epochs", "curve_epochs", "curve_samples", "threads", "heads"):
+        if getattr(effective, name) < 1:
+            raise ValueError(f"{name} must be positive")
+    if effective.depth < 2 or effective.points < 3:
+        raise ValueError("depth must be >=2 and points >=3")
+    if not 0 <= effective.dropout < 1:
+        raise ValueError("dropout must be in [0, 1)")
+    if effective.lr <= 0 or effective.curve_lr <= 0 or effective.weight_decay < 0:
+        raise ValueError("Learning rates must be positive and weight decay nonnegative")
+    if effective.selection not in ("val_loss", "val_accuracy"):
+        raise ValueError("selection must be val_loss or val_accuracy")
+    if effective.preset == "legacy" and (effective.normalization != "none" or effective.residual or effective.pre_linear or effective.heads != 1):
+        raise ValueError("Normalization, residuals, input projection and attention heads require --preset reference.")
+    return effective, source
 
 
 def cpu_state(state):
@@ -61,9 +102,11 @@ def metrics(logits, graph):
 
 def train_endpoint(graph, model_config, config, seed):
     seed_everything(seed)
-    model = GCN(**model_config).to(config.device)
+    model = build_model(model_config).to(config.device)
+    if model_config.get("family") == "tunedgnn":
+        model.reset_parameters()
     optimizer = torch.optim.Adam(model.parameters(), lr=config.lr, weight_decay=config.weight_decay)
-    best_loss = float("inf")
+    best_score = float("inf")
     best_state = None
     history = []
     best_epoch = 0
@@ -80,17 +123,24 @@ def train_endpoint(graph, model_config, config, seed):
         with torch.no_grad():
             logits = model(graph.x, graph.edge_index)
             val_loss = float(F.cross_entropy(logits[graph.val_mask], graph.y[graph.val_mask]))
-        if val_loss < best_loss:
-            best_loss, best_epoch = val_loss, epoch
+            val_accuracy = float((logits[graph.val_mask].argmax(-1) == graph.y[graph.val_mask]).float().mean())
+        score = -val_accuracy if config.selection == "val_accuracy" else val_loss
+        if not torch.isfinite(torch.tensor(val_loss)):
+            raise FloatingPointError(f"Non-finite validation loss for seed {seed}.")
+        if score < best_score:
+            best_score, best_epoch = score, epoch
             best_state = cpu_state(model.state_dict())
-        history.append({"epoch": epoch, "train_loss_with_dropout": float(loss.detach()), "val_loss": val_loss})
+        history.append({"epoch": epoch, "train_loss_with_dropout": float(loss.detach()), "val_loss": val_loss, "val_accuracy": val_accuracy})
     if best_state is None:
         raise FloatingPointError("No finite validation checkpoint was produced.")
     model.load_state_dict(best_state)
     model.eval()
     with torch.no_grad():
+        selected_metrics = metrics(model(graph.x, graph.edge_index), graph)
+        calibrate_batchnorm(model, graph)
         endpoint_metrics = metrics(model(graph.x, graph.edge_index), graph)
-    return model, {"seed": seed, "selected_epoch": best_epoch, "metrics": endpoint_metrics, "history": history}
+    return model, {"seed": seed, "selected_epoch": best_epoch, "selection": config.selection,
+                   "metrics_before_calibration": selected_metrics, "metrics": endpoint_metrics, "history": history}
 
 
 def fit_curve(model, graph, endpoint_a, endpoint_b, config, seed):
@@ -155,6 +205,7 @@ def aggregate_pairs(pairs, methods=("linear", "bezier")):
 
 
 def run(config: Config, output: str | Path):
+    resolved = {name: resolved_config(config, name) for name in config.datasets}
     torch.set_num_threads(config.threads)
     if config.device.startswith("cuda") and not torch.cuda.is_available():
         raise RuntimeError("CUDA requested but unavailable. Use --device cpu or a GPU allocation.")
@@ -166,11 +217,11 @@ def run(config: Config, output: str | Path):
     report = {
         "schema_version": 1,
         "paper": "https://arxiv.org/abs/2502.12608v1",
-        "scope": "core GCN connectivity procedure; thesis pipeline and explicit implementation defaults",
+        "scope": "Linear/Bézier architecture baselines; thesis pipeline and explicit implementation choices",
         "config": asdict(config),
         "environment": {"python": platform.python_version(), "torch": str(torch.__version__), "torch_geometric": str(torch_geometric.__version__), "device": config.device},
         "protocol": {
-            "endpoint_selection": "Minimum validation cross entropy over the configured epoch budget.",
+            "endpoint_selection": "Per-dataset config.selection: val_accuracy maximizes accuracy; val_loss minimizes cross entropy; earliest tied epoch retained.",
             "endpoint_optimizer": "Adam, unweighted train-mask cross entropy, configured weight decay on all parameters.",
             "curve_optimizer": "Adam, mean train-mask cross entropy at uniform random t; dropout enabled; no weight decay; final control retained.",
             "curve_initialization": "Arithmetic midpoint of the fixed endpoints.",
@@ -178,11 +229,14 @@ def run(config: Config, output: str | Path):
             "loss_reduction": "Mean cross entropy per labeled node. The paper displays a summed loss; absolute barriers depend on reduction.",
             "uncertainty": "Population standard deviation across supplied pairs; not a confidence interval.",
             "paper_gaps": "Training hyperparameters, split details, curve optimizer, and checkpoint selection were not specified in the paper; these settings are implementation choices.",
+            "normalization": "BatchNorm: fresh temporary buffers in curve training; one full-graph label-free calibration pass with dropout off at each evaluated point and selected endpoint. All BatchNorm layers use batch statistics during calibration. Not REPAIR; an implementation choice absent from the paper.",
+            "data_preprocessing": "The thesis loader's features, directed edges and masks are preserved. Upstream tunedGNN undirects graphs and replaces self-loops; that preprocessing is not applied here.",
         },
         "datasets": [],
     }
     (output / "config.json").write_text(json.dumps(asdict(config), indent=2) + "\n")
     for dataset_name in config.datasets:
+        effective, source = resolved[dataset_name]
         graph, metadata = load_graph(dataset_name, config.thesis_root, config.data_seed)
         dataset_dir = output / metadata["name"]
         dataset_dir.mkdir()
@@ -190,25 +244,30 @@ def run(config: Config, output: str | Path):
         graph = graph.to(config.device)
         model_config = {
             "in_channels": metadata["num_features"], "out_channels": metadata["num_classes"],
-            "hidden_channels": config.hidden_channels, "depth": config.depth, "dropout": config.dropout,
+            "hidden_channels": effective.hidden_channels, "depth": effective.depth, "dropout": effective.dropout,
         }
-        dataset_result = {"data": metadata, "model": model_config, "endpoints": [], "pairs": []}
+        if effective.preset == "reference":
+            model_config.update({name: getattr(effective, name) for name in
+                                 ("architecture", "normalization", "residual", "pre_linear", "heads")})
+            model_config["family"] = "tunedgnn"
+        dataset_result = {"data": metadata, "model": model_config, "config": asdict(effective),
+                          "source": source, "endpoints": [], "pairs": []}
         states = {}
-        for seed in dict.fromkeys(chain.from_iterable(config.pairs)):
+        for seed in dict.fromkeys(chain.from_iterable(effective.pairs)):
             print(f"[{metadata['name']}] endpoint seed={seed}", flush=True)
-            model, training = train_endpoint(graph, model_config, config, seed)
+            model, training = train_endpoint(graph, model_config, effective, seed)
             states[seed] = clone_parameters(model)
             checkpoint = f"{metadata['name']}/endpoint_{seed}.pt"
             torch.save({"model_config": model_config, "state_dict": cpu_state(model.state_dict()), "seed": seed, "selected_epoch": training["selected_epoch"], "split_sha256": metadata["split_sha256"]}, output / checkpoint)
             dataset_result["endpoints"].append({**training, "checkpoint": checkpoint})
-        for pair_index, (seed_a, seed_b) in enumerate(config.pairs):
+        for pair_index, (seed_a, seed_b) in enumerate(effective.pairs):
             print(f"[{metadata['name']}] curve {seed_a}:{seed_b}", flush=True)
-            model = GCN(**model_config).to(config.device)
+            model = build_model(model_config).to(config.device)
             endpoint_a, endpoint_b = states[seed_a], states[seed_b]
             curve_seed = config.curve_seed + pair_index
-            linear = evaluate_path(model, graph, endpoint_a, endpoint_b, config.points)
-            control, history = fit_curve(model, graph, endpoint_a, endpoint_b, config, curve_seed)
-            bezier = evaluate_path(model, graph, endpoint_a, endpoint_b, config.points, control)
+            linear = evaluate_path(model, graph, endpoint_a, endpoint_b, effective.points)
+            control, history = fit_curve(model, graph, endpoint_a, endpoint_b, effective, curve_seed)
+            bezier = evaluate_path(model, graph, endpoint_a, endpoint_b, effective.points, control)
             checkpoint = f"{metadata['name']}/curve_{seed_a}_{seed_b}.pt"
             torch.save({"model_config": model_config, "control": cpu_state(control), "endpoint_seeds": [seed_a, seed_b], "curve_seed": curve_seed, "split_sha256": metadata["split_sha256"]}, output / checkpoint)
             dataset_result["pairs"].append({"seed_a": seed_a, "seed_b": seed_b, "curve_seed": curve_seed, "checkpoint": checkpoint, "history": history, "linear": linear, "bezier": bezier})

@@ -56,7 +56,9 @@ The full paper scope contains five blocks:
 4. Correlation between mode-connectivity quantities and generalization.
 5. Cross-domain distance based on Wasserstein-1 distance between loss curves, followed by domain-adaptation experiments.
 
-The first block is the reproducible MVP target. The other four blocks require additional definitions, datasets, or baselines that the paper does not specify fully. [Sections 3 and 4](https://arxiv.org/html/2502.12608#S3).
+The implementation covers the first two blocks' baseline procedures on the four
+selected thesis datasets. The remaining blocks require additional definitions,
+datasets, or baselines. [Sections 3 and 4](https://arxiv.org/html/2502.12608#S3).
 
 ## Missing replication details
 
@@ -64,9 +66,11 @@ Appendix B only says the authors follow the architecture and hyperparameters of 
 
 Update, 2026-09-18: the cited baseline paper does provide official `tunedGNN`
 code. The [source-check note](architecture_sources.md) records the pinned source
-and initial findings for the next implementation. These reference settings have
-not yet been incorporated into our models or confirmed as the exact settings
-used by the mode-connectivity authors.
+and exact profiles. `--preset reference` now incorporates those architecture and
+endpoint training settings for GCN, GraphSAGE, and GAT. The MLP substitutes linear
+blocks into the GCN profile. These settings are recoverable from the cited
+baseline, but have not been confirmed as the exact configuration used by the
+mode-connectivity authors. The thesis data pipeline is retained.
 
 The following choices are therefore unknown from the paper:
 
@@ -82,9 +86,14 @@ The following choices are therefore unknown from the paper:
 
 There is also an architecture notation ambiguity. Equation 1 applies \(W^{(l)}\) in every propagation layer, then the text defines final logits as \(H^{(L)}W^{(L)}\), apparently reusing the last-layer symbol. The number of graph convolutions cannot be recovered from this notation alone. [Section 2.1](https://arxiv.org/html/2502.12608#S2.SS1).
 
-## Reproducible MVP choices
+## Legacy GCN defaults and shared path choices
 
-These are implementation defaults, not claims about the authors' setup.
+These are implementation defaults, not claims about the authors' setup. Reference
+presets replace the model and endpoint training rows with the settings in the
+[architecture source note](architecture_sources.md). Reference BatchNorm models
+use fresh, label-free full-graph statistics at each evaluated point and endpoint;
+temporary buffers isolate curve training. This normalization policy is a local
+choice, separate from REPAIR.
 
 | Item | MVP choice |
 |---|---|

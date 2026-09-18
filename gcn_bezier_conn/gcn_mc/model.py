@@ -36,3 +36,21 @@ class GCN(nn.Module):
             x = F.relu(x)
             x = F.dropout(x, p=self.dropout, training=self.training)
         return self.convs[-1](x, edge_index)
+
+
+def build_model(model_config: dict) -> nn.Module:
+    """Build a legacy GCN or the pinned tunedGNN architecture adaptation."""
+    config = dict(model_config)
+    family = config.pop("family", None)
+    if family is None:
+        config.pop("architecture", None)
+        return GCN(**config)
+    if family != "tunedgnn":
+        raise ValueError(f"Unknown model family {family!r}")
+
+    from .reference_models import ReferenceModel
+
+    architecture = config.pop("architecture", None)
+    if architecture is None:
+        raise ValueError("tunedgnn model configuration requires an architecture")
+    return ReferenceModel(architecture=architecture, **config)

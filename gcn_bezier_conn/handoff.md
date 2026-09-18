@@ -10,7 +10,8 @@ and GitHub SSH authentication is now verified. `origin` still uses HTTPS; use
 this command to push over SSH without changing the stored remote configuration:
 
 ```bash
-git -c remote.origin.pushurl=git@github.com:williserdman/ms_thesis.git \
+git -c 'core.sshCommand=ssh -o StrictHostKeyChecking=yes -o CheckHostIP=no -o BatchMode=yes' \
+  -c remote.origin.pushurl=git@github.com:williserdman/ms_thesis.git \
   push -u origin exp/gnn-repair
 ```
 
@@ -19,15 +20,24 @@ Do not put credentials into this handoff, repository files, or chat.
 
 ## Next session
 
-The user wants to preserve the current GCN/REPAIR work, then first reproduce the
-original paper's linear and quadratic Bézier experiments with **GCN, MLP,
-GraphSAGE, and GAT** on **Cora, Roman-empire, squirrel, and chameleon**. Reevaluate
-after those baselines exist. Extending REPAIR to the other architectures is
-deferred. The earlier choice still stands: REPAIR on linear paths only, with
-Bézier as the comparator.
+The current task extends the original linear and quadratic Bézier baseline to
+GCN, MLP, GraphSAGE, and GAT on Cora, Roman-empire, squirrel, and chameleon. Keep
+the completed legacy GCN and REPAIR artifacts valid. Reevaluate after the
+baseline runs exist. Extending REPAIR to reference models or other architectures
+remains deferred. REPAIR still applies only to legacy GCN linear paths, with the
+saved Bézier path as comparator.
 
-Only GCN is implemented today. No model-extension code was written before this
-handoff. The next step is implementation, not another effort estimate.
+The implementation is complete. All 25 tests pass. All 16 architecture/dataset
+smoke jobs completed, and four Cora runs used the source endpoint budgets with
+one pair each. See [architecture verification](docs/architecture_verification.md)
+for the replay evidence and numerical caveat. Full-budget runs on the other three
+datasets and three-pair reference comparisons remain deferred.
+
+The Cora Bézier paths have zero sampled training-loss barriers and relatively
+flat test accuracy, but substantially higher validation/test cross-entropy than
+their endpoints. Reevaluate curve training using training/validation data before
+extending REPAIR. No settings were selected using test metrics. The labeled
+[comparison](results/reference-architectures/README.md) records this result.
 
 ## Read first
 
@@ -35,40 +45,43 @@ handoff. The next step is implementation, not another effort estimate.
 - [Paper protocol](docs/paper_protocol.md): paper facts, missing details, current
   implementation choices. The scope is a procedure replication, not confirmed
   numerical reproduction.
-- [Architecture source check](docs/architecture_sources.md): newly identified
-  official reference code, pinned commit, preliminary settings, and open checks.
+- [Architecture design](docs/superpowers/specs/2026-09-18-architecture-baselines-design.md)
+  and [implementation plan](docs/superpowers/plans/2026-09-18-architecture-baselines.md):
+  agreed behavior and bounded work.
+- [Architecture source check](docs/architecture_sources.md): official reference
+  code, pinned commit, exact profiles, licensing, and source differences.
 - [Dataset sweep](docs/dataset_sweep.md): completed four-dataset results and limits.
 - [REPAIR integration](docs/repair_integration.md): current calibration and
   alignment semantics. The sibling [REPAIR handoff](../repair/handoff.md) covers
   that package's earlier work.
 - [Saved results](results/gcn-four-datasets/README.md): tracked figures and reports.
 
-The previous paper search did not identify an official mode-connectivity code
-repository. Appendix B refers to Luo et al., *Classic GNNs are Strong Baselines*,
-for architecture and hyperparameter choices. The fresh check identified that
-reference's official `tunedGNN` code. It uses deeper models and optional
-normalization/residuals; see the source-check note before choosing the design.
-The refreshed search for the mode-connectivity authors' own code is unfinished.
-Preserve citations and licensing for reused source. The existing implementation
-uses PyTorch/PyG operators and the thesis loader; it is not a checkout of the
-mode-connectivity authors' code.
+A bounded first-party search found no public repository from the
+mode-connectivity authors. This is not proof that none exists. Appendix B refers
+to Luo et al., *Classic GNNs are Strong Baselines*, for architecture and
+hyperparameter choices. Its official `tunedGNN` source is pinned at commit
+`23f9604e8b13a9a6d3faa2f691cd844006979153` under `upstream/tunedGNN`, together
+with its MIT License and provenance. The implementation adapts its models and
+profiles to the existing PyTorch/PyG runner and thesis loader. It does not adopt
+the upstream loader or graph preprocessing.
 
-## Implementation starting point
+## Implemented behavior
 
-1. Confirm available author/reference code and recover the model settings that
-   are actually specified. Record any remaining choices explicitly.
-2. Add the three model families with a common `forward(x, edge_index)` interface;
-   MLP ignores edges. Add architecture selection to the CLI and saved model
-   configuration. Preserve replay of existing GCN checkpoints.
-3. Replace direct GCN construction in the baseline runner with model selection.
-   Reuse the existing training, parameter interpolation, metrics, and thesis
-   loader. Label reports and graphics by architecture.
-4. Keep the REPAIR command GCN-only and reject other architectures clearly until
-   a later task defines their alignment/calibration rules.
-5. Verify path endpoints, control gradients, unchanged endpoint parameters, and
-   checkpoint replay for each new architecture. Run small end-to-end checks
-   before the three-pair dataset sweep. Update onboarding and report measured
-   results before reevaluating REPAIR.
+1. `run --preset reference --architecture {gcn,mlp,graphsage,gat}` is available.
+   Reference settings resolve per dataset. Explicit CLI overrides apply after
+   the preset and the effective configuration is saved.
+2. The existing default command and legacy GCN checkpoint replay are preserved.
+   `--smoke` applies after preset resolution and caps width at 8, endpoint and
+   curve training at 5 steps, evaluation at 5 points, and pairs at 1.
+3. The thesis loader, graph edges, features, and masks are unchanged. The MLP
+   substitutes linear operators into the reference GCN profile and ignores
+   edges. This is a local choice because tunedGNN has no MLP recipe.
+4. BatchNorm models calibrate each endpoint and path point with one
+   full-graph, label-free forward, dropout disabled, fresh statistics, and no
+   state leakage. This is transductive BatchNorm calibration, not REPAIR.
+5. REPAIR rejects reference and non-GCN reports before creating output. Tests
+   cover pinned upstream equivalence, MLP edge independence, path endpoints,
+   control gradients, BatchNorm state isolation, and checkpoint replay.
 
 Avoid silently carrying every GCN default into every architecture. The completed
 sweep documents weak Roman-empire endpoints and Bézier overfitting on filtered
@@ -89,14 +102,34 @@ pipeline was reimplemented. Saved-run replay must use the original loader/cache
 location recorded in the report, or an explicit compatible `--thesis-root`.
 
 Raw `runs/` artifacts and model checkpoints remain local and ignored. Compact
-figures and JSON reports are tracked under `results/gcn-four-datasets/`; those
-copies do not include model weights. No experiment jobs remain running.
+figures and JSON reports are tracked under `results/gcn-four-datasets/` and
+`results/reference-architectures/`; those copies do not include model weights.
+No experiment jobs remain running.
 
-Before this checkpoint, all 11 GCN/REPAIR tests passed again in 0.377 seconds
+Before this extension, all 11 legacy GCN/REPAIR tests passed in 0.377 seconds
 after imports. The dataset-sweep record documents successful Slurm jobs and
-replay of all 12 repaired midpoint checkpoints. No packages or machine
-configuration changed. No architecture-extension implementation plan has yet
-been written; the existing plans describe the completed GCN work.
+replay of all 12 repaired midpoint checkpoints. These are historical legacy
+results. New runs are in `runs/reference-smoke-20260918/` (Slurm array 3834723)
+and `runs/reference-cora-20260918/` (array 3834752). The latter uses seeds 0:1,
+500 endpoint epochs, 200 curve steps, and 21 points per model. No packages or
+machine configuration changed.
+
+The intended reference command form is:
+
+```bash
+$PY -m gcn_mc run \
+  --thesis-root /home/wge3/ms_thesis \
+  --preset reference \
+  --architecture graphsage \
+  --datasets Roman-empire \
+  --output runs/reference-roman-graphsage
+```
+
+Supported overrides cover width, depth, dropout, endpoint epochs and optimizer,
+normalization, residual connections, input projection, GAT heads, and endpoint
+selection. Only one GAT head is supported. `scripts/reference_baselines.sbatch`
+maps array tasks 0–15 to four datasets by four architectures; tasks 0–3 are Cora.
+See onboarding for commands and profile override rules.
 
 ## User preferences
 

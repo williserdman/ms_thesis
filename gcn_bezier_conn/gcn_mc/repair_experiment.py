@@ -52,6 +52,10 @@ def run_repair(source, output, *, thesis_root=None, device="cpu", threads=1):
     baseline = json.loads(source_bytes)
     if baseline.get("schema_version") != 1 or baseline.get("experiment") == "gnn_repair":
         raise ValueError("--source must be an original schema-v1 GCN connectivity report.")
+    for dataset in baseline.get("datasets", []):
+        model_config = dataset.get("model", {})
+        if model_config.get("family", "legacy") != "legacy" or model_config.get("architecture", "gcn") != "gcn":
+            raise ValueError("REPAIR currently supports only legacy GCN reports; reference architectures are baseline-only.")
     output = Path(output).expanduser().resolve()
     if output.exists() and any(output.iterdir()):
         raise FileExistsError(f"Output directory must be empty: {output}")

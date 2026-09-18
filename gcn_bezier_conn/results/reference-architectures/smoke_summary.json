@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "verified_on": "2026-09-18",
+  "run_root": "runs/reference-smoke-20260918",
+  "matrix": {
+    "datasets": ["Cora", "Roman-empire", "squirrel", "chameleon"],
+    "architectures": ["gcn", "mlp", "graphsage", "gat"],
+    "reports": 16
+  },
+  "slurm": {
+    "job_id": "3834723",
+    "array_tasks": 16,
+    "completed": 16,
+    "exit_code": "0:0",
+    "elapsed_seconds_min": 42,
+    "elapsed_seconds_max": 116
+  },
+  "tests": {
+    "log": "runs/reference-smoke-20260918/tests.log",
+    "ran": 25,
+    "passed": 25,
+    "elapsed_seconds": 1.104
+  },
+  "smoke_effective": {
+    "hidden_channels": 8,
+    "endpoint_epochs": 5,
+    "curve_epochs": 5,
+    "path_points": 5,
+    "pairs": [[0, 1]],
+    "explicit_overrides": {}
+  },
+  "source": {
+    "repository": "https://github.com/LUOyk1999/tunedGNN",
+    "commit": "23f9604e8b13a9a6d3faa2f691cd844006979153",
+    "license": "MIT; upstream/tunedGNN/LICENSE",
+    "mlp_adaptation": "The MLP replaces graph convolutions with linear operators and uses the corresponding GCN profile."
+  },
+  "source_profiles": {
+    "Cora": {
+      "gcn_mlp": {"width": 512, "depth": 3, "dropout": 0.7, "normalization": "none", "residual": false, "pre_linear": false, "heads": 1, "epochs": 500, "lr": 0.001, "weight_decay": 0.0005},
+      "graphsage": {"width": 256, "depth": 3, "dropout": 0.7, "normalization": "none", "residual": false, "pre_linear": false, "heads": 1, "epochs": 500, "lr": 0.001, "weight_decay": 0.0005},
+      "gat": {"width": 512, "depth": 3, "dropout": 0.2, "normalization": "none", "residual": true, "pre_linear": false, "heads": 1, "epochs": 500, "lr": 0.001, "weight_decay": 0.0005}
+    },
+    "Roman-empire": {
+      "gcn_mlp": {"width": 512, "depth": 9, "dropout": 0.5, "normalization": "batch", "residual": true, "pre_linear": true, "heads": 1, "epochs": 2500, "lr": 0.001, "weight_decay": 0.0},
+      "graphsage": {"width": 256, "depth": 9, "dropout": 0.3, "normalization": "batch", "residual": false, "pre_linear": true, "heads": 1, "epochs": 2500, "lr": 0.001, "weight_decay": 0.0},
+      "gat": {"width": 512, "depth": 10, "dropout": 0.3, "normalization": "batch", "residual": true, "pre_linear": true, "heads": 1, "epochs": 2500, "lr": 0.001, "weight_decay": 0.0}
+    },
+    "squirrel": {
+      "gcn_mlp": {"width": 256, "depth": 4, "dropout": 0.7, "normalization": "batch", "residual": true, "pre_linear": false, "heads": 1, "epochs": 500, "lr": 0.01, "weight_decay": 0.0005},
+      "graphsage": {"width": 256, "depth": 3, "dropout": 0.7, "normalization": "batch", "residual": true, "pre_linear": false, "heads": 1, "epochs": 500, "lr": 0.01, "weight_decay": 0.0005},
+      "gat": {"width": 512, "depth": 7, "dropout": 0.5, "normalization": "batch", "residual": true, "pre_linear": false, "heads": 1, "epochs": 500, "lr": 0.005, "weight_decay": 0.0005}
+    },
+    "chameleon": {
+      "gcn_mlp": {"width": 512, "depth": 5, "dropout": 0.2, "normalization": "none", "residual": false, "pre_linear": false, "heads": 1, "epochs": 200, "lr": 0.005, "weight_decay": 0.001},
+      "graphsage": {"width": 256, "depth": 4, "dropout": 0.7, "normalization": "batch", "residual": true, "pre_linear": false, "heads": 1, "epochs": 200, "lr": 0.01, "weight_decay": 0.001},
+      "gat": {"width": 256, "depth": 2, "dropout": 0.7, "normalization": "batch", "residual": true, "pre_linear": false, "heads": 1, "epochs": 200, "lr": 0.01, "weight_decay": 0.001}
+    }
+  },
+  "data": {
+    "Cora": {"nodes": 2708, "edges": 10556, "features": 1433, "classes": 7, "split_counts": {"train": 140, "val": 500, "test": 1000}, "split_sha256": "6bd8cc27013b1270c884603c41a93723dd92bf413c1e43b55cf5401c9cc13a2e"},
+    "Roman-empire": {"nodes": 22662, "edges": 65854, "features": 300, "classes": 18, "split_counts": {"train": 11331, "val": 5665, "test": 5666}, "split_sha256": "a3a172af36f96a338161be357714d68c9cd31cfeeca5e0cf6ec74ae2412772c2"},
+    "squirrel": {"nodes": 2223, "edges": 65718, "features": 2089, "classes": 5, "split_counts": {"train": 1080, "val": 700, "test": 443}, "split_sha256": "c939f177af32b334543763c465dd3c5881a70bca01f1bc82f25e20c122709210"},
+    "chameleon": {"nodes": 890, "edges": 13584, "features": 2325, "classes": 5, "split_counts": {"train": 427, "val": 302, "test": 161}, "split_sha256": "3df216c1db9ef1083f86fddedfe6d221b50606be1cf7f8e7c594c67648c93456"}
+  },
+  "checks": {
+    "all_reports_present": true,
+    "all_expected_artifacts_nonempty": true,
+    "artifacts_per_run": 8,
+    "all_path_metrics_finite": true,
+    "source_profiles_match": true,
+    "smoke_caps_applied_after_profile": true,
+    "data_signatures_match_across_architectures": true,
+    "repair_methods_absent": true,
+    "endpoint_path_tolerance": 0.00002,
+    "endpoint_path_match": false,
+    "max_endpoint_path_abs_error": 0.00017651915550231934,
+    "max_endpoint_path_abs_error_excluding_failure": 0.000003814697265625
+  },
+  "endpoint_path_discrepancy": {
+    "dataset": "Roman-empire",
+    "architecture": "graphsage",
+    "effective_width": 8,
+    "depth": 9,
+    "endpoint_seed": 0,
+    "split": "val",
+    "metric": "accuracy",
+    "endpoint_value": 0.05525154620409012,
+    "linear_t0": 0.05542806535959244,
+    "bezier_t0": 0.05542806535959244,
+    "absolute_error": 0.00017651915550231934,
+    "affected_validation_nodes": 1,
+    "status": "Outside the requested 2e-5 tolerance; original GPU report preserved."
+  },
+  "focused_cpu_replay": {
+    "dataset": "Roman-empire",
+    "architecture": "graphsage",
+    "endpoint_seed": 0,
+    "threads": 2,
+    "stored_gpu_calibrated_checkpoint_buffers_vs_cpu_recalibrated_path_t0": {
+      "max_abs_logit_difference": 0.854838490486145,
+      "mean_abs_logit_difference": 0.03126268461346626,
+      "argmax_flips_all_nodes": 3060,
+      "argmax_flips_validation": 784
+    },
+    "cpu_recalibrated_endpoint_vs_cpu_recalibrated_path_t0": {
+      "max_abs_logit_difference": 0.0,
+      "mean_abs_logit_difference": 0.0,
+      "argmax_flips_all_nodes": 0,
+      "argmax_flips_validation": 0,
+      "validation_accuracy_both": 0.06107678636908531
+    },
+    "interpretation": "The implementation agrees exactly when endpoint and path use the same CPU calibration. Cross-device checkpoint buffers and fresh path calibration are not numerically invariant. GPU scatter or near-tied logits are possible explanations for the original one-node discrepancy, but this replay does not establish its cause."
+  }
+}
