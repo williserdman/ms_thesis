@@ -18,6 +18,11 @@ from models.fixed_spectral import FixedSpectralModel
 
 DATASETS = ["Cora", "Roman-empire", "squirrel", "chameleon"]
 FILTERS = ["g_low_pass", "g_high_pass"]
+SINGLE_FILTERS = {
+    "low-pass": "g_low_pass",
+    "high-pass": "g_high_pass",
+    "band-pass": "g_band_pass",
+}
 
 
 def fit(network, info, config, output_dir, accelerator):
@@ -50,11 +55,14 @@ def write_json(path, value):
 
 
 def run_dataset(dataset, args):
+    filters = [SINGLE_FILTERS[args.filter]] if args.filter else FILTERS
     config_path = args.config_dir / f"{dataset}.json"
+    if args.filter:
+        config_path = args.config_dir / args.filter / f"{dataset}.json"
     if args.optuna:
         config = {
             "dataset": dataset, "seed": args.seed,
-            "model": {"K": 10, "filters": FILTERS},
+            "model": {"K": 10, "filters": filters},
             "training": {
                 "max_epochs": args.epochs or 300,
                 "patience": args.patience or 50,
@@ -66,6 +74,8 @@ def run_dataset(dataset, args):
         config = json.loads(config_path.read_text())
         if config["dataset"] != dataset:
             raise ValueError(f"Config dataset does not match {dataset}")
+        if args.filter and config["model"]["filters"] != filters:
+            raise ValueError(f"Config filters do not match {args.filter}")
         if args.epochs is not None:
             config["training"]["max_epochs"] = args.epochs
         if args.patience is not None:
@@ -79,6 +89,8 @@ def run_dataset(dataset, args):
     )
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S_%fZ")
     output_dir = args.output_dir / dataset / timestamp
+    if args.filter:
+        output_dir = args.output_dir / args.filter / dataset / timestamp
     output_dir.mkdir(parents=True)
 
     if args.optuna:
@@ -115,6 +127,7 @@ def run_dataset(dataset, args):
             "metric": "val_loss", "value": study.best_value,
             "n_trials": len(study.trials), "best_trial": study.best_trial.number,
             "seed": args.seed,
+            "checkpoint": study.best_trial.user_attrs["checkpoint"],
         }
         write_json(output_dir / "trials.json", [
             {"number": trial.number, "value": trial.value, "params": trial.params,
@@ -153,6 +166,7 @@ def run_dataset(dataset, args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--datasets", nargs="+", default=DATASETS)
+    parser.add_argument("--filter", choices=SINGLE_FILTERS)
     parser.add_argument("--optuna", action="store_true", help="Search and save configs; otherwise reuse them.")
     parser.add_argument("--config-dir", type=Path, default=Path("configs/fixed_spectral"))
     parser.add_argument("--output-dir", type=Path, default=Path("spectral_runs"))

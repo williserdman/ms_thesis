@@ -47,11 +47,36 @@ TensorBoard logs, checkpoints, trial summaries, and run configs go under
 and `--output-dir`. Checkpoints and logs are ignored by Git; selected configs
 are checked in.
 
+### Separate low-pass, high-pass, and band-pass models
+
+Use `--filter low-pass`, `--filter high-pass`, or `--filter band-pass` to train
+one fixed filter followed by its own predictor. Each dataset/filter pair has an
+independent Optuna search. For example:
+
+```bash
+python src/train_spectral.py --datasets Cora --filter band-pass --optuna --trials 20 --epochs 500 --patience 500
+```
+
+Repeat for the three filters and four datasets to select 12 trained models.
+On Slurm, submit each dataset/filter pair as a separate job requesting one GPU.
+Patience 500 lets every trial complete the full 500 epochs. Selection still
+uses the checkpoint with the lowest validation loss.
+
+Configs live at `configs/fixed_spectral/<filter>/<dataset>.json`; each records
+the winning checkpoint in `selection.checkpoint`. Logs and checkpoints live at
+`spectral_runs/<filter>/<dataset>/<timestamp>/`, or below `--output-dir`.
+To train a fresh predictor with a saved single-filter config, omit `--optuna`:
+
+```bash
+python src/train_spectral.py --datasets Cora --filter band-pass
+```
+
 ### Filter convention
 
 The graph is symmetrized, and the filters use its symmetric normalized
 Laplacian. Low-pass targets `exp(-10 * lambda**2)`; high-pass targets its
-complement. Arnoldi interpolation uses Chebyshev sample nodes on `[0, 2]` and
+complement. Band-pass targets `exp(-10 * (lambda - 1)**2)`.
+Arnoldi interpolation uses Chebyshev sample nodes on `[0, 2]` and
 retains both coefficients and their recurrence. There is no Jackson damping.
 This preserves the initialization's polynomial basis rather than copying
 coefficients into an unrelated propagation rule.
