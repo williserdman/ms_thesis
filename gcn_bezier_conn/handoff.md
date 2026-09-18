@@ -2,16 +2,16 @@
 
 Updated: 2026-09-18. Branch: `exp/gnn-repair`.
 
-## Push status
+## Publishing this branch
 
 The implementation, result snapshots, and initial handoff were committed as
-`cbfab3f`. The push to `origin` failed because HTTPS Git authentication is absent.
-SSH authentication also failed; this session has no GitHub token, credential
-helper/store, or SSH identity. The code is committed locally, not confirmed on
-the remote. After GitHub authentication is available, run from the worktree:
+`cbfab3f`. The initial HTTPS push failed. The user subsequently configured SSH,
+and GitHub SSH authentication is now verified. `origin` still uses HTTPS; use
+this command to push over SSH without changing the stored remote configuration:
 
 ```bash
-git push -u origin exp/gnn-repair
+git -c remote.origin.pushurl=git@github.com:williserdman/ms_thesis.git \
+  push -u origin exp/gnn-repair
 ```
 
 Verify the remote branch points to local `HEAD` before reporting it as pushed.
