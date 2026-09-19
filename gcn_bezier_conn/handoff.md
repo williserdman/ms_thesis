@@ -35,19 +35,22 @@ and smoke checks remain archived separately.
 The user requested Optuna and explicitly chose endpoint models only. The existing
 thesis hook now supports the four architectures, persistent studies, and cached
 best parameters. All 34 tests pass. A real Cora repeat reused its two-trial study
-with zero new trials. The full tuned matrix is running as Slurm array 3834945,
-under `runs/tuned-endpoints-20260918/`, with 20 trials/configuration and three final
-endpoint pairs. Check its state before claiming completion. Bézier settings stay
-fixed; tuning uses validation accuracy and never computes test metrics.
+with zero new trials. All four full Cora studies also returned cached parameters
+with no training calls. The full tuned matrix completed successfully as Slurm
+array 3834945: all 16 configurations, 20 trials each including pruned trials,
+six final endpoint seeds and three pairs each. See the
+[tuned results and graphics](results/tuned-endpoints-20260918/README.md).
+Bézier settings stayed fixed; tuning used validation accuracy without computing
+test metrics. Raw artifacts are under `runs/tuned-endpoints-20260918/`.
 
 Cache location: `runs/optuna-cache/<dataset>/<architecture>/<context-hash>/`.
 Keep `study.sqlite3` and `best.json`; deleting these discards reusable searches.
 Identical completed budgets are reused; raising the trial budget extends the
 study. Data, training/search settings, source implementation, runtime, and tuning
-seed changes create new contexts. Do not alter tuning implementation while the
-matrix is running; source hashes are part of cache identity.
+seed changes create new contexts. Source hashes are part of cache identity;
+changing training implementation intentionally creates a fresh study.
 
-The Cora Bézier paths have zero sampled training-loss barriers and relatively
+The earlier one-pair Cora Bézier pilots have zero sampled training-loss barriers and relatively
 flat test accuracy, but substantially higher validation/test cross-entropy than
 their endpoints. Reevaluate curve training using training/validation data before
 extending REPAIR. No settings were selected using test metrics. The labeled
@@ -118,10 +121,10 @@ pipeline was reimplemented. Saved-run replay must use the original loader/cache
 location recorded in the report, or an explicit compatible `--thesis-root`.
 
 Raw `runs/` artifacts and model checkpoints remain local and ignored. Compact
-figures and JSON reports are tracked under `results/gcn-four-datasets/` and
-`results/reference-architectures/`; those copies do not include model weights.
-The tuned matrix is currently running; inspect Slurm array 3834945. Other user
-jobs may share the account and must be left alone.
+figures and JSON reports are tracked under `results/`, including the full
+fixed-reference and endpoint-tuned matrices; those copies do not include model
+weights. All jobs in our tuned array 3834945 completed with exit code 0. Other
+user jobs may share the account and must be left alone.
 
 Before this extension, all 11 legacy GCN/REPAIR tests passed in 0.377 seconds
 after imports. The dataset-sweep record documents successful Slurm jobs and

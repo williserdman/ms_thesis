@@ -2,6 +2,10 @@
 
 Verification date: 2026-09-18.
 
+This records the initial pilots. The later [full reference matrix](reference_full_results.md)
+and [endpoint tuning verification](endpoint_tuning_verification.md) supersede the
+deferred-work status below.
+
 ## Focused tests
 
 The saved log at

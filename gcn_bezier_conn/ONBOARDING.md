@@ -9,6 +9,10 @@ GraphSAGE, and GAT models.
 
 The paper does not publish its splits or most training hyperparameters. The defaults below are explicit implementation choices. See [docs/paper_protocol.md](docs/paper_protocol.md) for the paper facts and replication gaps.
 
+Completed full matrices cover all four architectures and datasets, with three
+seed pairs each. Start with the [fixed-reference results](docs/reference_full_results.md)
+and [endpoint-tuned comparison and graphics](results/tuned-endpoints-20260918/README.md).
+
 ## Environment
 
 Run commands from `/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn`.
@@ -150,6 +154,17 @@ sbatch --array=0-15%4 --time=04:00:00 scripts/reference_baselines.sbatch \
   runs/tuned-matrix full --tune-endpoints --tuning-trials 20 \
   --tuning-cache runs/optuna-cache
 ```
+
+To archive and audit a completed full matrix against its saved Optuna studies:
+
+```bash
+$PY scripts/archive_tuned_matrix.py runs/tuned-endpoints-20260918 \
+  results/tuned-endpoints-20260918
+```
+
+This copies reports, selected parameters, and labeled plots. SQLite studies and
+model weights remain in the ignored `runs/` directories; preserve those directories
+to reuse searches and replay checkpoints.
 
 ## Compare REPAIR with existing paths
 

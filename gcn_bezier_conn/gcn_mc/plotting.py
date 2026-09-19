@@ -45,6 +45,8 @@ def plot_report(report_path):
                 if column == 0:
                     ax.set_ylabel("Cross entropy" if metric == "loss" else "Accuracy")
         note = "smoke test" if report["config"]["smoke"] else "linear/Bézier baseline"
+        if dataset.get("tuning") and not report["config"]["smoke"]:
+            note = "Optuna endpoints; fixed Bézier settings"
         if report.get("experiment") == "gnn_repair":
             note = "GCN REPAIR comparison" + (", smoke endpoints" if report["config"]["smoke"] else "")
         n_pairs = len(dataset["pairs"])
@@ -52,7 +54,7 @@ def plot_report(report_path):
         model_name = {"gcn": "GCN", "mlp": "MLP", "graphsage": "GraphSAGE", "gat": "GAT"}[model.get("architecture", "gcn")]
         architecture = (
             f"{model_name}, depth {model['depth']}, hidden width {model['hidden_channels']}, "
-            f"dropout {model['dropout']}"
+            f"dropout {model['dropout']:.3g}"
         )
         if model.get("family") == "tunedgnn":
             architecture += f", norm {model['normalization']}, residual {model['residual']}"

@@ -1,5 +1,9 @@
 # Reference architecture baselines
 
+Historical pilot snapshot. The later [full reference matrix](../../docs/reference_full_results.md)
+covers all 16 configurations with three pairs each; endpoint-only Optuna tuning
+is described in [onboarding](../../ONBOARDING.md#tune-and-cache-endpoint-hyperparameters).
+
 Completed 2026-09-18: one Cora endpoint pair for each architecture, using the
 reference endpoint budget and the existing thesis loader. These are initial
 comparisons, not the paper's three-repeat numerical reproduction.
