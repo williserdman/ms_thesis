@@ -1,6 +1,6 @@
-# REPAIR integration for GCN connectivity
+# REPAIR integration for GNN connectivity
 
-This postprocessing experiment asks how much of a sampled GCN interpolation barrier is associated with hidden-channel ordering and activation-variance collapse. It compares four methods on the same trained endpoint pairs, graph, masks, and interpolation grid:
+This postprocessing experiment asks how much of a sampled interpolation barrier is associated with hidden-channel ordering and activation-variance collapse. It compares four methods on the same trained endpoint pairs, graph, masks, and interpolation grid:
 
 1. raw linear interpolation;
 2. linear interpolation after aligning endpoint B's hidden channels to endpoint A;
@@ -24,7 +24,7 @@ cd /home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn
   --device cpu
 ```
 
-The source must be an original schema-v1 GCN connectivity report. The output directory must be new or empty. The command does not train endpoints or refit Bézier controls. It loads the original checkpoints, reproduces the raw linear and Bézier curves, and computes the aligned and repaired curves. Add `--no-plots` to skip plot generation or `--threads N` to change the default single CPU thread.
+The source must be an original schema-v1 connectivity report for legacy GCN or reference GCN, MLP, GraphSAGE or GAT. The output directory must be new or empty. The command does not train endpoints or refit Bézier controls. It loads the original checkpoints, reproduces the raw linear and Bézier curves, and computes the aligned and repaired curves. Add `--no-plots` to skip plot generation or `--threads N` to change the default single CPU thread.
 
 The source report and its artifacts remain unchanged. The new result directory copies the endpoint, Bézier-control, and split checkpoints needed for self-contained replay, then adds aligned and repaired artifacts.
 
@@ -38,11 +38,13 @@ Postprocessing stops rather than mixing incompatible artifacts. It checks:
 - the current thesis loader hash, graph dimensions, class and feature counts, node count, and edge count;
 - each saved train, validation, and test mask against the graph returned by the current loader;
 - replayed endpoint losses against the source report;
-- recomputed raw linear and Bézier losses against the source values within `2e-5`.
+- recomputed raw linear and Bézier losses against the source values within `2e-5`;
+- source-path accuracy within one correctly classified node per split, with any
+  replay differences recorded. Original source-path metrics remain the comparator.
 
 The new report records the source report's SHA-256 for provenance. Use the original thesis checkout's loader and cached datasets. The worktree has its own tracked files, but this command reads the original run and copies its checkpoints into the new result directory.
 
-## Alignment
+## Legacy GCN alignment
 
 For each hidden layer, `align_gcn` captures post-ReLU activations from both endpoints. It forms channel correlations using training-node rows, applies the baseline's regularized correlation calculation, and solves the assignment with the Hungarian algorithm.
 
@@ -50,7 +52,7 @@ The assignment permutes hidden feature channels, not graph nodes. For a hidden `
 
 Node permutations would change graph identity and are outside this method. Channel permutations only choose an equivalent parameterization of the same endpoint function.
 
-## Sequential graph REPAIR
+## Legacy GCN sequential REPAIR
 
 `repair_gcn` first creates an aligned linear interpolation with the sibling package's `repair.core.interpolate`. It calibrates every hidden convolution in forward order and excludes the final classifier.
 
@@ -118,7 +120,9 @@ The report uses the same sampled barrier definition and grid as the source exper
 - `gcn_mc/__main__.py` exposes the `repair` subcommand.
 - `../repair/src/repair/core.py` supplies generic parameter interpolation. Its existing MLP/VGG behavior is unchanged.
 
-The adapter supports this project's configurable sequential GCN only. Attention, residual branches, normalization layers, spectral-filter models, REPAIR on Bézier points, and other architectures require separate alignment and fusion rules.
+The legacy adapter remains unchanged. `gcn_mc/reference_repair.py` adds the
+reference architectures using the rules below. Spectral-filter models and REPAIR
+on Bézier points remain outside this analysis.
 
 ## Interpretation
 
@@ -136,3 +140,80 @@ The subsequent [four-dataset sweep](dataset_sweep.md) completed Roman-empire,
 squirrel, and chameleon with the same GCN settings. It records mixed REPAIR
 results, weak Roman-empire endpoints, and Bézier overfitting on the filtered
 datasets; the Cora result alone should not be generalized to those graphs.
+
+
+## Reference GCN, MLP, GraphSAGE and GAT
+
+Use the completed tuned endpoints directly. The source report resolves all six
+endpoint checkpoints and three saved Bézier controls:
+
+```bash
+$PY -m gcn_mc repair \
+  --source runs/tuned-endpoints-20260918/Cora/gat/report.json \
+  --output runs/repair-tuned-example/Cora/gat \
+  --thesis-root /home/wge3/ms_thesis --device cuda --threads 2
+```
+
+For all sixteen configurations:
+
+```bash
+sbatch --array=0-15%4 scripts/repair_matrix.sbatch \
+  runs/tuned-endpoints-20260918 runs/repair-tuned-20260918
+```
+
+The optional input projection and each hidden block have their own channel
+assignment. These models use learned residual projections, so each projection
+receives the same output permutation as its graph/linear branch and the same
+input permutation as the preceding stage. GraphSAGE permutes both neighbor and
+root projections. Single-head GAT permutes projection channels and both attention
+vectors together. Normalization affine parameters and running statistics follow
+the output permutation. The classifier's input columns follow the last stage;
+its class outputs remain fixed. The runner checks full-graph logit invariance.
+The initial check uses float32 tolerances `rtol=1e-5, atol=1e-6`. If it fails,
+independent float64 copies must pass `rtol=1e-9, atol=1e-10`. This distinguishes
+channel-reduction roundoff from a changed function; a failed float64 check still
+stops the run. Reports retain both errors and predicted-class disagreements.
+
+Matching uses post-ReLU activations, except for the input projection, which has
+no ReLU in the reference model. Corrections act after the complete block,
+including residual addition and active normalization, immediately before ReLU.
+The optional input projection also receives a correction before dropout.
+Calibration uses the same weighted-mean/weighted-standard-deviation equations
+and epsilon as the legacy adapter, measured on training nodes in forward order.
+
+Original linear/Bézier paths and aligned linear interiors retain the baseline's
+full-graph, label-free BatchNorm recalibration. A repaired interior starts from
+that calibrated aligned linear model. Its native BatchNorm buffers are then
+frozen while sequential REPAIR measures training-node moments and installs
+corrections. No subsequent BatchNorm recalibration cancels those corrections.
+The full-graph normalization policy is inherited from the source experiment;
+REPAIR itself does not select validation/test rows or use labels.
+
+Reference corrections remain explicit channel-wise affine modules. In
+particular, scaling a GAT projection would also change attention scores, so
+fusing an output correction into that projection would implement a different
+operation. Legacy GCN checkpoints still use fused weights. Reference midpoint
+checkpoints carry `repair_format="reference-affine-v1"`; load either format with:
+
+```python
+from gcn_mc.reference_repair import load_repaired_model
+model = load_repaired_model("path/to/repaired_0_1_midpoint.pt", device="cuda")
+logits = model(graph.x, graph.edge_index)
+```
+
+The repaired path returns original endpoint copies at the two boundaries,
+with B in its aligned parameterization. It generally leaves the original model
+parameterization between endpoints because of explicit affine corrections.
+This is an activation-statistics comparison, not evidence of a straight
+low-loss segment in the original parameter space.
+
+
+GPU graph reductions can perturb logits near a class tie. The Roman-empire GAT
+probe reproduced one changed test prediction at Bézier t=0.95, with a top-two
+margin of 2.86e-6 and unchanged cross-entropy. The original path evaluator showed
+the same effect across repeated calls. Source-path validation therefore counts
+correct predictions and permits at most one node of disagreement per split,
+while retaining the strict loss check. `source_replay` records those differences;
+the original linear/Bézier curves are copied after verification. Endpoint and
+repaired-checkpoint replay retain their stricter accuracy checks. See the saved
+[precision probe](../results/repair-tuned-20260918/source_replay_precision_probe.json).

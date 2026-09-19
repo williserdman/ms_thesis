@@ -1,0 +1,27 @@
+{
+  "job_id": 3835218,
+  "device": "NVIDIA L40S",
+  "torch": "2.9.0+cu128",
+  "dataset": "Roman-empire",
+  "architecture": "gat",
+  "points_checked": 126,
+  "accuracy_mismatches": 1,
+  "mismatch": {
+    "pair": "0:1",
+    "method": "bezier",
+    "t": 0.95,
+    "split": "test",
+    "num_nodes": 5666,
+    "saved_accuracy": 0.798093855381012,
+    "replayed_accuracy": 0.797917366027832,
+    "correct_count_difference": 1,
+    "node": 5525,
+    "label": 9,
+    "replayed_prediction": 11,
+    "top_two_logit_margin": 0.00000286102294921875,
+    "loss_error": 0.0
+  },
+  "max_saved_loss_error": 0.00000095367431640625,
+  "max_repeated_logit_variation": 0.000038623809814453125,
+  "conclusion": "CUDA GAT replay can change one prediction at a near-tied logit while preserving loss within the strict replay tolerance."
+}

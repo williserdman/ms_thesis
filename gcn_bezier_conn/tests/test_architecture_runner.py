@@ -11,18 +11,47 @@ from torch_geometric.data import Data
 
 from gcn_mc.experiment import Config, metrics, run
 from gcn_mc.paths import clone_parameters, path_logits
-from gcn_mc.repair_experiment import run_repair
+from gcn_mc.repair_experiment import _validate_source_paths, load_repaired_model, run_repair
 
 
 class RepairScopeTests(unittest.TestCase):
-    def test_reference_models_are_rejected_before_output_or_checkpoint_io(self):
+    def test_source_path_replay_allows_one_changed_prediction_and_rejects_two(self):
+        graph = Data(
+            train_mask=torch.ones(10, dtype=torch.bool),
+            val_mask=torch.ones(10, dtype=torch.bool),
+            test_mask=torch.ones(10, dtype=torch.bool),
+        )
+        path = {"splits": {split: {"loss": [1.0], "accuracy": [0.8]}
+                           for split in ("train", "val", "test")}}
+        original = {method: path for method in ("linear", "bezier")}
+        measured = json.loads(json.dumps(original))
+        measured["bezier"]["splits"]["test"]["accuracy"] = [0.7]
+        replay = _validate_source_paths(original, measured, graph)
+        self.assertEqual(replay["bezier"]["test"]["max_correct_count_difference"], 1)
+        measured["bezier"]["splits"]["test"]["accuracy"] = [0.6]
+        with self.assertRaisesRegex(ValueError, "2 correct predictions"):
+            _validate_source_paths(original, measured, graph)
+
+    def test_source_path_replay_rejects_loss_outside_tolerance(self):
+        graph = Data(train_mask=torch.ones(2, dtype=torch.bool),
+                     val_mask=torch.ones(2, dtype=torch.bool),
+                     test_mask=torch.ones(2, dtype=torch.bool))
+        path = {"splits": {split: {"loss": [1.0], "accuracy": [0.5]}
+                           for split in ("train", "val", "test")}}
+        original = {method: path for method in ("linear", "bezier")}
+        measured = json.loads(json.dumps(original))
+        measured["linear"]["splits"]["train"]["loss"] = [1.000021]
+        with self.assertRaisesRegex(ValueError, "curve loss"):
+            _validate_source_paths(original, measured, graph)
+
+    def test_unknown_model_family_is_rejected_before_output_or_checkpoint_io(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             source = root / "source.json"
             source.write_text(json.dumps({
                 "schema_version": 1,
                 "datasets": [{"model": {
-                    "family": "tunedgnn", "architecture": "gat",
+                    "family": "unknown", "architecture": "gat",
                 }}],
             }))
             output = root / "repair"
@@ -30,9 +59,9 @@ class RepairScopeTests(unittest.TestCase):
                 run_repair(source, output)
             except Exception as error:
                 self.assertIsInstance(error, ValueError)
-                self.assertIn("legacy GCN", str(error))
+                self.assertIn("Unsupported model family", str(error))
             else:
-                self.fail("Reference GAT must not enter the GCN REPAIR runner")
+                self.fail("An unknown family must not enter the REPAIR runner")
             self.assertFalse(output.exists())
 
 
@@ -48,7 +77,12 @@ class ReferenceRunnerTests(unittest.TestCase):
             val_mask=torch.tensor([0, 0, 1, 1, 0, 0], dtype=torch.bool),
             test_mask=torch.tensor([0, 0, 0, 0, 1, 1], dtype=torch.bool),
         )
-        metadata = {"name": "Cora", "num_features": 2, "num_classes": 2, "split_sha256": "fixture"}
+        metadata = {
+            "name": "Cora", "num_nodes": 6, "num_edges": 12,
+            "num_features": 2, "num_classes": 2, "data_seed": 0,
+            "split_sha256": "fixture", "loader_sha256": "fixture-loader",
+            "loader": "/tmp/thesis/src/data/loader.py",
+        }
         for architecture in ("gcn", "mlp", "graphsage", "gat"):
             with self.subTest(architecture=architecture), tempfile.TemporaryDirectory() as folder:
                 config = Config(
@@ -90,6 +124,39 @@ class ReferenceRunnerTests(unittest.TestCase):
                         for metric in ("loss", "accuracy"):
                             recorded = dataset["pairs"][0][method]["splits"][split][metric][1]
                             self.assertAlmostEqual(replay[split][metric], recorded, places=6)
+
+                repair_output = Path(folder) / "repair"
+                with patch("gcn_mc.repair_experiment.load_graph", return_value=(graph, metadata)):
+                    repaired_path = run_repair(report_path, repair_output)
+                repaired = json.loads(repaired_path.read_text())
+                repaired_dataset = repaired["datasets"][0]
+                self.assertEqual(repaired_dataset["config"], dataset["config"])
+                self.assertEqual(repaired_dataset["source"], dataset["source"])
+                pair = repaired_dataset["pairs"][0]
+                self.assertEqual(
+                    set(pair["source_replay"]), {"linear", "bezier"}
+                )
+                self.assertEqual(
+                    pair["source_replay"]["linear"]["test"]["max_correct_count_difference"], 0
+                )
+                for method in ("linear", "bezier"):
+                    for split in ("train", "val", "test"):
+                        for metric in ("loss", "accuracy"):
+                            self.assertEqual(
+                                pair[method]["splits"][split][metric],
+                                dataset["pairs"][0][method]["splits"][split][metric],
+                            )
+                checkpoint = repair_output / pair["repaired_midpoint_checkpoint"]
+                midpoint = load_repaired_model(checkpoint)
+                with torch.no_grad():
+                    replay = metrics(midpoint(graph.x, graph.edge_index), graph)
+                for split in ("train", "val", "test"):
+                    for metric in ("loss", "accuracy"):
+                        self.assertAlmostEqual(
+                            replay[split][metric],
+                            pair["repaired"]["splits"][split][metric][1],
+                            places=6,
+                        )
 
 
 if __name__ == "__main__":

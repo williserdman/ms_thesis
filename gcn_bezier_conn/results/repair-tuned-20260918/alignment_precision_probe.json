@@ -1,0 +1,38 @@
+{
+  "device": "cpu",
+  "dataset": "Roman-empire",
+  "float32_tolerance": {"rtol": 1e-5, "atol": 1e-6},
+  "float64_tolerance": {"rtol": 1e-9, "atol": 1e-10},
+  "pairs": [
+    {
+      "architecture": "gcn",
+      "seeds": [0, 1],
+      "float32_max_logit_error": 9.5367431640625e-6,
+      "float32_tolerance_mismatches": 811,
+      "float32_argmax_disagreements": 0,
+      "float64_max_logit_error": 1.7763568394002505e-14,
+      "float64_tolerance_mismatches": 0,
+      "float64_argmax_disagreements": 0
+    },
+    {
+      "architecture": "mlp",
+      "seeds": [2, 3],
+      "float32_max_logit_error": 4.76837158203125e-6,
+      "float32_tolerance_mismatches": 0,
+      "float32_argmax_disagreements": 0,
+      "float64_max_logit_error": 6.217248937900877e-15,
+      "float64_tolerance_mismatches": 0,
+      "float64_argmax_disagreements": 0
+    },
+    {
+      "architecture": "gat",
+      "seeds": [0, 1],
+      "float32_max_logit_error": 3.4332275390625e-5,
+      "float32_tolerance_mismatches": 2345,
+      "float32_argmax_disagreements": 0,
+      "float64_max_logit_error": 6.039613253960852e-14,
+      "float64_tolerance_mismatches": 0,
+      "float64_argmax_disagreements": 0
+    }
+  ]
+}

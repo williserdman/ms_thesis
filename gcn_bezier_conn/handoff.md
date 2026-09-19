@@ -20,12 +20,22 @@ Do not put credentials into this handoff, repository files, or chat.
 
 ## Next session
 
-The current task extends the original linear and quadratic Bézier baseline to
-GCN, MLP, GraphSAGE, and GAT on Cora, Roman-empire, squirrel, and chameleon. Keep
-the completed legacy GCN and REPAIR artifacts valid. Reevaluate after the
-baseline runs exist. Extending REPAIR to reference models or other architectures
-remains deferred. REPAIR still applies only to legacy GCN linear paths, with the
-saved Bézier path as comparator.
+The user resumed alignment and REPAIR for GCN, MLP, GraphSAGE and GAT on Cora,
+Roman-empire, squirrel and chameleon. The extension reuses the completed tuned
+endpoints and all three pairs per configuration, alongside each saved Bézier
+curve. Reference REPAIR uses explicit affine corrections after complete blocks,
+including residual addition and normalization. REPAIR remains on linear paths;
+Bézier is the comparator. Existing legacy GCN artifacts remain valid.
+
+This extension is complete for all 16 configurations and 48 endpoint pairs.
+[Results and graphics](results/repair-tuned-20260918/README.md) include all four
+methods. All 42 tests pass; all 48 repaired midpoint checkpoints replayed on GPU.
+The [verification record](docs/reference_repair_verification.md) documents the
+strict float64 alignment fallback and a one-node GAT source-replay tie. Raw
+artifacts are in `runs/repair-tuned-20260918/`; no experiment jobs remain active.
+Alignment helped Cora and Roman-empire, while REPAIR's additional effects were
+mixed. Do not assume REPAIR improves every model/dataset.
+
 
 All 16 fixed reference-preset configurations have now completed full endpoint
 budgets and three seed pairs each (Slurm 3834822). See
@@ -95,12 +105,15 @@ the upstream loader or graph preprocessing.
 3. The thesis loader, graph edges, features, and masks are unchanged. The MLP
    substitutes linear operators into the reference GCN profile and ignores
    edges. This is a local choice because tunedGNN has no MLP recipe.
-4. BatchNorm models calibrate each endpoint and path point with one
-   full-graph, label-free forward, dropout disabled, fresh statistics, and no
-   state leakage. This is transductive BatchNorm calibration, not REPAIR.
-5. REPAIR rejects reference and non-GCN reports before creating output. Tests
-   cover pinned upstream equivalence, MLP edge independence, path endpoints,
-   control gradients, BatchNorm state isolation, and checkpoint replay.
+4. Baseline and aligned BatchNorm paths calibrate with a full-graph, label-free
+   forward, dropout disabled and isolated statistics. REPAIR starts from that
+   calibrated aligned base, freezes native buffers, then fits training-node
+   affine corrections in forward order.
+5. REPAIR accepts legacy GCN and the four reference architectures. Reference
+   alignment permutes all channel consumers, including GAT attention vectors,
+   learned residual projections and normalization state. Reference corrections
+   have a distinct replayable affine-wrapper checkpoint format. See
+   [integration rules](docs/repair_integration.md).
 
 Avoid silently carrying every GCN default into every architecture. The completed
 sweep documents weak Roman-empire endpoints and Bézier overfitting on filtered

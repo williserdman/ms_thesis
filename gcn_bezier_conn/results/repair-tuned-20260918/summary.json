@@ -1,0 +1,1526 @@
+{
+  "configurations": 16,
+  "pairs": 48,
+  "runs": {
+    "Cora": {
+      "gcn": {
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.5469434246204299,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "6dcc4e36b2f4df99db28314a4b46c736eb57164cac3fd6390ba7ce6b12f247c1",
+        "source_report_sha256": "d32b5471a0b7e0350a55bd9abb3dc43e1081fcaa3c36873010b63ac60098a77b",
+        "test_barrier_means": {
+          "linear": 0.5586763213078181,
+          "aligned": 0.009332473079363504,
+          "repaired": 0.0,
+          "bezier": 0.8581520915031433
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.7428164040359359,
+              "barrier_std": 0.028848235701945828,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.5313602328300476,
+              "barrier_std": 0.058719992461230386,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.5586763213078181,
+              "barrier_std": 0.057040676177107806,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.011688060685992244,
+              "barrier_std": 0.0035427093006093623,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0055610279242197524,
+              "barrier_std": 0.005369196212803137,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.009332473079363504,
+              "barrier_std": 0.007332886307116532,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.0006772221997380321,
+              "barrier_std": 0.0005720863184610426,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.9897881150245667,
+              "barrier_std": 0.2904506019192841,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.8581520915031433,
+              "barrier_std": 0.25895812949834474,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 3.814697265625e-06
+      },
+      "mlp": {
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.16814067813799777,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "de185f558f822ef38767d2bf4e8896f3eacf388389f65328878d8aeaeae65fac",
+        "source_report_sha256": "d630fc28e971053b548e50bf8c3910fed5f02acbb8b1907d2e65a1c9230187a1",
+        "test_barrier_means": {
+          "linear": 0.23934773008028673,
+          "aligned": 0.0007743159929911592,
+          "repaired": 0.0,
+          "bezier": 1.3410488307476043
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.8380810333881528,
+              "barrier_std": 0.05525776583884989,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.24259618322054544,
+              "barrier_std": 0.051569853938135075,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.23934773008028673,
+              "barrier_std": 0.050186789908390636,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.04334136672938863,
+              "barrier_std": 0.008906498698947808,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0007743159929911592,
+              "barrier_std": 0.0010950481788504877,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.01613438439865907,
+              "barrier_std": 0.0034100683404379023,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 1.422333957751592,
+              "barrier_std": 0.1215816436543457,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 1.3410488307476043,
+              "barrier_std": 0.13619259608188292,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 1.9073486328125e-06
+      },
+      "graphsage": {
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.44976739159793006,
+          "architecture": "graphsage",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "8f693d5617105853e4b7b2a9bc393668c7896c43eef1b06ca2fd82d7c449525d",
+        "source_report_sha256": "fbceb99468b034cfb173105f0839645d46ae5fea83539301bcb5b5757b9be888",
+        "test_barrier_means": {
+          "linear": 0.49224070310592655,
+          "aligned": 0.013067151109377543,
+          "repaired": 0.0,
+          "bezier": 1.242893656094869
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.7087126505561173,
+              "barrier_std": 0.173108585015358,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.47013376355171205,
+              "barrier_std": 0.12895362440839958,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.49224070310592655,
+              "barrier_std": 0.12425941971387097,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.023146378869811694,
+              "barrier_std": 0.006406324674249248,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.009281282623608908,
+              "barrier_std": 0.013125715762525459,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.013067151109377543,
+              "barrier_std": 0.013960856076440108,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.003442075941711664,
+              "barrier_std": 0.002655876000493054,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 1.4659467935562134,
+              "barrier_std": 0.908710657828611,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 1.242893656094869,
+              "barrier_std": 0.8043049306149289,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 1.9073486328125e-06
+      },
+      "gat": {
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 256,
+          "depth": 2,
+          "dropout": 0.3559994838152919,
+          "architecture": "gat",
+          "normalization": "none",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "bd6855c1bf0539079b672e290a286145d2cf7cccc3820f9f9ba5ea949c880b08",
+        "source_report_sha256": "21b566b7d661417756a75d2fb396e0d9b4fc0c628fa29b6ca10a61a9c8953325",
+        "test_barrier_means": {
+          "linear": 0.49975080986817677,
+          "aligned": 0.018971993525822944,
+          "repaired": 0.0,
+          "bezier": 1.6889368424812952
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.7576797399401244,
+              "barrier_std": 0.14286568152220844,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.4766373127698898,
+              "barrier_std": 0.15515136707186372,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.49975080986817677,
+              "barrier_std": 0.14953584875151613,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.008393191111584505,
+              "barrier_std": 0.01186976470159212,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.016399480899175017,
+              "barrier_std": 0.023192368303491827,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.018971993525822944,
+              "barrier_std": 0.026830450549473358,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 1.7871890356143316,
+              "barrier_std": 0.30538815112269196,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 1.6889368424812952,
+              "barrier_std": 0.2492856227913567,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 9.5367431640625e-07
+      }
+    },
+    "Roman-empire": {
+      "gcn": {
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 128,
+          "depth": 4,
+          "dropout": 0.19302742512777532,
+          "architecture": "gcn",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "da1942958efcf96510f3b6369cb0b0f8680eb0e4302ecd0c4aa46685049242b9",
+        "source_report_sha256": "dcc70901e69dcf4272da3b3dd237b77f331bc619fc2cb655006f713d43507526",
+        "test_barrier_means": {
+          "linear": 1.8679763575394948,
+          "aligned": 0.06775079170862834,
+          "repaired": 0.10939565300941467,
+          "bezier": 0.09488174915313723
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 2.1594564244151115,
+              "barrier_std": 0.1129644090952981,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 1.8604558060566585,
+              "barrier_std": 0.11625595130395754,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 1.8679763575394948,
+              "barrier_std": 0.12537712911981652,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.15130420153339705,
+              "barrier_std": 0.00557716425168801,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.06704932451248169,
+              "barrier_std": 0.003931031576145478,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.06775079170862834,
+              "barrier_std": 0.006664744069293944,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.18724341442187628,
+              "barrier_std": 0.00247221770605689,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.09856582184632619,
+              "barrier_std": 0.00654280953237474,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.10939565300941467,
+              "barrier_std": 0.009954263285696235,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.29157839181522527,
+              "barrier_std": 0.0389168083930778,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0885564555724462,
+              "barrier_std": 0.015980903556490903,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.09488174915313723,
+              "barrier_std": 0.017828623505686987,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 9.775161743164062e-06
+      },
+      "mlp": {
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 512,
+          "depth": 9,
+          "dropout": 0.4253888387577169,
+          "architecture": "mlp",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "392cd10b31c4d9cc5e1e4cfbfe791e251b453bc7e8530e4d2f61279dfb0990f3",
+        "source_report_sha256": "37964d77c80d4e398ebd9af676e259f596621aff2501af708beef0d94fe9de37",
+        "test_barrier_means": {
+          "linear": 1.2359489798545837,
+          "aligned": 0.04611581563949585,
+          "repaired": 0.05238570769627889,
+          "bezier": 0.19156259695688882
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 1.2745178838570912,
+              "barrier_std": 0.26090319210174906,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 1.2301440238952637,
+              "barrier_std": 0.2517625335138057,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 1.2359489798545837,
+              "barrier_std": 0.2502816859383382,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.07468808690706889,
+              "barrier_std": 0.010648084516113713,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.04587912559509277,
+              "barrier_std": 0.00874713517170141,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.04611581563949585,
+              "barrier_std": 0.009931557957326814,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.08131584525108337,
+              "barrier_std": 0.011929728554943205,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.05356431007385254,
+              "barrier_std": 0.010368188955797976,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.05238570769627889,
+              "barrier_std": 0.011333511241536538,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.24931362171967822,
+              "barrier_std": 0.008274690532725807,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.19372516870498657,
+              "barrier_std": 0.010971429265591554,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.19156259695688882,
+              "barrier_std": 0.008491647827380775,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 3.814697265625e-06
+      },
+      "graphsage": {
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 128,
+          "depth": 4,
+          "dropout": 0.18487213716651885,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": false,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "dca577d2785d0f0729af71ce155e7a0a6c7734d1e5477377bed6c6a5121ca8e2",
+        "source_report_sha256": "f23e69c3999dbbafbfb2d664fe7ff276b6dc000664e9be87bde547eedf8f9b6b",
+        "test_barrier_means": {
+          "linear": 1.6834686696529388,
+          "aligned": 0.09769682089487712,
+          "repaired": 0.10844342907269795,
+          "bezier": 0.05356306632359822
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 2.0803435665244856,
+              "barrier_std": 0.10386381916380767,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 1.6851979245742161,
+              "barrier_std": 0.0871998142900027,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 1.6834686696529388,
+              "barrier_std": 0.09772595443848987,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.22356374592830738,
+              "barrier_std": 0.006567283966023684,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.08543923993905385,
+              "barrier_std": 0.013105533891539553,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.09769682089487712,
+              "barrier_std": 0.010263245785173378,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.2267575478181243,
+              "barrier_std": 0.00371784030468052,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0933503657579422,
+              "barrier_std": 0.011271892212152829,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.10844342907269795,
+              "barrier_std": 0.011126782063694792,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.3318104000762105,
+              "barrier_std": 0.022694918411786735,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0638298019766808,
+              "barrier_std": 0.023730490705516076,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.05356306632359822,
+              "barrier_std": 0.027716949869100366,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 7.62939453125e-06
+      },
+      "gat": {
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 128,
+          "depth": 10,
+          "dropout": 0.15744341670256293,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "2a00434279f186921a4387f93df23c535022392df073a9a403673f574db4b620",
+        "source_report_sha256": "88a3335068f5edeff68cc7a71e7fbac2d6752f08e9d684189ac266b67ec222b0",
+        "test_barrier_means": {
+          "linear": 4.766900134086609,
+          "aligned": 0.8651627977689107,
+          "repaired": 0.8939875284830728,
+          "bezier": 0.0
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 5.955061849990549,
+              "barrier_std": 0.3001450532034191,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 4.82697335879008,
+              "barrier_std": 0.33550184734757016,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 4.766900134086609,
+              "barrier_std": 0.2859648565872775,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 1.8128504209395033,
+              "barrier_std": 0.14335711414617666,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.9338184932867686,
+              "barrier_std": 0.11684611509565081,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.8651627977689107,
+              "barrier_std": 0.10643917121125192,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 1.8353329353791197,
+              "barrier_std": 0.14709903159442542,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.9630159278710683,
+              "barrier_std": 0.1179941750837277,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.8939875284830728,
+              "barrier_std": 0.10856393868008839,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.6298607054942598,
+              "barrier_std": 0.10826338162774893,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 3.814697265625e-05
+      }
+    },
+    "squirrel": {
+      "gcn": {
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 128,
+          "depth": 4,
+          "dropout": 0.6512421737267309,
+          "architecture": "gcn",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "62e9439ac952ae52d5eba7279ffe9976ba4276c01552bbd84cb67e141360ef40",
+        "source_report_sha256": "8e239717c19ee51f47e7b1c031015c3e3b4447339757f8e823de6491308ff9ad",
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.029135898749033624,
+          "repaired": 0.034275919198989944,
+          "bezier": 3.7396572828292847
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.25510305960973106,
+              "barrier_std": 0.019668219937142593,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.04841913282871246,
+              "barrier_std": 0.0073496325343087405,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.022672015428543062,
+              "barrier_std": 0.011784084888481412,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.029135898749033624,
+              "barrier_std": 0.024704830537956544,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.04710425535837811,
+              "barrier_std": 0.007126561814021787,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.02654779156049088,
+              "barrier_std": 0.014216491988578928,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.034275919198989944,
+              "barrier_std": 0.02441458128838732,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 4.071658432483673,
+              "barrier_std": 0.11043455316865536,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 3.7396572828292847,
+              "barrier_std": 0.18467436330795586,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 3.814697265625e-06
+      },
+      "mlp": {
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 32,
+          "depth": 3,
+          "dropout": 0.6453119645161818,
+          "architecture": "mlp",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "e36fe5feec0447563ee330b51564050b33b0e91f31af7ab0bb8030dc3a4dbfdc",
+        "source_report_sha256": "ce9de8cc5704cd707c686c0b3ac40168c7e273b7bbe46de470b67b73eaf8d986",
+        "test_barrier_means": {
+          "linear": 0.020777293046315554,
+          "aligned": 0.006473700205485026,
+          "repaired": 0.006114192803700735,
+          "bezier": 1.4104609489440918
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.11887467304865511,
+              "barrier_std": 0.04814530476980805,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0208071768283844,
+              "barrier_std": 0.01779647161701531,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.020777293046315554,
+              "barrier_std": 0.01908482864581748,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.036564276615778546,
+              "barrier_std": 0.00991043172813003,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.005031182368596454,
+              "barrier_std": 0.003557674098767662,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.006473700205485026,
+              "barrier_std": 0.0038155311875157243,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.0330828328927358,
+              "barrier_std": 0.010682549823284343,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.004661941528320372,
+              "barrier_std": 0.003297577430097587,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.006114192803700735,
+              "barrier_std": 0.004064561931040163,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 1.3804863691329956,
+              "barrier_std": 0.22402095851468787,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 1.4104609489440918,
+              "barrier_std": 0.22160466801528939,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 9.5367431640625e-07
+      },
+      "graphsage": {
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 128,
+          "depth": 3,
+          "dropout": 0.6512421737267309,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "833781ea774ddbcdfbccfb15e8fe93e8366441fd9e1ef7878b7783ae6a5ac60d",
+        "source_report_sha256": "352674a4b8c3fa454ca057aa41cac30cca8171c7458403172f1400d232ee45d5",
+        "test_barrier_means": {
+          "linear": 0.004923234383265178,
+          "aligned": 0.003377626339594523,
+          "repaired": 0.0023264785607655845,
+          "bezier": 4.387496153513591
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.18600356181462607,
+              "barrier_std": 0.0038759588427087085,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.004872584342956454,
+              "barrier_std": 0.006890874861615813,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.004923234383265178,
+              "barrier_std": 0.006962504835555154,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.07145930727322895,
+              "barrier_std": 0.0057866243955322465,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0018500526746113948,
+              "barrier_std": 0.00250961248445199,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.003377626339594523,
+              "barrier_std": 0.004776684978083168,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.07356826066970827,
+              "barrier_std": 0.006687934999062784,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0009648462136585915,
+              "barrier_std": 0.0013261921057629968,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0023264785607655845,
+              "barrier_std": 0.003290137533204928,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 4.864157100518544,
+              "barrier_std": 0.053618082221600236,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 4.387496153513591,
+              "barrier_std": 0.15791114254427066,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 1.9073486328125e-06
+      },
+      "gat": {
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 4,
+          "dropout": 0.6140637172657928,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "c1b41c2f41e170aab72bda88f483c2af05deeec720a7e41416f67cc963419fcf",
+        "source_report_sha256": "7da1698c040fba8059b59c8b60d1106e7e1866b86978adae84abe4fd6d4473a1",
+        "test_barrier_means": {
+          "linear": 0.03183281421661377,
+          "aligned": 0.041700943311055415,
+          "repaired": 0.04339101314544669,
+          "bezier": 4.748834351698558
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.22427884737650552,
+              "barrier_std": 0.09093033565471025,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.017676631609598797,
+              "barrier_std": 0.013741711905088416,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.03183281421661377,
+              "barrier_std": 0.030493148501180425,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.0872481405735015,
+              "barrier_std": 0.048200631619697586,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.020986584822336802,
+              "barrier_std": 0.02396067097478339,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.041700943311055415,
+              "barrier_std": 0.006752319895998571,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.08628163139025362,
+              "barrier_std": 0.04771930301468478,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.02174973885218301,
+              "barrier_std": 0.02631791819940763,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.04339101314544669,
+              "barrier_std": 0.004746348914106631,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 4.897114912668864,
+              "barrier_std": 0.19057498441504422,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 4.748834351698558,
+              "barrier_std": 0.22324849249704568,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 6.4373016357421875e-06
+      }
+    },
+    "chameleon": {
+      "gcn": {
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 5,
+          "dropout": 0.21663590790627754,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "85306a754e06687f3834baa257a3cb174c1dac35895deda20543c79503a5ca66",
+        "source_report_sha256": "4f5b1eee75d919ce5619ed833df3a81b5cf09d57295895684d3bd183274e1e39",
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 1.8330866972605389
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 1.730405398706595,
+              "barrier_std": 0.25067187502158944,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.2609408105413119,
+              "barrier_std": 0.06896726702088707,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.3310323024789492,
+              "barrier_std": 0.13237042324064943,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.22051631112893424,
+              "barrier_std": 0.2971959934129218,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 1.942046570777893,
+              "barrier_std": 0.27631755476052167,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 1.8330866972605389,
+              "barrier_std": 1.0631305220827687,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 0.0001220703125
+      },
+      "mlp": {
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 128,
+          "depth": 3,
+          "dropout": 0.44389950994636185,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "dd867b8f9011200ab3c468cbe64501f90e5a804b62f41711f25fffe2637a1c3d",
+        "source_report_sha256": "139eee9d945efa459c8df48b1665270a134d87bd73a12751abe761caa8cd6c51",
+        "test_barrier_means": {
+          "linear": 0.07608813047409058,
+          "aligned": 0.0006947716077168783,
+          "repaired": 0.0,
+          "bezier": 31.6118918855985
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.23821196953455606,
+              "barrier_std": 0.04243893157537991,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.04805322090784703,
+              "barrier_std": 0.01119073073193835,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.07608813047409058,
+              "barrier_std": 0.010484228626396412,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.06121034423510233,
+              "barrier_std": 0.006402376628492336,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0006947716077168783,
+              "barrier_std": 0.000982555430384969,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.02684822678565979,
+              "barrier_std": 0.005147472604253074,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 39.092787663141884,
+              "barrier_std": 3.2972715444815357,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 31.6118918855985,
+              "barrier_std": 4.240188926147766,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 9.5367431640625e-07
+      },
+      "graphsage": {
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 32,
+          "depth": 3,
+          "dropout": 0.6453119645161818,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "59e7f010340f3b9a239beb4dd83983c62b4b35fb957cd1ee1094a326c7e5e394",
+        "source_report_sha256": "d3a36119e92c2432fb3aa1314b8b01c6e952e64c411f758ee5a2a31495d13367",
+        "test_barrier_means": {
+          "linear": 0.03307249347368879,
+          "aligned": 0.0032871166865030923,
+          "repaired": 0.0033875306447347007,
+          "bezier": 1.2504917621612548
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.1727228720982869,
+              "barrier_std": 0.09868737269818749,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.014611967404683401,
+              "barrier_std": 0.0108910963774441,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.03307249347368879,
+              "barrier_std": 0.023403742998301887,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.030519330501556436,
+              "barrier_std": 0.005148637902457911,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0032871166865030923,
+              "barrier_std": 0.004648684999155583,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.02941642204920449,
+              "barrier_std": 0.0035502284822915976,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0033875306447347007,
+              "barrier_std": 0.004790691780738288,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 1.3213117082913717,
+              "barrier_std": 0.3715095223015409,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 1.2504917621612548,
+              "barrier_std": 0.24421134671413722,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 3.814697265625e-06
+      },
+      "gat": {
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 512,
+          "depth": 3,
+          "dropout": 0.3775395693409555,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "tuning_cache_key": "1c4a3b6fa2012b591b0ed9dba3f7a22713dd3bac8a2ecd0ce40eeac3aca35fbb",
+        "source_report_sha256": "15b74cf5496415957328ef7eb11d8d108d857c06f36258c565c1486698e57b86",
+        "test_barrier_means": {
+          "linear": 0.016422524054845233,
+          "aligned": 0.0,
+          "repaired": 0.0025767087936401367,
+          "bezier": 3.99593958457311
+        },
+        "metrics": {
+          "linear": {
+            "train": {
+              "barrier_mean": 0.378459939857324,
+              "barrier_std": 0.19427599840572382,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.008337789773941099,
+              "barrier_std": 0.011791415378523205,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.016422524054845233,
+              "barrier_std": 0.014267834262534394,
+              "n_pairs": 3
+            }
+          },
+          "aligned": {
+            "train": {
+              "barrier_mean": 0.19659212737654652,
+              "barrier_std": 0.10345234319758033,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.003504981597264608,
+              "barrier_std": 0.004886123268218557,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            }
+          },
+          "repaired": {
+            "train": {
+              "barrier_mean": 0.2036402968068918,
+              "barrier_std": 0.09970176215578747,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 0.0005226095517476548,
+              "barrier_std": 0.0007390815159072572,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 0.0025767087936401367,
+              "barrier_std": 0.003644016522251898,
+              "n_pairs": 3
+            }
+          },
+          "bezier": {
+            "train": {
+              "barrier_mean": 0.0,
+              "barrier_std": 0.0,
+              "n_pairs": 3
+            },
+            "val": {
+              "barrier_mean": 4.456775202353795,
+              "barrier_std": 0.3979613749747997,
+              "n_pairs": 3
+            },
+            "test": {
+              "barrier_mean": 3.99593958457311,
+              "barrier_std": 0.5177887608587816,
+              "n_pairs": 3
+            }
+          }
+        },
+        "max_alignment_logit_error": 7.62939453125e-06
+      }
+    }
+  },
+  "max_source_loss_error": 9.5367431640625e-07,
+  "max_source_accuracy_error": 0.0,
+  "max_midpoint_replay_loss_error": 4.76837158203125e-07,
+  "max_midpoint_replay_accuracy_error": 0.0,
+  "float64_alignment_checks": 12,
+  "alignment_prediction_checks": 15,
+  "max_recorded_alignment_prediction_disagreements": 0,
+  "max_recorded_source_correct_count_difference": 1
+}

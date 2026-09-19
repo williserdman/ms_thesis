@@ -55,7 +55,7 @@ def main(argv=None):
     plotter = commands.add_parser("plot", help="Plot saved report.json without retraining.")
     plotter.add_argument("report")
     repair_runner = commands.add_parser("repair", help="Compare alignment and REPAIR on an existing run's linear paths.")
-    repair_runner.add_argument("--source", required=True, help="Original GCN connectivity report.json.")
+    repair_runner.add_argument("--source", required=True, help="Original connectivity report.json.")
     repair_runner.add_argument("--output", required=True, help="New or empty output directory.")
     repair_runner.add_argument("--thesis-root", help="Original thesis loader checkout; defaults to the source report's recorded location.")
     repair_runner.add_argument("--device", default="cpu")

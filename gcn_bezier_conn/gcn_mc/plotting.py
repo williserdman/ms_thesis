@@ -48,7 +48,7 @@ def plot_report(report_path):
         if dataset.get("tuning") and not report["config"]["smoke"]:
             note = "Optuna endpoints; fixed Bézier settings"
         if report.get("experiment") == "gnn_repair":
-            note = "GCN REPAIR comparison" + (", smoke endpoints" if report["config"]["smoke"] else "")
+            note = "Alignment + REPAIR comparison" + (", smoke endpoints" if report["config"]["smoke"] else "")
         n_pairs = len(dataset["pairs"])
         model = dataset.get("model", report["config"])
         model_name = {"gcn": "GCN", "mlp": "MLP", "graphsage": "GraphSAGE", "gat": "GAT"}[model.get("architecture", "gcn")]

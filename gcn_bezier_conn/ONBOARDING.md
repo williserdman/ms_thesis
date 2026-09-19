@@ -12,6 +12,9 @@ The paper does not publish its splits or most training hyperparameters. The defa
 Completed full matrices cover all four architectures and datasets, with three
 seed pairs each. Start with the [fixed-reference results](docs/reference_full_results.md)
 and [endpoint-tuned comparison and graphics](results/tuned-endpoints-20260918/README.md).
+The [alignment/REPAIR matrix](results/repair-tuned-20260918/README.md) adds all four
+methods to the same tuned endpoints. Read the
+[verification notes](docs/reference_repair_verification.md) for numerical checks and findings.
 
 ## Environment
 
@@ -186,8 +189,17 @@ three-pair Cora results and checkpoint replay checks. Choose a new output direct
 when repeating the command; `runs/cora-repair` already contains that result.
 See the [four-dataset sweep](docs/dataset_sweep.md) for Roman-empire, squirrel,
 chameleon, and Cora, including dataset variants and the fixed GCN configuration.
-REPAIR accepts legacy GCN reports only. Reference-profile GCN and all other
-architectures are baseline-only in this phase.
+REPAIR also accepts the reference GCN, MLP, GraphSAGE and GAT reports. It reuses
+each saved endpoint pair and Bézier control. Run the full tuned matrix with:
+
+```bash
+sbatch --array=0-15%4 scripts/repair_matrix.sbatch \
+  runs/tuned-endpoints-20260918 runs/repair-tuned-20260918
+```
+
+Reference repaired checkpoints contain explicit affine corrections; load them
+with `gcn_mc.reference_repair.load_repaired_model`. The integration guide explains
+normalization, attention permutations and the training-node calibration policy.
 
 ## Run the experiment
 
