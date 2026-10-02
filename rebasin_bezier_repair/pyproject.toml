@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rebasin-bezier-repair"
+version = "0.1.0"
+description = "Architecture adapters for Re-Basin, Bezier fitting, and REPAIR"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = ["torch>=2.2", "git-re-basin-thesis>=0.1.0"]
+
+[project.optional-dependencies]
+gcn = ["torch-geometric>=2.6"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
