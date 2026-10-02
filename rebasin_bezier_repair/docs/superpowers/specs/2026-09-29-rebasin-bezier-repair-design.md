@@ -1,7 +1,7 @@
 # Re-Basin, Bézier, and REPAIR framework
 
 Date: 2026-09-29
-Status: proposed written design, awaiting user review
+Status: approved by the user on 2026-10-02
 
 ## Purpose and agreed scope
 
