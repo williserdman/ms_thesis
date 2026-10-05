@@ -1,0 +1,720 @@
+{
+  "scope": "Optuna endpoint tuning only; three independent final pairs; fixed B\u00e9zier settings",
+  "runs": {
+    "Cora": {
+      "gcn": {
+        "best_params": {
+          "lr": 0.006347058414030993,
+          "hidden_channels": 512,
+          "dropout": 0.5469434246204299,
+          "depth": 2,
+          "weight_decay": 0.0005
+        },
+        "best_validation_accuracy": 0.812000036239624,
+        "trial_states": {
+          "COMPLETE": 13,
+          "PRUNED": 7,
+          "FAIL": 0
+        },
+        "cache_key": "6dcc4e36b2f4df99db28314a4b46c736eb57164cac3fd6390ba7ce6b12f247c1",
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.5469434246204299,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.7880000472068787,
+        "tuned_endpoint_test_accuracy_mean": 0.8083333770434061,
+        "tuned_endpoint_test_accuracy_std": 0.0035901033116635755,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.5586763699849446,
+            "barrier_std": 0.05704067147953535,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 0.8581520915031433,
+            "barrier_std": 0.25895812949834474,
+            "n_pairs": 3
+          }
+        }
+      },
+      "mlp": {
+        "best_params": {
+          "lr": 0.008546506077525903,
+          "hidden_channels": 512,
+          "dropout": 0.16814067813799777,
+          "depth": 2,
+          "weight_decay": 0.001
+        },
+        "best_validation_accuracy": 0.5980000495910645,
+        "trial_states": {
+          "COMPLETE": 12,
+          "PRUNED": 8,
+          "FAIL": 0
+        },
+        "cache_key": "de185f558f822ef38767d2bf4e8896f3eacf388389f65328878d8aeaeae65fac",
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.16814067813799777,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.5181666910648346,
+        "tuned_endpoint_test_accuracy_mean": 0.5911666850248972,
+        "tuned_endpoint_test_accuracy_std": 0.009990281650461234,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.23934774994850164,
+            "barrier_std": 0.05018680659960657,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 1.3410488526026407,
+            "barrier_std": 0.1361926219239112,
+            "n_pairs": 3
+          }
+        }
+      },
+      "graphsage": {
+        "best_params": {
+          "lr": 0.008613595063527768,
+          "hidden_channels": 512,
+          "dropout": 0.44976739159793006,
+          "depth": 2,
+          "weight_decay": 0.001
+        },
+        "best_validation_accuracy": 0.8080000281333923,
+        "trial_states": {
+          "COMPLETE": 13,
+          "PRUNED": 7,
+          "FAIL": 0
+        },
+        "cache_key": "8f693d5617105853e4b7b2a9bc393668c7896c43eef1b06ca2fd82d7c449525d",
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.44976739159793006,
+          "architecture": "graphsage",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.7818333705266317,
+        "tuned_endpoint_test_accuracy_mean": 0.7855000297228495,
+        "tuned_endpoint_test_accuracy_std": 0.005377414589829784,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.4922406603892644,
+            "barrier_std": 0.12425940525012555,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 1.2428936660289764,
+            "barrier_std": 0.8043048539244773,
+            "n_pairs": 3
+          }
+        }
+      },
+      "gat": {
+        "best_params": {
+          "lr": 0.0052750550108817415,
+          "hidden_channels": 256,
+          "dropout": 0.3559994838152919,
+          "depth": 2,
+          "weight_decay": 0.0
+        },
+        "best_validation_accuracy": 0.8040000200271606,
+        "trial_states": {
+          "COMPLETE": 12,
+          "PRUNED": 8,
+          "FAIL": 0
+        },
+        "cache_key": "bd6855c1bf0539079b672e290a286145d2cf7cccc3820f9f9ba5ea949c880b08",
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 256,
+          "depth": 2,
+          "dropout": 0.3559994838152919,
+          "architecture": "gat",
+          "normalization": "none",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.7946667075157166,
+        "tuned_endpoint_test_accuracy_mean": 0.7905000448226929,
+        "tuned_endpoint_test_accuracy_std": 0.012513328268499923,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.4997508356968562,
+            "barrier_std": 0.14953585818929133,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 1.6889367034037908,
+            "barrier_std": 0.24928571059879634,
+            "n_pairs": 3
+          }
+        }
+      }
+    },
+    "Roman-empire": {
+      "gcn": {
+        "best_params": {
+          "lr": 0.009365783242471162,
+          "hidden_channels": 128,
+          "dropout": 0.19302742512777532,
+          "depth": 4,
+          "weight_decay": 0.0005
+        },
+        "best_validation_accuracy": 0.879611611366272,
+        "trial_states": {
+          "COMPLETE": 10,
+          "PRUNED": 10,
+          "FAIL": 0
+        },
+        "cache_key": "da1942958efcf96510f3b6369cb0b0f8680eb0e4302ecd0c4aa46685049242b9",
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 128,
+          "depth": 4,
+          "dropout": 0.19302742512777532,
+          "architecture": "gcn",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.8464524944623312,
+        "tuned_endpoint_test_accuracy_mean": 0.8785739243030548,
+        "tuned_endpoint_test_accuracy_std": 0.004910150491373004,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 1.8679765164852142,
+            "barrier_std": 0.12537710494517268,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 0.09488179236650468,
+            "barrier_std": 0.017828650423309167,
+            "n_pairs": 3
+          }
+        }
+      },
+      "mlp": {
+        "best_params": {
+          "lr": 0.0016793558932377832,
+          "hidden_channels": 512,
+          "dropout": 0.4253888387577169,
+          "depth": 9,
+          "weight_decay": 5e-05
+        },
+        "best_validation_accuracy": 0.656663715839386,
+        "trial_states": {
+          "COMPLETE": 10,
+          "PRUNED": 10,
+          "FAIL": 0
+        },
+        "cache_key": "392cd10b31c4d9cc5e1e4cfbfe791e251b453bc7e8530e4d2f61279dfb0990f3",
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 512,
+          "depth": 9,
+          "dropout": 0.4253888387577169,
+          "architecture": "mlp",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.6519884566466013,
+        "tuned_endpoint_test_accuracy_mean": 0.6596952378749847,
+        "tuned_endpoint_test_accuracy_std": 0.0010511451957343795,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 1.2359489798545837,
+            "barrier_std": 0.2502816859383382,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 0.19156259695688882,
+            "barrier_std": 0.008491647827380775,
+            "n_pairs": 3
+          }
+        }
+      },
+      "graphsage": {
+        "best_params": {
+          "lr": 0.00721196578320335,
+          "hidden_channels": 128,
+          "dropout": 0.18487213716651885,
+          "depth": 4,
+          "weight_decay": 0.0005
+        },
+        "best_validation_accuracy": 0.8787290453910828,
+        "trial_states": {
+          "COMPLETE": 11,
+          "PRUNED": 9,
+          "FAIL": 0
+        },
+        "cache_key": "dca577d2785d0f0729af71ce155e7a0a6c7734d1e5477377bed6c6a5121ca8e2",
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 128,
+          "depth": 4,
+          "dropout": 0.18487213716651885,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": false,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.8412754336992899,
+        "tuned_endpoint_test_accuracy_mean": 0.8618955016136169,
+        "tuned_endpoint_test_accuracy_std": 0.00555294754466864,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 1.6834687640269597,
+            "barrier_std": 0.09772605584698021,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 0.05356306632359822,
+            "barrier_std": 0.027716949869100366,
+            "n_pairs": 3
+          }
+        }
+      },
+      "gat": {
+        "best_params": {
+          "lr": 0.007623540877218867,
+          "hidden_channels": 128,
+          "dropout": 0.15744341670256293,
+          "depth": 10,
+          "weight_decay": 0.0
+        },
+        "best_validation_accuracy": 0.7922329902648926,
+        "trial_states": {
+          "COMPLETE": 7,
+          "PRUNED": 13,
+          "FAIL": 0
+        },
+        "cache_key": "2a00434279f186921a4387f93df23c535022392df073a9a403673f574db4b620",
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 128,
+          "depth": 10,
+          "dropout": 0.15744341670256293,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.7613542576630911,
+        "tuned_endpoint_test_accuracy_mean": 0.7947993675867716,
+        "tuned_endpoint_test_accuracy_std": 0.004179856810214664,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 4.766900134086609,
+            "barrier_std": 0.2859648565872775,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 0.0,
+            "barrier_std": 0.0,
+            "n_pairs": 3
+          }
+        }
+      }
+    },
+    "squirrel": {
+      "gcn": {
+        "best_params": {
+          "lr": 0.009993688142551362,
+          "hidden_channels": 128,
+          "dropout": 0.6512421737267309,
+          "depth": 4,
+          "weight_decay": 0.0
+        },
+        "best_validation_accuracy": 0.44285714626312256,
+        "trial_states": {
+          "COMPLETE": 8,
+          "PRUNED": 12,
+          "FAIL": 0
+        },
+        "cache_key": "62e9439ac952ae52d5eba7279ffe9976ba4276c01552bbd84cb67e141360ef40",
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 128,
+          "depth": 4,
+          "dropout": 0.6512421737267309,
+          "architecture": "gcn",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.41234011948108673,
+        "tuned_endpoint_test_accuracy_mean": 0.40669678151607513,
+        "tuned_endpoint_test_accuracy_std": 0.011614262817235965,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.0,
+            "barrier_std": 0.0,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 3.7396571238835654,
+            "barrier_std": 0.18467434194891272,
+            "n_pairs": 3
+          }
+        }
+      },
+      "mlp": {
+        "best_params": {
+          "lr": 0.005512431765498469,
+          "hidden_channels": 32,
+          "dropout": 0.6453119645161818,
+          "depth": 3,
+          "weight_decay": 0.001
+        },
+        "best_validation_accuracy": 0.4057142734527588,
+        "trial_states": {
+          "COMPLETE": 9,
+          "PRUNED": 11,
+          "FAIL": 0
+        },
+        "cache_key": "e36fe5feec0447563ee330b51564050b33b0e91f31af7ab0bb8030dc3a4dbfdc",
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 32,
+          "depth": 3,
+          "dropout": 0.6453119645161818,
+          "architecture": "mlp",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.3856282929579417,
+        "tuned_endpoint_test_accuracy_mean": 0.3950338711341222,
+        "tuned_endpoint_test_accuracy_std": 0.005972349029789028,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.020777293046315554,
+            "barrier_std": 0.01908482864581748,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 1.4104609489440918,
+            "barrier_std": 0.22160466801528939,
+            "n_pairs": 3
+          }
+        }
+      },
+      "graphsage": {
+        "best_params": {
+          "lr": 0.009993688142551362,
+          "hidden_channels": 128,
+          "dropout": 0.6512421737267309,
+          "depth": 3,
+          "weight_decay": 0.0
+        },
+        "best_validation_accuracy": 0.40285712480545044,
+        "trial_states": {
+          "COMPLETE": 10,
+          "PRUNED": 10,
+          "FAIL": 0
+        },
+        "cache_key": "833781ea774ddbcdfbccfb15e8fe93e8366441fd9e1ef7878b7783ae6a5ac60d",
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 128,
+          "depth": 3,
+          "dropout": 0.6512421737267309,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.39653875927130383,
+        "tuned_endpoint_test_accuracy_mean": 0.39992476006348926,
+        "tuned_endpoint_test_accuracy_std": 0.01299467371530124,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.004923234383265178,
+            "barrier_std": 0.006962504835555154,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 4.387495994567871,
+            "barrier_std": 0.15791107095253842,
+            "n_pairs": 3
+          }
+        }
+      },
+      "gat": {
+        "best_params": {
+          "lr": 0.006560397895466417,
+          "hidden_channels": 256,
+          "dropout": 0.6140637172657928,
+          "depth": 4,
+          "weight_decay": 0.0005
+        },
+        "best_validation_accuracy": 0.42571428418159485,
+        "trial_states": {
+          "COMPLETE": 14,
+          "PRUNED": 6,
+          "FAIL": 0
+        },
+        "cache_key": "c1b41c2f41e170aab72bda88f483c2af05deeec720a7e41416f67cc963419fcf",
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 4,
+          "dropout": 0.6140637172657928,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.4115876754124959,
+        "tuned_endpoint_test_accuracy_mean": 0.416478564341863,
+        "tuned_endpoint_test_accuracy_std": 0.01185550020403461,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.03183279434839884,
+            "barrier_std": 0.030493154546318537,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 4.748834331830342,
+            "barrier_std": 0.22324846967925993,
+            "n_pairs": 3
+          }
+        }
+      }
+    },
+    "chameleon": {
+      "gcn": {
+        "best_params": {
+          "lr": 0.007272015394967664,
+          "hidden_channels": 256,
+          "dropout": 0.21663590790627754,
+          "depth": 5,
+          "weight_decay": 5e-05
+        },
+        "best_validation_accuracy": 0.41059601306915283,
+        "trial_states": {
+          "COMPLETE": 9,
+          "PRUNED": 11,
+          "FAIL": 0
+        },
+        "cache_key": "85306a754e06687f3834baa257a3cb174c1dac35895deda20543c79503a5ca66",
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 5,
+          "dropout": 0.21663590790627754,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.3892339617013931,
+        "tuned_endpoint_test_accuracy_mean": 0.4140786826610565,
+        "tuned_endpoint_test_accuracy_std": 0.013733431747845805,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.0,
+            "barrier_std": 0.0,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 1.8330863793691001,
+            "barrier_std": 1.0631300931167063,
+            "n_pairs": 3
+          }
+        }
+      },
+      "mlp": {
+        "best_params": {
+          "lr": 0.00768924757280837,
+          "hidden_channels": 128,
+          "dropout": 0.44389950994636185,
+          "depth": 3,
+          "weight_decay": 0.0005
+        },
+        "best_validation_accuracy": 0.4139072895050049,
+        "trial_states": {
+          "COMPLETE": 13,
+          "PRUNED": 7,
+          "FAIL": 0
+        },
+        "cache_key": "dd867b8f9011200ab3c468cbe64501f90e5a804b62f41711f25fffe2637a1c3d",
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 128,
+          "depth": 3,
+          "dropout": 0.44389950994636185,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.3799171944459279,
+        "tuned_endpoint_test_accuracy_mean": 0.44306419293085736,
+        "tuned_endpoint_test_accuracy_std": 0.01224861282541501,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.07608813047409058,
+            "barrier_std": 0.010484228626396412,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 31.6118918855985,
+            "barrier_std": 4.240188926147766,
+            "n_pairs": 3
+          }
+        }
+      },
+      "graphsage": {
+        "best_params": {
+          "lr": 0.005512431765498469,
+          "hidden_channels": 32,
+          "dropout": 0.6453119645161818,
+          "depth": 3,
+          "weight_decay": 0.001
+        },
+        "best_validation_accuracy": 0.37748345732688904,
+        "trial_states": {
+          "COMPLETE": 7,
+          "PRUNED": 13,
+          "FAIL": 0
+        },
+        "cache_key": "59e7f010340f3b9a239beb4dd83983c62b4b35fb957cd1ee1094a326c7e5e394",
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 32,
+          "depth": 3,
+          "dropout": 0.6453119645161818,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.4244306484858195,
+        "tuned_endpoint_test_accuracy_mean": 0.40993789831797284,
+        "tuned_endpoint_test_accuracy_std": 0.019641471018444344,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.03307251930236813,
+            "barrier_std": 0.023403760008939345,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 1.2504918018976847,
+            "barrier_std": 0.2442113678840699,
+            "n_pairs": 3
+          }
+        }
+      },
+      "gat": {
+        "best_params": {
+          "lr": 0.009304006758191473,
+          "hidden_channels": 512,
+          "dropout": 0.3775395693409555,
+          "depth": 3,
+          "weight_decay": 0.005
+        },
+        "best_validation_accuracy": 0.3874172270298004,
+        "trial_states": {
+          "COMPLETE": 15,
+          "PRUNED": 5,
+          "FAIL": 0
+        },
+        "cache_key": "1c4a3b6fa2012b591b0ed9dba3f7a22713dd3bac8a2ecd0ce40eeac3aca35fbb",
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 512,
+          "depth": 3,
+          "dropout": 0.3775395693409555,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "fixed_endpoint_test_accuracy_mean": 0.42132506271203357,
+        "tuned_endpoint_test_accuracy_mean": 0.42028985917568207,
+        "tuned_endpoint_test_accuracy_std": 0.02258532536828903,
+        "test_barriers": {
+          "linear": {
+            "barrier_mean": 0.01642240087191264,
+            "barrier_std": 0.014267896270260833,
+            "n_pairs": 3
+          },
+          "bezier": {
+            "barrier_mean": 3.9959394097328187,
+            "barrier_std": 0.5177887600718771,
+            "n_pairs": 3
+          }
+        }
+      }
+    }
+  },
+  "endpoint_path_max_loss_error": 4.76837158203125e-07,
+  "endpoint_path_max_accuracy_error": 0.0,
+  "verified_reports": 16
+}

@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gcn-bezier-connectivity"
+version = "0.1.0"
+description = "GCN mode connectivity experiments with the existing thesis data pipeline"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.2",
+    "torch-geometric>=2.6",
+    "pytorch-lightning>=2.5",
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "matplotlib>=3.8",
+]
+
+[project.scripts]
+gcn-connectivity = "gcn_mc.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["gcn_mc*"]

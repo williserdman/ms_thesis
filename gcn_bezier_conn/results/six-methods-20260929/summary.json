@@ -1,0 +1,2573 @@
+{
+  "schema_version": 1,
+  "complete": true,
+  "run_root": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929",
+  "manifest_provenance": {
+    "pairs": [
+      [
+        0,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        4,
+        5
+      ]
+    ],
+    "points": 21,
+    "curve_epochs": 200,
+    "methods": [
+      "linear",
+      "aligned",
+      "repaired",
+      "bezier",
+      "aligned_bezier",
+      "repaired_bezier"
+    ],
+    "created": "2026-09-29",
+    "reused_tuned": {
+      "Cora/gcn": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Cora/gcn/report.json",
+        "sha256": "d32b5471a0b7e0350a55bd9abb3dc43e1081fcaa3c36873010b63ac60098a77b"
+      },
+      "Cora/mlp": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Cora/mlp/report.json",
+        "sha256": "d630fc28e971053b548e50bf8c3910fed5f02acbb8b1907d2e65a1c9230187a1"
+      },
+      "Cora/graphsage": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Cora/graphsage/report.json",
+        "sha256": "fbceb99468b034cfb173105f0839645d46ae5fea83539301bcb5b5757b9be888"
+      },
+      "Cora/gat": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Cora/gat/report.json",
+        "sha256": "21b566b7d661417756a75d2fb396e0d9b4fc0c628fa29b6ca10a61a9c8953325"
+      },
+      "Roman-empire/gcn": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Roman-empire/gcn/report.json",
+        "sha256": "dcc70901e69dcf4272da3b3dd237b77f331bc619fc2cb655006f713d43507526"
+      },
+      "Roman-empire/mlp": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Roman-empire/mlp/report.json",
+        "sha256": "37964d77c80d4e398ebd9af676e259f596621aff2501af708beef0d94fe9de37"
+      },
+      "Roman-empire/graphsage": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Roman-empire/graphsage/report.json",
+        "sha256": "f23e69c3999dbbafbfb2d664fe7ff276b6dc000664e9be87bde547eedf8f9b6b"
+      },
+      "Roman-empire/gat": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Roman-empire/gat/report.json",
+        "sha256": "88a3335068f5edeff68cc7a71e7fbac2d6752f08e9d684189ac266b67ec222b0"
+      },
+      "squirrel/gcn": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/squirrel/gcn/report.json",
+        "sha256": "8e239717c19ee51f47e7b1c031015c3e3b4447339757f8e823de6491308ff9ad"
+      },
+      "squirrel/mlp": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/squirrel/mlp/report.json",
+        "sha256": "ce9de8cc5704cd707c686c0b3ac40168c7e273b7bbe46de470b67b73eaf8d986"
+      },
+      "squirrel/graphsage": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/squirrel/graphsage/report.json",
+        "sha256": "352674a4b8c3fa454ca057aa41cac30cca8171c7458403172f1400d232ee45d5"
+      },
+      "squirrel/gat": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/squirrel/gat/report.json",
+        "sha256": "7da1698c040fba8059b59c8b60d1106e7e1866b86978adae84abe4fd6d4473a1"
+      },
+      "chameleon/gcn": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/chameleon/gcn/report.json",
+        "sha256": "4f5b1eee75d919ce5619ed833df3a81b5cf09d57295895684d3bd183274e1e39"
+      },
+      "chameleon/mlp": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/chameleon/mlp/report.json",
+        "sha256": "139eee9d945efa459c8df48b1665270a134d87bd73a12751abe761caa8cd6c51"
+      },
+      "chameleon/graphsage": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/chameleon/graphsage/report.json",
+        "sha256": "d3a36119e92c2432fb3aa1314b8b01c6e952e64c411f758ee5a2a31495d13367"
+      },
+      "chameleon/gat": {
+        "source": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/chameleon/gat/report.json",
+        "sha256": "15b74cf5496415957328ef7eb11d8d108d857c06f36258c565c1486698e57b86"
+      }
+    },
+    "new_endpoint_tuning": false,
+    "local_fallback_datasets": [
+      "actor",
+      "texas",
+      "cornell",
+      "Tolokers"
+    ],
+    "code_sha256": {
+      "gcn_mc/__init__.py": "034a78a8ed4d2d6f6843b1d69af690c80e594c65b1f7cfe66ee3131e2742f600",
+      "gcn_mc/__main__.py": "5574adcbe7f80a299c84eb7c16144bfacd13182beddfa4f36f1ebbf4bec97316",
+      "gcn_mc/data.py": "dab74ccd5773c0a5d267cec65666224d2edd3b6e5d3ef6033118e66d09affd08",
+      "gcn_mc/experiment.py": "33d372d6286f0978b331d0114f5771736790aa0b8a7e0adc72339f0b7702f17e",
+      "gcn_mc/model.py": "450b61197f930713004189676eb65187df2f33a8ca02e05c05820a3a1f2d2034",
+      "gcn_mc/paths.py": "bdabb4f43718fbc1195b9284b1624784e9576460bff42f26e344e4149ccaa3ed",
+      "gcn_mc/plotting.py": "1264693f550259b3741a6a9a39532bc9561545163e2a3817394c58e9931fdfd2",
+      "gcn_mc/presets.py": "a2e3172cecd7ed05f5c7e02b07022e97b13282914cfde0cabdf723c6f557714a",
+      "gcn_mc/reference_models.py": "4863c1b68c0949bb77c182b8846e5a99eb52dbbe37e2a85cfb8c8540669f413a",
+      "gcn_mc/reference_repair.py": "07747c7a6bbb65ea9ae22994278f34ac1c431c1913262c2c75b85a1ae76e0534",
+      "gcn_mc/repair_adapter.py": "0676ece8ff825214e0f88ad95c22c8313191273f9e524769cf4239a63a0ec272",
+      "gcn_mc/repair_experiment.py": "4c6fbaaf2d997afcffb9dbb83f5bfe029df24064abd63fef29dcf498b80b720d",
+      "gcn_mc/tuning.py": "9b9b72f0f21e3c4e284c687b547f323a7d6b847e2a7bc5e78ebcfc864ffa1230"
+    },
+    "verification": "50 tests passed before submission; full test log retained.",
+    "array_job_id": "3922820",
+    "submit_command": [
+      "sbatch",
+      "--parsable",
+      "--array=0-59%4",
+      "--output=/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/logs/%A_%a.out",
+      "--error=/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/logs/%A_%a.err",
+      "scripts/six_method_matrix.sbatch",
+      "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929",
+      "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918"
+    ],
+    "audit_job_id": "3922821",
+    "audit_submit_command": [
+      "sbatch",
+      "--parsable",
+      "--job-name=gnn-six-audit",
+      "--partition=batch",
+      "--cpus-per-task=2",
+      "--mem=12G",
+      "--time=01:00:00",
+      "--dependency=afterany:3922820",
+      "--output=/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/logs/audit_%j.out",
+      "--error=/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/logs/audit_%j.err",
+      "--wrap",
+      "/home/wge3/miniconda3/envs/py312/bin/python -B scripts/archive_six_method_matrix.py runs/six-methods-20260929 results/six-methods-20260929"
+    ]
+  },
+  "datasets": [
+    "Cora",
+    "Roman-empire",
+    "squirrel",
+    "chameleon",
+    "Questions",
+    "computers",
+    "photo",
+    "Citeseer",
+    "Pubmed",
+    "actor",
+    "texas",
+    "cornell",
+    "Amazon-ratings",
+    "Minesweeper",
+    "Tolokers"
+  ],
+  "architectures": [
+    "gcn",
+    "mlp",
+    "graphsage",
+    "gat"
+  ],
+  "methods": [
+    "linear",
+    "aligned",
+    "repaired",
+    "bezier",
+    "aligned_bezier",
+    "repaired_bezier"
+  ],
+  "expected_configurations": 60,
+  "available_configurations": 60,
+  "audited_configurations": 60,
+  "failed_configurations": [],
+  "missing_configurations": [],
+  "profile_groups": {
+    "reused_tuned": {
+      "expected": 16,
+      "available": 16,
+      "passed": 16
+    },
+    "pinned_source_profile": {
+      "expected": 28,
+      "available": 28,
+      "passed": 28
+    },
+    "local_fallback": {
+      "expected": 16,
+      "available": 16,
+      "passed": 16
+    }
+  },
+  "global_errors": [],
+  "runs": {
+    "Cora": {
+      "gcn": {
+        "dataset": "Cora",
+        "architecture": "gcn",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Cora/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Cora/gcn/report.json",
+        "source_report_sha256": "d32b5471a0b7e0350a55bd9abb3dc43e1081fcaa3c36873010b63ac60098a77b",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.5586763699849446,
+          "aligned": 0.009332473079363504,
+          "repaired": 0.0,
+          "bezier": 0.8581520915031433,
+          "aligned_bezier": 0.9959562768538793,
+          "repaired_bezier": 0.20338403085867562
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 5.960464477539063e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 5.960464477539063e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.5469434246204299,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "Cora",
+        "architecture": "mlp",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Cora/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Cora/mlp/report.json",
+        "source_report_sha256": "d630fc28e971053b548e50bf8c3910fed5f02acbb8b1907d2e65a1c9230187a1",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.23934774994850164,
+          "aligned": 0.0007743159929911592,
+          "repaired": 0.0,
+          "bezier": 1.3410488526026407,
+          "aligned_bezier": 1.9768335819244385,
+          "repaired_bezier": 0.010147311290105154
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.16814067813799777,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "Cora",
+        "architecture": "graphsage",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Cora/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Cora/graphsage/report.json",
+        "source_report_sha256": "fbceb99468b034cfb173105f0839645d46ae5fea83539301bcb5b5757b9be888",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.4922406603892644,
+          "aligned": 0.013004407286643982,
+          "repaired": 0.0,
+          "bezier": 1.2428936660289764,
+          "aligned_bezier": 1.7195398459831874,
+          "repaired_bezier": 0.04311161239941915
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 5.960464477539063e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 1.1920928955078125e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.44976739159793006,
+          "architecture": "graphsage",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "Cora",
+        "architecture": "gat",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Cora/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Cora/gat/report.json",
+        "source_report_sha256": "21b566b7d661417756a75d2fb396e0d9b4fc0c628fa29b6ca10a61a9c8953325",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.4997508356968562,
+          "aligned": 0.018945387999216707,
+          "repaired": 0.0,
+          "bezier": 1.6889367034037908,
+          "aligned_bezier": 2.7510392010211944,
+          "repaired_bezier": 0.21048235098520918
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 5.960464477539063e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 1.1920928955078125e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1433,
+          "out_channels": 7,
+          "hidden_channels": 256,
+          "depth": 2,
+          "dropout": 0.3559994838152919,
+          "architecture": "gat",
+          "normalization": "none",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "Roman-empire": {
+      "gcn": {
+        "dataset": "Roman-empire",
+        "architecture": "gcn",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Roman-empire/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Roman-empire/gcn/report.json",
+        "source_report_sha256": "dcc70901e69dcf4272da3b3dd237b77f331bc619fc2cb655006f713d43507526",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 1.8679765164852142,
+          "aligned": 0.06775079170862834,
+          "repaired": 0.10939565300941467,
+          "bezier": 0.09488179236650468,
+          "aligned_bezier": 0.0179443712035815,
+          "repaired_bezier": 0.02395200779040657
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 5.960464477539063e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 5.960464477539063e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 128,
+          "depth": 4,
+          "dropout": 0.19302742512777532,
+          "architecture": "gcn",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "Roman-empire",
+        "architecture": "mlp",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Roman-empire/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Roman-empire/mlp/report.json",
+        "source_report_sha256": "37964d77c80d4e398ebd9af676e259f596621aff2501af708beef0d94fe9de37",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 1.2359489798545837,
+          "aligned": 0.04611581563949585,
+          "repaired": 0.05238570769627889,
+          "bezier": 0.19156259695688882,
+          "aligned_bezier": 0.09677892923355103,
+          "repaired_bezier": 0.1005125641822815
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 512,
+          "depth": 9,
+          "dropout": 0.4253888387577169,
+          "architecture": "mlp",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "Roman-empire",
+        "architecture": "graphsage",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Roman-empire/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Roman-empire/graphsage/report.json",
+        "source_report_sha256": "f23e69c3999dbbafbfb2d664fe7ff276b6dc000664e9be87bde547eedf8f9b6b",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 1.6834687640269597,
+          "aligned": 0.09770434101422627,
+          "repaired": 0.10844897230466206,
+          "bezier": 0.05356306632359822,
+          "aligned_bezier": 0.01073151131470997,
+          "repaired_bezier": 0.009972886741161332
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 5.960464477539063e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 5.960464477539063e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 128,
+          "depth": 4,
+          "dropout": 0.18487213716651885,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": false,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "Roman-empire",
+        "architecture": "gat",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Roman-empire/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/Roman-empire/gat/report.json",
+        "source_report_sha256": "88a3335068f5edeff68cc7a71e7fbac2d6752f08e9d684189ac266b67ec222b0",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 4.766900134086609,
+          "aligned": 0.8651627620061239,
+          "repaired": 0.8939875463644663,
+          "bezier": 0.0,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.0
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 2.384185791015625e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 5.960464477539063e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 300,
+          "out_channels": 18,
+          "hidden_channels": 128,
+          "depth": 10,
+          "dropout": 0.15744341670256293,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "squirrel": {
+      "gcn": {
+        "dataset": "squirrel",
+        "architecture": "gcn",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/squirrel/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/squirrel/gcn/report.json",
+        "source_report_sha256": "8e239717c19ee51f47e7b1c031015c3e3b4447339757f8e823de6491308ff9ad",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.029135862986246746,
+          "repaired": 0.03427590131759647,
+          "bezier": 3.7396571238835654,
+          "aligned_bezier": 4.042212009429932,
+          "repaired_bezier": 2.5881370504697165
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.1920928955078125e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 4.76837158203125e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 128,
+          "depth": 4,
+          "dropout": 0.6512421737267309,
+          "architecture": "gcn",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "squirrel",
+        "architecture": "mlp",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/squirrel/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/squirrel/mlp/report.json",
+        "source_report_sha256": "ce9de8cc5704cd707c686c0b3ac40168c7e273b7bbe46de470b67b73eaf8d986",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.020777293046315554,
+          "aligned": 0.006473700205485026,
+          "repaired": 0.006114151080449437,
+          "bezier": 1.4104609489440918,
+          "aligned_bezier": 1.7373013496398926,
+          "repaired_bezier": 1.2579448223114014
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 32,
+          "depth": 3,
+          "dropout": 0.6453119645161818,
+          "architecture": "mlp",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "squirrel",
+        "architecture": "graphsage",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/squirrel/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/squirrel/graphsage/report.json",
+        "source_report_sha256": "352674a4b8c3fa454ca057aa41cac30cca8171c7458403172f1400d232ee45d5",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.004923234383265178,
+          "aligned": 0.00337760845820112,
+          "repaired": 0.002326460679372181,
+          "bezier": 4.387495994567871,
+          "aligned_bezier": 4.095905760924022,
+          "repaired_bezier": 2.9185151855150857
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.1920928955078125e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 9.313225746154785e-10,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 128,
+          "depth": 3,
+          "dropout": 0.6512421737267309,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "squirrel",
+        "architecture": "gat",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/squirrel/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/squirrel/gat/report.json",
+        "source_report_sha256": "7da1698c040fba8059b59c8b60d1106e7e1866b86978adae84abe4fd6d4473a1",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.03183279434839884,
+          "aligned": 0.04170084794362383,
+          "repaired": 0.043391036987304656,
+          "bezier": 4.748834331830342,
+          "aligned_bezier": 4.69145800669988,
+          "repaired_bezier": 3.120526953538259
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.1920928955078125e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 4.76837158203125e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 2089,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 4,
+          "dropout": 0.6140637172657928,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "chameleon": {
+      "gcn": {
+        "dataset": "chameleon",
+        "architecture": "gcn",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/chameleon/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/chameleon/gcn/report.json",
+        "source_report_sha256": "4f5b1eee75d919ce5619ed833df3a81b5cf09d57295895684d3bd183274e1e39",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 1.8330863793691001,
+          "aligned_bezier": 4.444016440709432,
+          "repaired_bezier": 2.6042845567067463
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 4.76837158203125e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 5.960464477539063e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 256,
+          "depth": 5,
+          "dropout": 0.21663590790627754,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "chameleon",
+        "architecture": "mlp",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/chameleon/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/chameleon/mlp/report.json",
+        "source_report_sha256": "139eee9d945efa459c8df48b1665270a134d87bd73a12751abe761caa8cd6c51",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.07608813047409058,
+          "aligned": 0.0006947716077168783,
+          "repaired": 0.0,
+          "bezier": 31.6118918855985,
+          "aligned_bezier": 35.921006977558136,
+          "repaired_bezier": 0.10479544997215269
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 128,
+          "depth": 3,
+          "dropout": 0.44389950994636185,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "chameleon",
+        "architecture": "graphsage",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/chameleon/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/chameleon/graphsage/report.json",
+        "source_report_sha256": "d3a36119e92c2432fb3aa1314b8b01c6e952e64c411f758ee5a2a31495d13367",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.03307251930236813,
+          "aligned": 0.0032871166865030923,
+          "repaired": 0.0033875306447347007,
+          "bezier": 1.2504918018976847,
+          "aligned_bezier": 1.5213584939638773,
+          "repaired_bezier": 0.8761480490366618
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.1920928955078125e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.384185791015625e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 32,
+          "depth": 3,
+          "dropout": 0.6453119645161818,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "chameleon",
+        "architecture": "gat",
+        "profile_group": "reused_tuned",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/chameleon/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/tuned-endpoints-20260918/chameleon/gat/report.json",
+        "source_report_sha256": "15b74cf5496415957328ef7eb11d8d108d857c06f36258c565c1486698e57b86",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.01642240087191264,
+          "aligned": 0.0,
+          "repaired": 0.0025766770044963008,
+          "bezier": 3.9959394097328187,
+          "aligned_bezier": 3.9462844649950664,
+          "repaired_bezier": 2.5569935917854307
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 4.76837158203125e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 2325,
+          "out_channels": 5,
+          "hidden_channels": 512,
+          "depth": 3,
+          "dropout": 0.3775395693409555,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "Questions": {
+      "gcn": {
+        "dataset": "Questions",
+        "architecture": "gcn",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Questions/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Questions/gcn/report.json",
+        "source_report_sha256": "43efe0e77600d8981982a9efa0d96f7c2ec2ce515b4ff28ed7842a16a7a720cf",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.024217379093170194,
+          "aligned": 0.01523671448230742,
+          "repaired": 0.004571149746576945,
+          "bezier": 1.2945972234010696,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.0
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 5.960464477539063e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 301,
+          "out_channels": 2,
+          "hidden_channels": 512,
+          "depth": 10,
+          "dropout": 0.3,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "Questions",
+        "architecture": "mlp",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Questions/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Questions/mlp/report.json",
+        "source_report_sha256": "c4a194b5dc39a7bc9ea81af84f19d062abae21ec9a3c4830944b7cf54d8b0799",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.006817975640296958,
+          "aligned": 0.002766023079554203,
+          "repaired": 0.0006540437539418464,
+          "bezier": 0.0,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.0
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 301,
+          "out_channels": 2,
+          "hidden_channels": 512,
+          "depth": 10,
+          "dropout": 0.3,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "Questions",
+        "architecture": "graphsage",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Questions/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Questions/graphsage/report.json",
+        "source_report_sha256": "5eae31a119f798c54420505b0c17cea073b4cebb70d0cd0e62997dc5286abf67",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.35481254234910015,
+          "aligned": 0.1671007255713145,
+          "repaired": 0.04630404983957607,
+          "bezier": 0.0,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.006131586929162343
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 2.9802322387695312e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 301,
+          "out_channels": 2,
+          "hidden_channels": 512,
+          "depth": 6,
+          "dropout": 0.2,
+          "architecture": "graphsage",
+          "normalization": "layer",
+          "residual": false,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "Questions",
+        "architecture": "gat",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Questions/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Questions/gat/report.json",
+        "source_report_sha256": "25c9c0ec8701a97faad97774293a222407f49234167aadf01cc6ec5a5a4f56a7",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.12140184094508488,
+          "aligned": 0.11665001759926481,
+          "repaired": 0.026453123490015662,
+          "bezier": 0.0,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.0
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 2.9802322387695312e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.9802322387695312e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 301,
+          "out_channels": 2,
+          "hidden_channels": 512,
+          "depth": 3,
+          "dropout": 0.2,
+          "architecture": "gat",
+          "normalization": "layer",
+          "residual": true,
+          "pre_linear": true,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "computers": {
+      "gcn": {
+        "dataset": "computers",
+        "architecture": "gcn",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/computers/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/computers/gcn/report.json",
+        "source_report_sha256": "56f2084a5658f9c635e125536d84e928724e80b80a269ff018ddfb73f1a055cb",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.31318869193394977,
+          "aligned": 0.021133111417293533,
+          "repaired": 0.0133182813723882,
+          "bezier": 0.3268960138161977,
+          "aligned_bezier": 0.015507201850414265,
+          "repaired_bezier": 0.16142174502213794
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 2.9802322387695312e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 5.960464477539063e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 767,
+          "out_channels": 10,
+          "hidden_channels": 512,
+          "depth": 3,
+          "dropout": 0.5,
+          "architecture": "gcn",
+          "normalization": "layer",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "computers",
+        "architecture": "mlp",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/computers/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/computers/mlp/report.json",
+        "source_report_sha256": "f937b41018b733c812d14543dcfd5138580daaf294776f9d9ee613225313170d",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.4494190454483032,
+          "aligned": 0.034466518958409686,
+          "repaired": 0.014326078693072045,
+          "bezier": 0.0,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.032796770334243774
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 767,
+          "out_channels": 10,
+          "hidden_channels": 512,
+          "depth": 3,
+          "dropout": 0.5,
+          "architecture": "mlp",
+          "normalization": "layer",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "computers",
+        "architecture": "graphsage",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/computers/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/computers/graphsage/report.json",
+        "source_report_sha256": "7440ad30981d02466787d6164e462aa5f898da351cbacbf6355798db94193f75",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.4879481742779414,
+          "aligned": 0.048040871818860374,
+          "repaired": 0.03773191223541894,
+          "bezier": 0.26901654998461405,
+          "aligned_bezier": 0.045157723128795645,
+          "repaired_bezier": 0.03478523443142575
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.4901161193847656e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.9802322387695312e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 767,
+          "out_channels": 10,
+          "hidden_channels": 64,
+          "depth": 4,
+          "dropout": 0.3,
+          "architecture": "graphsage",
+          "normalization": "layer",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "computers",
+        "architecture": "gat",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/computers/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/computers/gat/report.json",
+        "source_report_sha256": "9aea0e2e6aed8da375330281ec8d4f8e29242f8fe02d695ad80aa0aa29591479",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.3605208446582158,
+          "aligned": 0.04984868069489797,
+          "repaired": 0.04480409622192383,
+          "bezier": 0.11529837499062219,
+          "aligned_bezier": 0.011189606785774223,
+          "repaired_bezier": 0.022502573827902477
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.4901161193847656e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.9802322387695312e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 767,
+          "out_channels": 10,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gat",
+          "normalization": "layer",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "photo": {
+      "gcn": {
+        "dataset": "photo",
+        "architecture": "gcn",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/photo/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/photo/gcn/report.json",
+        "source_report_sha256": "3746d2c8349d4deb55afd6c11e19439c1f0ba3ebf232600611da5fe71873d1cd",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.24592906733353934,
+          "aligned": 0.02043398842215538,
+          "repaired": 0.012930540988842646,
+          "bezier": 1.7449226481219133,
+          "aligned_bezier": 0.3478361777961254,
+          "repaired_bezier": 0.470066599547863
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 2.9802322387695312e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 1.1920928955078125e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 745,
+          "out_channels": 8,
+          "hidden_channels": 256,
+          "depth": 6,
+          "dropout": 0.5,
+          "architecture": "gcn",
+          "normalization": "layer",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "photo",
+        "architecture": "mlp",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/photo/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/photo/mlp/report.json",
+        "source_report_sha256": "86346ced0394ff26d2a85fb85d5e67164cc4c6aee6a922db35e4d091ba2a0ff0",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.029327288269996643,
+          "repaired": 0.015985290209452312,
+          "bezier": 0.006002199649810784,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.0
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 745,
+          "out_channels": 8,
+          "hidden_channels": 256,
+          "depth": 6,
+          "dropout": 0.5,
+          "architecture": "mlp",
+          "normalization": "layer",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "photo",
+        "architecture": "graphsage",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/photo/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/photo/graphsage/report.json",
+        "source_report_sha256": "9654fdee109a3de79f8c3879765fcf66fde4a453b56c6ab8279f8a6634955655",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.7274040758609772,
+          "aligned": 0.03270490715901057,
+          "repaired": 0.018041020631790156,
+          "bezier": 0.7017976338664691,
+          "aligned_bezier": 0.03467036833365759,
+          "repaired_bezier": 0.0970391628642877
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.4901161193847656e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.9802322387695312e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 745,
+          "out_channels": 8,
+          "hidden_channels": 64,
+          "depth": 6,
+          "dropout": 0.2,
+          "architecture": "graphsage",
+          "normalization": "layer",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "photo",
+        "architecture": "gat",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/photo/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/photo/gat/report.json",
+        "source_report_sha256": "4b4b34e052ed7da273180a002be66255dce185cf43d9453d3a73624c464b32c7",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.24367895498871803,
+          "aligned": 0.008658889184395474,
+          "repaired": 0.003927206993103023,
+          "bezier": 0.010640009492635735,
+          "aligned_bezier": 0.026911818236112595,
+          "repaired_bezier": 0.010489359994729358
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 2.9802322387695312e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.9802322387695312e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 745,
+          "out_channels": 8,
+          "hidden_channels": 64,
+          "depth": 3,
+          "dropout": 0.5,
+          "architecture": "gat",
+          "normalization": "layer",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "Citeseer": {
+      "gcn": {
+        "dataset": "Citeseer",
+        "architecture": "gcn",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Citeseer/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Citeseer/gcn/report.json",
+        "source_report_sha256": "64f2d5e8e2aa78c50be601fd95fb42db549f4c8b06294fd538abf340dff333bf",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 3.860394160041618e-06,
+          "repaired": 6.938576698312104e-05,
+          "bezier": 16.98101834456126,
+          "aligned_bezier": 19.024866382280987,
+          "repaired_bezier": 0.0005428016185760054
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 3703,
+          "out_channels": 6,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "Citeseer",
+        "architecture": "mlp",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Citeseer/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Citeseer/mlp/report.json",
+        "source_report_sha256": "dd24bfd0301afcfad29a3aa06a4fc720e2cd53fe1310bc8d783335ce046565bc",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.00016887585322063656,
+          "aligned": 4.567702611287435e-05,
+          "repaired": 6.198684374495815e-05,
+          "bezier": 20.807210564613342,
+          "aligned_bezier": 18.690173745155334,
+          "repaired_bezier": 0.0
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 3703,
+          "out_channels": 6,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "Citeseer",
+        "architecture": "graphsage",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Citeseer/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Citeseer/graphsage/report.json",
+        "source_report_sha256": "e5fc62faaf74c64439e94fdbdcc8ed5c9e99f9fb64b10561694c2f8765ee9017",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.00015272696812947592,
+          "aligned": 0.0001427471637724942,
+          "repaired": 0.00011212229728700211,
+          "bezier": 118.0145955880483,
+          "aligned_bezier": 368.20002547899884,
+          "repaired_bezier": 0.01453802585601808
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 3703,
+          "out_channels": 6,
+          "hidden_channels": 512,
+          "depth": 3,
+          "dropout": 0.2,
+          "architecture": "graphsage",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "Citeseer",
+        "architecture": "gat",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Citeseer/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Citeseer/gat/report.json",
+        "source_report_sha256": "a1f957bfd367318f35269fd7f91803d30acddd0a9447fe2cfc7908241089a894",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.00019485950469973665,
+          "aligned": 8.368889490761866e-05,
+          "repaired": 0.00014767249425255238,
+          "bezier": 59.93290948867798,
+          "aligned_bezier": 54.0474279721578,
+          "repaired_bezier": 0.028037414948145562
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.1920928955078125e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 3703,
+          "out_channels": 6,
+          "hidden_channels": 256,
+          "depth": 3,
+          "dropout": 0.5,
+          "architecture": "gat",
+          "normalization": "none",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "Pubmed": {
+      "gcn": {
+        "dataset": "Pubmed",
+        "architecture": "gcn",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Pubmed/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Pubmed/gcn/report.json",
+        "source_report_sha256": "8303e89993a6859b557f1e3c1871418c205f711bf79cdb4c62a49d0b0d690d16",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.061996916929880776,
+          "aligned": 0.0,
+          "repaired": 0.005836397409439087,
+          "bezier": 0.8487090905507405,
+          "aligned_bezier": 1.2956307629744213,
+          "repaired_bezier": 0.2963693509499232
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 5.960464477539063e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 5.960464477539063e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 500,
+          "out_channels": 3,
+          "hidden_channels": 256,
+          "depth": 2,
+          "dropout": 0.7,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "Pubmed",
+        "architecture": "mlp",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Pubmed/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Pubmed/mlp/report.json",
+        "source_report_sha256": "95123f2d9ecd0eed870a2ee2b6d468b31f750b31c48f04d3aed41fe713c65cc0",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 1.2301789075136185,
+          "aligned_bezier": 2.6840662558873496,
+          "repaired_bezier": 0.26247096061706543
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 500,
+          "out_channels": 3,
+          "hidden_channels": 256,
+          "depth": 2,
+          "dropout": 0.7,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "Pubmed",
+        "architecture": "graphsage",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Pubmed/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Pubmed/graphsage/report.json",
+        "source_report_sha256": "35d1fcb8efaa3099bff2141f5f473dcafadb4c864f68134856426440ea806570",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 7.168305136760076,
+          "aligned_bezier": 5.810341954231262,
+          "repaired_bezier": 0.01837241848309838
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.384185791015625e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 500,
+          "out_channels": 3,
+          "hidden_channels": 512,
+          "depth": 4,
+          "dropout": 0.7,
+          "architecture": "graphsage",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "Pubmed",
+        "architecture": "gat",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Pubmed/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Pubmed/gat/report.json",
+        "source_report_sha256": "1b2d1dfebc7bc2892fb24f91f34a7ede1304f3f30058f3aa51b320a47d560887",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.0,
+          "repaired": 0.0474827080965042,
+          "bezier": 1.4733225007851918,
+          "aligned_bezier": 3.7083460410435993,
+          "repaired_bezier": 0.34482949773470556
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.1920928955078125e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 3.725290298461914e-09,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 500,
+          "out_channels": 3,
+          "hidden_channels": 512,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gat",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "actor": {
+      "gcn": {
+        "dataset": "actor",
+        "architecture": "gcn",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/actor/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/actor/gcn/report.json",
+        "source_report_sha256": "5dc759965f161f0f8e1efed41dc2a0e71ef57cd09a3c1fad505339a4eb7ac67e",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.008165081342061361,
+          "aligned": 0.0008313834667205514,
+          "repaired": 0.0007359762986500762,
+          "bezier": 1.1111236413319905,
+          "aligned_bezier": 1.164552927017212,
+          "repaired_bezier": 0.23658589522043863
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 932,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "actor",
+        "architecture": "mlp",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/actor/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/actor/mlp/report.json",
+        "source_report_sha256": "2b3130a0b67be80aa78022a045261a8c16e26035201b01e8c938d3bd3cd21eb4",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.044469197591145836,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 1.541032354036967,
+          "aligned_bezier": 1.663335144519806,
+          "repaired_bezier": 0.4629001021385193
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 932,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "actor",
+        "architecture": "graphsage",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/actor/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/actor/graphsage/report.json",
+        "source_report_sha256": "5dff9794c3bc8589dd97df1d644cb2efb0e3967feccdd9bad153d01afd957ff1",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.048664629459381104,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 3.0606525937716165,
+          "aligned_bezier": 3.276776929696401,
+          "repaired_bezier": 0.5822444558143616
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 932,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "graphsage",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "actor",
+        "architecture": "gat",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/actor/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/actor/gat/report.json",
+        "source_report_sha256": "9068b6594635a13859ee64f8d991dac880dc65a9e60f077c8fc6978e07b89790",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 1.1455528338750203,
+          "aligned_bezier": 0.9839905500411987,
+          "repaired_bezier": 0.08075500726699825
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 1.1920928955078125e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 932,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gat",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "texas": {
+      "gcn": {
+        "dataset": "texas",
+        "architecture": "gcn",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/texas/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/texas/gcn/report.json",
+        "source_report_sha256": "e2cfc88d2636c3c176f6a2ee83d2394dece6f4e3207a06d130409e854c910cda",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.01734595100084942,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 2.644837975502014,
+          "aligned_bezier": 2.2995596329371133,
+          "repaired_bezier": 0.820473869641622
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.1920928955078125e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.384185791015625e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1703,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "texas",
+        "architecture": "mlp",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/texas/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/texas/mlp/report.json",
+        "source_report_sha256": "658e62b9c1e2a8a5aadd0956d5671c05a75237a56fddcf910f5846f82193e697",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.06624863743782043,
+          "aligned": 0.02182820936044057,
+          "repaired": 0.003543414672215787,
+          "bezier": 1.4547706782817842,
+          "aligned_bezier": 2.1081159050265947,
+          "repaired_bezier": 0.17567681173483526
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1703,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "texas",
+        "architecture": "graphsage",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/texas/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/texas/graphsage/report.json",
+        "source_report_sha256": "cf6fced5fbf138f9e5ae7b83a9110bc71ca3006a322a78c4472a148cdea056b6",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.2999519457419713,
+          "aligned": 0.0016188090046246884,
+          "repaired": 0.001505756378173832,
+          "bezier": 1.0498523677388827,
+          "aligned_bezier": 1.6534697661797206,
+          "repaired_bezier": 0.11546300103267033
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 5.960464477539063e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1703,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "graphsage",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "texas",
+        "architecture": "gat",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/texas/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/texas/gat/report.json",
+        "source_report_sha256": "69434671facf270ff9585ee8ad0eecff255265bf48924b17b072dcaacd0484fc",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 1.6375500937302907,
+          "aligned_bezier": 1.5626127123832703,
+          "repaired_bezier": 0.0
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 1.1920928955078125e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1703,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gat",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "cornell": {
+      "gcn": {
+        "dataset": "cornell",
+        "architecture": "gcn",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/cornell/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/cornell/gcn/report.json",
+        "source_report_sha256": "ed10004eb91bff3f04b0884dfbb2b42598bea2dd8152b4050613143128b85646",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 4.079468687375386,
+          "aligned_bezier": 3.4353219270706177,
+          "repaired_bezier": 0.25293785532315566
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1703,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "cornell",
+        "architecture": "mlp",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/cornell/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/cornell/mlp/report.json",
+        "source_report_sha256": "eec9fde8fa34ff0acf740deec2c3f4d437ff30ad80b40c108a738b5c578c50e0",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.1275218427181244,
+          "aligned": 0.03248726030190785,
+          "repaired": 0.028490855296452827,
+          "bezier": 0.9748114844163259,
+          "aligned_bezier": 0.9559874435265859,
+          "repaired_bezier": 0.028844128052393597
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1703,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "cornell",
+        "architecture": "graphsage",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/cornell/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/cornell/graphsage/report.json",
+        "source_report_sha256": "b6a5a35b840df94f2bf11891c3558062ea0f9ade689d887ac5b42f7a856b6f27",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0040993312994639375,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 1.6291271964708964,
+          "aligned_bezier": 2.2656701525052387,
+          "repaired_bezier": 0.3337864398956299
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 1.1920928955078125e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1703,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "graphsage",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "cornell",
+        "architecture": "gat",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/cornell/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/cornell/gat/report.json",
+        "source_report_sha256": "df7af58db2f84601fd22ee03add309c6518458b2421457402391cb2321f29815",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.0,
+          "repaired": 0.00073203444480896,
+          "bezier": 2.5662548740704856,
+          "aligned_bezier": 2.173748771349589,
+          "repaired_bezier": 0.10341667135556538
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 1.1920928955078125e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 1703,
+          "out_channels": 5,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gat",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "Amazon-ratings": {
+      "gcn": {
+        "dataset": "Amazon-ratings",
+        "architecture": "gcn",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Amazon-ratings/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Amazon-ratings/gcn/report.json",
+        "source_report_sha256": "70099e82e1c71903bd18cd5d1193f8677cf454a843c1855c4fcd11da05ed50ef",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.0,
+          "repaired": 0.0,
+          "bezier": 0.0,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.0
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 2.384185791015625e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 300,
+          "out_channels": 5,
+          "hidden_channels": 512,
+          "depth": 4,
+          "dropout": 0.5,
+          "architecture": "gcn",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "Amazon-ratings",
+        "architecture": "mlp",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Amazon-ratings/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Amazon-ratings/mlp/report.json",
+        "source_report_sha256": "98a988c9d985739577f3a90c8e515b7eea07130e7812e97e2a575dd2300155cc",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.19320343335469561,
+          "repaired": 0.2603557745615641,
+          "bezier": 0.7009364604949951,
+          "aligned_bezier": 0.7921276609102885,
+          "repaired_bezier": 1.580458148320516
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 300,
+          "out_channels": 5,
+          "hidden_channels": 512,
+          "depth": 4,
+          "dropout": 0.5,
+          "architecture": "mlp",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "Amazon-ratings",
+        "architecture": "graphsage",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Amazon-ratings/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Amazon-ratings/graphsage/report.json",
+        "source_report_sha256": "ddc3d270b744f82f519e26e9e8e9313bbb6fecb704bb9e5dd3dd5b22519c0617",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0008250077565511068,
+          "aligned": 0.1603407184282938,
+          "repaired": 0.14759425719579058,
+          "bezier": 0.12667224208513886,
+          "aligned_bezier": 0.2568959017594656,
+          "repaired_bezier": 0.44423303604125985
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 2.384185791015625e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.384185791015625e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 300,
+          "out_channels": 5,
+          "hidden_channels": 512,
+          "depth": 9,
+          "dropout": 0.5,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "Amazon-ratings",
+        "architecture": "gat",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Amazon-ratings/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Amazon-ratings/gat/report.json",
+        "source_report_sha256": "df343a55097b41c204fdf56ea4937c13d4bd5691495bb52e37f6e7e6b6df787e",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.0,
+          "aligned": 0.11525970896085107,
+          "repaired": 0.178228243192037,
+          "bezier": 0.6144433339436849,
+          "aligned_bezier": 0.7262247443199158,
+          "repaired_bezier": 1.0128405968348184
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 4.76837158203125e-07,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 4.76837158203125e-07,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 300,
+          "out_channels": 5,
+          "hidden_channels": 512,
+          "depth": 4,
+          "dropout": 0.5,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "Minesweeper": {
+      "gcn": {
+        "dataset": "Minesweeper",
+        "architecture": "gcn",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Minesweeper/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Minesweeper/gcn/report.json",
+        "source_report_sha256": "9dbb6ef3e0fdd0ab75c99b467a607103596527c1a0852720d9a51a978e0fac95",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.6720838325719038,
+          "aligned": 0.0836688570678234,
+          "repaired": 0.09066423252224921,
+          "bezier": 0.0,
+          "aligned_bezier": 0.003946875780820841,
+          "repaired_bezier": 0.003615595897038776
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 5.960464477539063e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.9802322387695312e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 7,
+          "out_channels": 2,
+          "hidden_channels": 64,
+          "depth": 12,
+          "dropout": 0.2,
+          "architecture": "gcn",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "Minesweeper",
+        "architecture": "mlp",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Minesweeper/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Minesweeper/mlp/report.json",
+        "source_report_sha256": "9d822548d422960e3bc058140b21f04321c911fe012f1747786b1e465da4f90f",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.026560116807619716,
+          "aligned": 0.005484849214553833,
+          "repaired": 0.0063236574331919275,
+          "bezier": 0.07104519804318747,
+          "aligned_bezier": 0.05520310699939727,
+          "repaired_bezier": 0.10792879064877829
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 7,
+          "out_channels": 2,
+          "hidden_channels": 64,
+          "depth": 12,
+          "dropout": 0.2,
+          "architecture": "mlp",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "Minesweeper",
+        "architecture": "graphsage",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Minesweeper/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Minesweeper/graphsage/report.json",
+        "source_report_sha256": "9e61bc88df6df759f6976d97ee9ed9d0793180864af30c5e194a0af8ad1286ba",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.9285143688321114,
+          "aligned": 0.093103905270497,
+          "repaired": 0.10229964032769202,
+          "bezier": 0.007942904780308402,
+          "aligned_bezier": 0.005031690249840422,
+          "repaired_bezier": 0.0060457197328408485
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 2.9802322387695312e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.9802322387695312e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 7,
+          "out_channels": 2,
+          "hidden_channels": 64,
+          "depth": 15,
+          "dropout": 0.2,
+          "architecture": "graphsage",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "Minesweeper",
+        "architecture": "gat",
+        "profile_group": "pinned_source_profile",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Minesweeper/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Minesweeper/gat/report.json",
+        "source_report_sha256": "f2c59f442b49243226e5e2458df08833733952dff967f00070e3c9f70e17c9eb",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.5866099620858828,
+          "aligned": 0.24558071941137313,
+          "repaired": 0.26114498501022654,
+          "bezier": 0.0029731417695681253,
+          "aligned_bezier": 0.000621273616949719,
+          "repaired_bezier": 0.001411197582880654
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 5.960464477539063e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 1.4901161193847656e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 7,
+          "out_channels": 2,
+          "hidden_channels": 64,
+          "depth": 15,
+          "dropout": 0.2,
+          "architecture": "gat",
+          "normalization": "batch",
+          "residual": true,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    },
+    "Tolokers": {
+      "gcn": {
+        "dataset": "Tolokers",
+        "architecture": "gcn",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Tolokers/gcn/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Tolokers/gcn/report.json",
+        "source_report_sha256": "3be7cbe6cb6b39a5546697441b8fee5c1f486f81192136828d78ea692189aae2",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.036529481410980225,
+          "aligned": 0.0021722729007402908,
+          "repaired": 0.0017985552549361812,
+          "bezier": 0.0,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.0
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.9802322387695312e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 10,
+          "out_channels": 2,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gcn",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "mlp": {
+        "dataset": "Tolokers",
+        "architecture": "mlp",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Tolokers/mlp/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Tolokers/mlp/report.json",
+        "source_report_sha256": "cd99180068f1c5f4105f5afb85efc9de5a841b921a5d9483e01c2defde928fc2",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.01716018219788869,
+          "aligned": 0.00048723270495730037,
+          "repaired": 0.0002516955137252623,
+          "bezier": 8.476575215658293e-05,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.012102479736010233
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 0.0,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 0.0,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 10,
+          "out_channels": 2,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "mlp",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "graphsage": {
+        "dataset": "Tolokers",
+        "architecture": "graphsage",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Tolokers/graphsage/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Tolokers/graphsage/report.json",
+        "source_report_sha256": "1e6c6e4aef0828d1a75d0dd91561866720f7ee5a9d7408090e77258d0100be1e",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.04162108898162842,
+          "aligned": 0.0016180435816446719,
+          "repaired": 0.0008943453431129456,
+          "bezier": 0.003583731253941828,
+          "aligned_bezier": 0.0014153515299161201,
+          "repaired_bezier": 0.00605564812819163
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 5.960464477539063e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 2.9802322387695312e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 10,
+          "out_channels": 2,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "graphsage",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      },
+      "gat": {
+        "dataset": "Tolokers",
+        "architecture": "gat",
+        "profile_group": "local_fallback",
+        "report_path": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/analysis/Tolokers/gat/report.json",
+        "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Tolokers/gat/report.json",
+        "source_report_sha256": "34b503c5a350480ed8760e04a0de9fbe4747155290320a2b95f521191ccdb2b4",
+        "endpoint_count": 6,
+        "pair_count": 3,
+        "test_barrier_means": {
+          "linear": 0.09741164247194926,
+          "aligned": 0.008261311550935124,
+          "repaired": 0.0029021879037221345,
+          "bezier": 0.0,
+          "aligned_bezier": 0.0,
+          "repaired_bezier": 0.0
+        },
+        "midpoint_replay_max": {
+          "linear_loss": 2.9802322387695312e-08,
+          "linear_accuracy": 0.0,
+          "bezier_loss": 8.940696716308594e-08,
+          "bezier_accuracy": 0.0
+        },
+        "model": {
+          "in_channels": 10,
+          "out_channels": 2,
+          "hidden_channels": 64,
+          "depth": 2,
+          "dropout": 0.5,
+          "architecture": "gat",
+          "normalization": "none",
+          "residual": false,
+          "pre_linear": false,
+          "heads": 1,
+          "family": "tunedgnn"
+        },
+        "errors": [],
+        "status": "passed"
+      }
+    }
+  }
+}

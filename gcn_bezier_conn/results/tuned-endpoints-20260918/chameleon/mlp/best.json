@@ -1,0 +1,83 @@
+{
+  "key": "dd867b8f9011200ab3c468cbe64501f90e5a804b62f41711f25fffe2637a1c3d",
+  "cache_hit": false,
+  "new_trials": 20,
+  "finished_trials": 20,
+  "requested_trials": 20,
+  "best_trial": 13,
+  "best_validation_accuracy": 0.4139072895050049,
+  "best_params": {
+    "lr": 0.00768924757280837,
+    "hidden_channels": 128,
+    "dropout": 0.44389950994636185,
+    "depth": 3,
+    "weight_decay": 0.0005
+  },
+  "study_name": "endpoint-dd867b8f9011200ab3c468cbe64501f90e5a804b62f41711f25fffe2637a1c3d",
+  "study_file": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/optuna-cache/chameleon/mlp/dd867b8f9011200ab3c468cbe64501f90e5a804b62f41711f25fffe2637a1c3d/study.sqlite3",
+  "best_parameters_file": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/optuna-cache/chameleon/mlp/dd867b8f9011200ab3c468cbe64501f90e5a804b62f41711f25fffe2637a1c3d/best.json",
+  "context": {
+    "schema_version": 1,
+    "dataset": "chameleon",
+    "graph_sha256": "d8d9c15017055ccb2bf7733a0f9a5fbf5de55f9317280d933c2d29d6d8fe168c",
+    "num_features": 2325,
+    "num_classes": 5,
+    "loader_sha256": "49c5d1099b92f695664d85bb6ad9b42ac99a80ff2fade42a40f85cee0302a1b7",
+    "fixed_training": {
+      "architecture": "mlp",
+      "preset": "reference",
+      "normalization": "none",
+      "residual": false,
+      "pre_linear": false,
+      "heads": 1,
+      "epochs": 200,
+      "selection": "val_accuracy",
+      "tuning_seed": 42,
+      "threads": 2
+    },
+    "initial_profile": {
+      "lr": 0.005,
+      "hidden_channels": 512,
+      "dropout": 0.2,
+      "depth": 5,
+      "weight_decay": 0.001
+    },
+    "search": {
+      "version": 1,
+      "common": "thesis suggest_common_parameters",
+      "pruning_report_interval": 10,
+      "depth": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "weight_decay": [
+        0.0,
+        5e-05,
+        0.0005,
+        0.001,
+        0.005
+      ],
+      "fixed": {}
+    },
+    "implementation_sha256": {
+      "optuna_trainer.py": "adb0031d32284af01d55d25c030fffb6655e98abe494a98889fdba580dbd0fd7",
+      "tuning.py": "9b9b72f0f21e3c4e284c687b547f323a7d6b847e2a7bc5e78ebcfc864ffa1230",
+      "experiment.py": "33d372d6286f0978b331d0114f5771736790aa0b8a7e0adc72339f0b7702f17e",
+      "model.py": "450b61197f930713004189676eb65187df2f33a8ca02e05c05820a3a1f2d2034",
+      "reference_models.py": "4863c1b68c0949bb77c182b8846e5a99eb52dbbe37e2a85cfb8c8540669f413a",
+      "paths.py": "bdabb4f43718fbc1195b9284b1624784e9576460bff42f26e344e4149ccaa3ed",
+      "presets.py": "48d43d78c334a2e9bcd91a7886f405e6259bcd5de680596d9d292ed3b06cec00",
+      "data.py": "dab74ccd5773c0a5d267cec65666224d2edd3b6e5d3ef6033118e66d09affd08"
+    },
+    "runtime": {
+      "torch": "2.9.0+cu128",
+      "torch_geometric": "2.7.0",
+      "optuna": "4.7.0",
+      "device_type": "cuda",
+      "matmul_precision": "highest"
+    },
+    "objective": "Maximize calibrated selected-endpoint validation accuracy; no test metrics; fixed tuning seed."
+  }
+}

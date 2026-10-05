@@ -21,6 +21,9 @@ from pathlib import Path
 from dataclasses import dataclass
 from typing import Optional, cast
 
+REPO_ROOT = Path(__file__).resolve().parents[2]
+DATA_ROOT = REPO_ROOT / "data"
+
 ALL_DATASETS = [
     "Questions",
     "Cora",
@@ -127,16 +130,30 @@ def _load_single_ds(name: str):
     tfm = (
         NormalizeFeatures()
     )  # creating instance of NormalizeFeatures to pass into transform (each row sums to one)
+    ds_root = DATA_ROOT / name
 
     if name in {"Cora", "Citeseer", "Pubmed"}:
         ds = Planetoid(
-            root=os.path.join("data", name), name=name, transform=tfm
+            root=str(ds_root), name=name, transform=tfm
         )  # initialize planetoid dataset object, will download or use downloaded copy
 
     elif name in {"chameleon", "squirrel"}:
-        data, nf, nc = _load_filtered_dataset(
-            Path(f"data/{name}/{name}_filtered_directed.npz")
-        )
+        filtered_candidates = [
+            ds_root / f"{name}_filtered_directed.npz",
+            ds_root / f"{name}_filtered.npz",
+        ]
+        if name == "squirrel":
+            filtered_candidates.append(ds_root / "sqf.npz")
+
+        for candidate in filtered_candidates:
+            if candidate.exists():
+                data, nf, nc = _load_filtered_dataset(candidate)
+                break
+        else:
+            raise FileNotFoundError(
+                f"No filtered dataset found for {name}; tried: "
+                + ", ".join(str(p) for p in filtered_candidates)
+            )
 
         ds = SimpleDatasetWrapper()
 
@@ -145,7 +162,7 @@ def _load_single_ds(name: str):
         ds.num_classes = nc
 
     elif name in {"computers", "photo"}:
-        ds = Amazon(root=os.path.join("data", name), name=name, transform=tfm)
+        ds = Amazon(root=str(ds_root), name=name, transform=tfm)
         data = cast(tg_data.Data, ds[0])
         nf = ds.num_features
         nc = ds.num_classes
@@ -156,10 +173,10 @@ def _load_single_ds(name: str):
         ds.num_features, ds.num_classes = nf, nc
 
     elif name in {"actor"}:
-        ds = Actor(root=os.path.join("data", name), transform=tfm)
+        ds = Actor(root=str(ds_root), transform=tfm)
 
     elif name in {"texas", "cornell"}:
-        ds = WebKB(root=os.path.join("data", name), name=name, transform=tfm)
+        ds = WebKB(root=str(ds_root), name=name, transform=tfm)
 
     elif name in {
         "Roman-empire",
@@ -169,7 +186,7 @@ def _load_single_ds(name: str):
         "Questions",
     }:
         ds = HeterophilousGraphDataset(
-            root=os.path.join("data", name), name=name, transform=tfm
+            root=str(ds_root), name=name, transform=tfm
         )
 
     else:

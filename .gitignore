@@ -3,3 +3,11 @@ lightning_logs
 optuna_logs
 __pycache__/
 spectral_runs/
+
+.venv*
+.worktrees/
+*.pyc
+# OS cruft
+.DS_Store
+# run artifacts
+training_results_*.json
