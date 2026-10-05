@@ -59,3 +59,11 @@ For a separate environment, install this project with `python -m pip install -e 
 The thesis checkout is still required; pass `--thesis-root /path/to/ms_thesis`
 if it is not this directory's parent. No installation is needed to run from
 this source directory in an existing compatible environment.
+
+## Completed six-method study
+
+All 15 thesis-loader datasets and four architectures completed the six-method
+study. [Results and graphics](results/six-methods-20260929/README.md) contain all
+60 configurations and 180 endpoint pairs. See [protocol](docs/six_method_matrix.md)
+for aligned Bézier fitting and posthoc REPAIR, and [handoff](handoff.md) for
+interpretation, preserved artifacts, and next-session context.

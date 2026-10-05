@@ -194,10 +194,55 @@ class RepairAdapterTests(unittest.TestCase):
             torch.testing.assert_close(value, aligned_state[name])
 
         for endpoint_alpha, endpoint in ((0.0, reference), (1.0, aligned)):
-            endpoint_copy, _ = repair_gcn(reference, aligned, graph, endpoint_alpha)
+            endpoint_copy, _ = repair_gcn(
+                reference,
+                aligned,
+                graph,
+                endpoint_alpha,
+                path_model=merged,
+            )
             self.assertFalse(endpoint_copy.training)
             for name, value in endpoint.state_dict().items():
                 torch.testing.assert_close(endpoint_copy.state_dict()[name], value)
+
+    def test_repair_uses_supplied_path_and_preserves_its_classifier(self) -> None:
+        graph = unequal_degree_graph()
+        reference = configured_gcn(depth=2)
+        torch.manual_seed(101)
+        aligned = GCN(4, 4, 2, depth=2, dropout=.4)
+        alpha = .4
+        path_model = copy.deepcopy(reference)
+        with torch.no_grad():
+            path_model.convs[0].lin.weight.add_(.2)
+            path_model.convs[-1].lin.weight.copy_(
+                torch.tensor([[1.1, -1.2, 1.3, -1.4], [-.7, .8, -.9, 1.]])
+            )
+            path_model.convs[-1].bias.copy_(torch.tensor([.35, -.45]))
+        path_model.train()
+        path_state = state_copy(path_model)
+        path_modes = [module.training for module in path_model.modules()]
+
+        repaired, _ = repair_gcn(
+            reference, aligned, graph, alpha, path_model=path_model
+        )
+
+        target_a = hidden_statistics(reference, graph)["convs.0"]
+        target_b = hidden_statistics(aligned, graph)["convs.0"]
+        actual = hidden_statistics(repaired, graph)["convs.0"]
+        torch.testing.assert_close(
+            actual[0], (1 - alpha) * target_a[0] + alpha * target_b[0]
+        )
+        torch.testing.assert_close(
+            actual[1],
+            (1 - alpha) * target_a[1] + alpha * target_b[1],
+            rtol=2e-4,
+            atol=2e-4,
+        )
+        for name, value in path_model.convs[-1].state_dict().items():
+            torch.testing.assert_close(repaired.convs[-1].state_dict()[name], value)
+        self.assertEqual([module.training for module in path_model.modules()], path_modes)
+        for name, value in path_model.state_dict().items():
+            torch.testing.assert_close(value, path_state[name])
 
 
 if __name__ == "__main__":

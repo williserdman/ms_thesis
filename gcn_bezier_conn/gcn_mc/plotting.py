@@ -19,8 +19,10 @@ def plot_report(report_path):
     styles = {
         "linear": ("Linear", "#b84a39"),
         "aligned": ("Aligned linear", "#ba801f"),
-        "repaired": ("Aligned + REPAIR", "#248454"),
+        "repaired": ("Aligned linear + REPAIR", "#248454"),
         "bezier": ("Bézier", "#285eaa"),
+        "aligned_bezier": ("Aligned Bézier", "#8251a6"),
+        "repaired_bezier": ("Aligned Bézier + REPAIR", "#137e8e"),
     }
     for dataset in report["datasets"]:
         figure, axes = plt.subplots(2, 3, figsize=(11, 6), sharex=True)
@@ -62,8 +64,8 @@ def plot_report(report_path):
             f"{dataset['data']['name']}: {architecture}\n{note}, {n_pairs} endpoint pair(s)"
         )
         handles, labels = axes[0, 0].get_legend_handles_labels()
-        figure.legend(handles, labels, loc="lower center", ncol=len(labels), frameon=False)
-        figure.tight_layout(rect=(0, 0.05, 1, 0.94))
+        figure.legend(handles, labels, loc="lower center", ncol=3 if len(labels) == 6 else len(labels), frameon=False)
+        figure.tight_layout(rect=(0, 0.09 if len(labels) == 6 else 0.05, 1, 0.94))
         directory = report_path.parent / dataset["data"]["name"]
         directory.mkdir(exist_ok=True)
         for extension in ("png", "pdf"):

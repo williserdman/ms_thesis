@@ -271,7 +271,14 @@ def align_reference(reference: ReferenceModel, candidate: ReferenceModel, graph)
                      "high_precision_max_logit_error": high_precision_error}
 
 
-def repair_reference(reference: ReferenceModel, aligned: ReferenceModel, graph, alpha: float) -> tuple[nn.Module, dict]:
+def repair_reference(
+    reference: ReferenceModel,
+    aligned: ReferenceModel,
+    graph,
+    alpha: float,
+    *,
+    path_model: ReferenceModel | None = None,
+) -> tuple[nn.Module, dict]:
     """Interpolate calibrated endpoints and sequentially correct stage moments."""
     alpha = float(alpha)
     if not math.isfinite(alpha) or not 0 <= alpha <= 1:
@@ -280,7 +287,11 @@ def repair_reference(reference: ReferenceModel, aligned: ReferenceModel, graph, 
     if alpha in (0., 1.):
         return copy.deepcopy(reference if alpha == 0. else aligned).eval(), {"alpha": alpha, "epsilon": EPSILON, "layers": {}}
     endpoint_a, endpoint_b = reference_statistics(reference, graph), reference_statistics(aligned, graph)
-    merged = interpolate_models(reference, aligned, alpha)
+    merged = (
+        interpolate_models(reference, aligned, alpha)
+        if path_model is None
+        else copy.deepcopy(_validate(path_model))
+    )
     calibrate_batchnorm(merged, graph)
     repaired = ReferenceRepairModel(merged).eval()
     diagnostics = {}

@@ -1,184 +1,94 @@
 # Handoff
 
-Updated: 2026-09-18. Branch: `exp/gnn-repair`.
+Updated: 2026-10-05. Integration target: `main`.
 
-## Publishing this branch
+## Current state
 
-The implementation, result snapshots, and initial handoff were committed as
-`cbfab3f`. The initial HTTPS push failed. The user subsequently configured SSH,
-and GitHub SSH authentication is now verified. `origin` still uses HTTPS; use
-this command to push over SSH without changing the stored remote configuration:
+The user requested a handoff in this project folder, merging the completed
+alignment/Bézier/REPAIR study into `main`, and cleanup of the session worktree.
+Integration is in progress; final merge/push verification follows this document.
+The primary checkout has unrelated pending work on `exp/spectral-mc-pocs`.
+Preserve that work and all other experiment worktrees.
 
-```bash
-git -c 'core.sshCommand=ssh -o StrictHostKeyChecking=yes -o CheckHostIP=no -o BatchMode=yes' \
-  -c remote.origin.pushurl=git@github.com:williserdman/ms_thesis.git \
-  push -u origin exp/gnn-repair
-```
+Permanent project folder: `/home/wge3/ms_thesis/gcn_bezier_conn`.
+Use `/home/wge3/miniconda3/envs/py312/bin/python`, which contains Python 3.14,
+PyTorch 2.9.0+cu128 and PyG 2.7.0 despite the environment's name. No environment
+or machine configuration was changed.
 
-Verify the remote branch points to local `HEAD` before reporting it as pushed.
-Do not put credentials into this handoff, repository files, or chat.
+## Completed experiment
 
-## Next session
+All 60 model/dataset configurations completed and passed the archive audit:
+15 thesis-loader datasets, GCN/MLP/GraphSAGE/GAT, three seed pairs per
+configuration, 21 path points, and 200 steps per Bézier control. Slurm array
+`3922820` and audit `3922821` completed with exit code 0. The project suite
+passed all 50 tests again before integration.
 
-The user resumed alignment and REPAIR for GCN, MLP, GraphSAGE and GAT on Cora,
-Roman-empire, squirrel and chameleon. The extension reuses the completed tuned
-endpoints and all three pairs per configuration, alongside each saved Bézier
-curve. Reference REPAIR uses explicit affine corrections after complete blocks,
-including residual addition and normalization. REPAIR remains on linear paths;
-Bézier is the comparator. Existing legacy GCN artifacts remain valid.
+Start with [results and graphics](results/six-methods-20260929/README.md),
+[summary JSON](results/six-methods-20260929/summary.json), and
+[summary CSV](results/six-methods-20260929/summary.csv).
+[Six-method protocol](docs/six_method_matrix.md) defines report keys and order:
+train endpoints, align endpoint B, fit a separate aligned Bézier control, then
+apply posthoc REPAIR to sampled models. The original raw linear and Bézier
+comparators are retained. REPAIR is absent from curve optimization.
 
-This extension is complete for all 16 configurations and 48 endpoint pairs.
-[Results and graphics](results/repair-tuned-20260918/README.md) include all four
-methods. All 42 tests pass; all 48 repaired midpoint checkpoints replayed on GPU.
-The [verification record](docs/reference_repair_verification.md) documents the
-strict float64 alignment fallback and a one-node GAT source-replay tie. Raw
-artifacts are in `runs/repair-tuned-20260918/`; no experiment jobs remain active.
-Alignment helped Cora and Roman-empire, while REPAIR's additional effects were
-mixed. Do not assume REPAIR improves every model/dataset.
+The matrix combines 16 reused endpoint-tuned configurations, 28 pinned source
+profiles, and 16 explicit local fallbacks. Preserve these provenance groups.
+[Extended profiles](docs/extended_dataset_profiles.md) documents the local
+choices and upstream binary ROC AUC deviation. The raw weights, split masks,
+training histories, calibration diagnostics and tuning databases remain under
+`runs/`; compact reports and PNG/PDF plots are versioned under `results/`.
+Historical result folders and the original legacy GCN runs remain valid.
 
+## Interpretation and next work
 
-All 16 fixed reference-preset configurations have now completed full endpoint
-budgets and three seed pairs each (Slurm 3834822). See
-[full reference results](docs/reference_full_results.md). The earlier Cora pilots
-and smoke checks remain archived separately.
+Alignment was the most consistent improvement. Bézier training often obtains
+low training barriers but high validation/test barriers. A quadratic Bézier
+with its control at the endpoint midpoint reproduces the straight path, so a
+worse fitted curve does not establish absence of a useful connecting path.
+REPAIR can reduce cross-entropy barriers while reducing classification accuracy.
+Low path barriers do not establish that an interior model beats either endpoint.
+See the saved reports for the measured comparisons and checkpoint replay checks.
 
-The user requested Optuna and explicitly chose endpoint models only. The existing
-thesis hook now supports the four architectures, persistent studies, and cached
-best parameters. All 34 tests pass. A real Cora repeat reused its two-trial study
-with zero new trials. All four full Cora studies also returned cached parameters
-with no training calls. The full tuned matrix completed successfully as Slurm
-array 3834945: all 16 configurations, 20 trials each including pruned trials,
-six final endpoint seeds and three pairs each. See the
-[tuned results and graphics](results/tuned-endpoints-20260918/README.md).
-Bézier settings stayed fixed; tuning used validation accuracy without computing
-test metrics. Raw artifacts are under `runs/tuned-endpoints-20260918/`.
+A suggested follow-up is to hold endpoints fixed, record train/validation path
+loss throughout aligned control fitting, and select the control checkpoint using
+validation loss. This experiment is proposed, not implemented or launched.
+Distinguish studying whole-path connectivity from selecting one useful merged
+model. Use validation for selection and reserve test metrics for evaluation.
 
-Cache location: `runs/optuna-cache/<dataset>/<architecture>/<context-hash>/`.
-Keep `study.sqlite3` and `best.json`; deleting these discards reusable searches.
-Identical completed budgets are reused; raising the trial budget extends the
-study. Data, training/search settings, source implementation, runtime, and tuning
-seed changes create new contexts. Source hashes are part of cache identity;
-changing training implementation intentionally creates a fresh study.
+## Artifact preservation and relocation
 
-The earlier one-pair Cora Bézier pilots have zero sampled training-loss barriers and relatively
-flat test accuracy, but substantially higher validation/test cross-entropy than
-their endpoints. Reevaluate curve training using training/validation data before
-extending REPAIR. No settings were selected using test metrics. The labeled
-[comparison](results/reference-architectures/README.md) records this result.
+The session worktree was `/home/wge3/ms_thesis/.worktrees/gnn-repair`.
+Before removing it, move all ignored `gcn_bezier_conn/runs/` artifacts into the
+permanent folder. Keep every existing legacy run. Preserve the earlier legacy
+source under `runs/legacy-source-20261005/` for historical replay.
 
-## Read first
+Operational `source_report` references are relocated to the permanent folder;
+source baseline bytes and SHA-256 values remain unchanged. Preserve original
+analysis JSON and the relocation mapping under `runs/` and rerun the archive
+audit after relocation. Historical cache and implementation metadata may still
+record the former worktree path; treat that as provenance, not an active path.
+Do not rewrite baseline reports or delete Optuna `study.sqlite3`/`best.json`.
 
-- [ONBOARDING.md](ONBOARDING.md): environment, commands, code map, loader behavior.
-- [Paper protocol](docs/paper_protocol.md): paper facts, missing details, current
-  implementation choices. The scope is a procedure replication, not confirmed
-  numerical reproduction.
-- [Architecture design](docs/superpowers/specs/2026-09-18-architecture-baselines-design.md)
-  and [implementation plan](docs/superpowers/plans/2026-09-18-architecture-baselines.md):
-  agreed behavior and bounded work.
-- [Architecture source check](docs/architecture_sources.md): official reference
-  code, pinned commit, exact profiles, licensing, and source differences.
-- [Dataset sweep](docs/dataset_sweep.md): completed four-dataset results and limits.
-- [REPAIR integration](docs/repair_integration.md): current calibration and
-  alignment semantics. The sibling [REPAIR handoff](../repair/handoff.md) covers
-  that package's earlier work.
-- [Saved results](results/gcn-four-datasets/README.md): tracked figures and reports.
-- [Cached tuning design](docs/superpowers/specs/2026-09-18-endpoint-tuning.md):
-  endpoint-only scope, search dimensions, objective, and cache identity.
+## Read before changing behavior
 
-A bounded first-party search found no public repository from the
-mode-connectivity authors. This is not proof that none exists. Appendix B refers
-to Luo et al., *Classic GNNs are Strong Baselines*, for architecture and
-hyperparameter choices. Its official `tunedGNN` source is pinned at commit
-`23f9604e8b13a9a6d3faa2f691cd844006979153` under `upstream/tunedGNN`, together
-with its MIT License and provenance. The implementation adapts its models and
-profiles to the existing PyTorch/PyG runner and thesis loader. It does not adopt
-the upstream loader or graph preprocessing.
+- [Developer onboarding](ONBOARDING.md): commands, dependencies, code map.
+- [Paper protocol](docs/paper_protocol.md): replication scope and missing details.
+- [Architecture source check](docs/architecture_sources.md): pinned tunedGNN code.
+- [REPAIR integration](docs/repair_integration.md): alignment and normalization.
+- [Reference verification](docs/reference_repair_verification.md): numerical replay.
+- Existing designs/plans under `docs/superpowers/` document implemented decisions.
 
-## Implemented behavior
-
-1. `run --preset reference --architecture {gcn,mlp,graphsage,gat}` is available.
-   Reference settings resolve per dataset. Explicit CLI overrides apply after
-   the preset and the effective configuration is saved.
-2. The existing default command and legacy GCN checkpoint replay are preserved.
-   `--smoke` applies after preset resolution and caps width at 8, endpoint and
-   curve training at 5 steps, evaluation at 5 points, and pairs at 1.
-3. The thesis loader, graph edges, features, and masks are unchanged. The MLP
-   substitutes linear operators into the reference GCN profile and ignores
-   edges. This is a local choice because tunedGNN has no MLP recipe.
-4. Baseline and aligned BatchNorm paths calibrate with a full-graph, label-free
-   forward, dropout disabled and isolated statistics. REPAIR starts from that
-   calibrated aligned base, freezes native buffers, then fits training-node
-   affine corrections in forward order.
-5. REPAIR accepts legacy GCN and the four reference architectures. Reference
-   alignment permutes all channel consumers, including GAT attention vectors,
-   learned residual projections and normalization state. Reference corrections
-   have a distinct replayable affine-wrapper checkpoint format. See
-   [integration rules](docs/repair_integration.md).
-
-Avoid silently carrying every GCN default into every architecture. The completed
-sweep documents weak Roman-empire endpoints and Bézier overfitting on filtered
-squirrel/chameleon. Any setting selection must use training/validation data;
-test metrics remain evaluation-only.
-
-## Workspace and checkpoint
-
-Work in the existing linked worktree `<thesis-checkout>/.worktrees/gnn-repair`,
-under `gcn_bezier_conn`. Exact machine paths and interpreter are in onboarding.
-The original checkout remains on `exp/spectral-mc-pocs` with unrelated dirty
-files. Do not switch, clean, reset, or commit that checkout's unrelated work.
-
-This checkpoint includes the existing loader path/cache fallback fixes that
-were already used by all recorded runs. They were copied unchanged into the
-worktree so the branch contains the loader expected by `gcn_mc.data`; no data
-pipeline was reimplemented. Saved-run replay must use the original loader/cache
-location recorded in the report, or an explicit compatible `--thesis-root`.
-
-Raw `runs/` artifacts and model checkpoints remain local and ignored. Compact
-figures and JSON reports are tracked under `results/`, including the full
-fixed-reference and endpoint-tuned matrices; those copies do not include model
-weights. All jobs in our tuned array 3834945 completed with exit code 0. Other
-user jobs may share the account and must be left alone.
-
-Before this extension, all 11 legacy GCN/REPAIR tests passed in 0.377 seconds
-after imports. The dataset-sweep record documents successful Slurm jobs and
-replay of all 12 repaired midpoint checkpoints. These are historical legacy
-results. New runs are in `runs/reference-smoke-20260918/` (Slurm array 3834723)
-and `runs/reference-cora-20260918/` (array 3834752). The latter uses seeds 0:1,
-500 endpoint epochs, 200 curve steps, and 21 points per model. No packages or
-machine configuration changed.
-
-The intended reference command form is:
-
-```bash
-$PY -m gcn_mc run \
-  --thesis-root /home/wge3/ms_thesis \
-  --preset reference \
-  --architecture graphsage \
-  --datasets Roman-empire \
-  --output runs/reference-roman-graphsage
-```
-
-Supported overrides cover width, depth, dropout, endpoint epochs and optimizer,
-normalization, residual connections, input projection, GAT heads, and endpoint
-selection. Only one GAT head is supported. `scripts/reference_baselines.sbatch`
-maps array tasks 0–15 to four datasets by four architectures; tasks 0–3 are Cora.
-See onboarding for commands and profile override rules.
-
-## User preferences
-
-Use the thesis data pipeline. Keep changes in a worktree. Prefer the smallest
-runnable implementation, focused checks, and concise updates. Do not initiate
-review cycles or broad hardening. Do not add AI-authorship attribution. The user
-explicitly authorized committing and pushing this branch and requested this
-handoff in the project folder rather than the skill's default temporary folder.
+Use the original thesis loader/cache with explicit
+`--thesis-root /home/wge3/ms_thesis`. Its hash and split masks identify all saved
+runs. Preserve unrelated dirty files. Keep changes small, reversible, and scoped.
+Do not initiate review cycles, add authorship attribution, or select settings on
+test metrics. Do not rerun the completed matrix merely to regenerate graphics.
 
 ## Suggested skills
 
 - `superpowers:using-superpowers` for session setup.
-- `superpowers:brainstorming` and `superpowers:writing-plans` for the bounded
-  architecture extension, using the already agreed baseline-first scope.
-- `research` for author code and reference architecture settings.
-- `superpowers:test-driven-development` for focused model/path behavior checks.
-- `superpowers:verification-before-completion` before reporting success or pushing.
-- `unslop` for concise documentation. Apply the user's MVP and no-review
-  preferences over broader skill workflows.
+- `superpowers:brainstorming` before choosing a follow-up experiment.
+- `superpowers:systematic-debugging` for unexpected fitting or replay behavior.
+- `superpowers:test-driven-development` for a small runner extension.
+- `superpowers:verification-before-completion` before reporting results or merging.
+- `unslop` for concise documentation.

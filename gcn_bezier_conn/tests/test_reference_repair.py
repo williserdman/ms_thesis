@@ -1,3 +1,4 @@
+import copy
 from types import SimpleNamespace
 import tempfile
 import unittest
@@ -161,6 +162,79 @@ class ReferenceRepairTests(unittest.TestCase):
         for name, value in repaired.base.named_buffers():
             torch.testing.assert_close(value, expected_buffers[name])
             torch.testing.assert_close(value, before[name])
+
+    def test_repair_uses_supplied_gat_batchnorm_path_without_mutating_it(self):
+        data = graph()
+        torch.manual_seed(41)
+        first = model("gat", normalization="batch")
+        torch.manual_seed(43)
+        second = model("gat", normalization="batch")
+        aligned, _ = align_reference(first, second, data)
+        alpha = .3
+        linear = interpolate_models(first, aligned, alpha)
+        path_model = copy.deepcopy(linear)
+        with torch.no_grad():
+            path_model.pred_local.weight.add_(.75)
+            path_model.pred_local.bias.sub_(.25)
+            for batchnorm in path_model.bns:
+                batchnorm.running_mean.fill_(11.)
+                batchnorm.running_var.fill_(7.)
+        path_model.train()
+        path_model.local_convs[0].eval()
+        path_modes = [module.training for module in path_model.modules()]
+        path_state = {name: value.clone() for name, value in path_model.state_dict().items()}
+        expected_base = copy.deepcopy(path_model)
+        calibrate_batchnorm(expected_base, data)
+
+        with mock.patch(
+            "gcn_mc.reference_repair.calibrate_batchnorm",
+            wraps=calibrate_batchnorm,
+        ) as calibrate:
+            repaired, _ = repair_reference(
+                first, aligned, data, alpha, path_model=path_model
+            )
+
+        self.assertEqual(calibrate.call_count, 1)
+        torch.testing.assert_close(
+            repaired.base.pred_local.weight, path_state["pred_local.weight"]
+        )
+        torch.testing.assert_close(
+            repaired.base.pred_local.bias, path_state["pred_local.bias"]
+        )
+        self.assertFalse(torch.allclose(
+            repaired.base.pred_local.weight, linear.pred_local.weight
+        ))
+        expected_buffers = {
+            name: value.clone() for name, value in expected_base.named_buffers()
+        }
+        frozen_buffers = {
+            name: value.clone() for name, value in repaired.base.named_buffers()
+        }
+        for name, value in repaired.base.named_buffers():
+            torch.testing.assert_close(value, expected_buffers[name])
+
+        target_a = reference_statistics(first, data)
+        target_b = reference_statistics(aligned, data)
+        actual = reference_statistics(repaired, data)
+        for name in actual:
+            torch.testing.assert_close(
+                actual[name][0],
+                (1 - alpha) * target_a[name][0] + alpha * target_b[name][0],
+                atol=2e-4,
+                rtol=2e-4,
+            )
+            torch.testing.assert_close(
+                actual[name][1],
+                (1 - alpha) * target_a[name][1] + alpha * target_b[name][1],
+                atol=2e-4,
+                rtol=2e-4,
+            )
+        repaired(data.x, data.edge_index)
+        for name, value in repaired.base.named_buffers():
+            torch.testing.assert_close(value, frozen_buffers[name])
+        self.assertEqual([module.training for module in path_model.modules()], path_modes)
+        for name, value in path_model.state_dict().items():
+            torch.testing.assert_close(value, path_state[name])
 
 
 if __name__ == "__main__":

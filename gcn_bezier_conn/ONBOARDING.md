@@ -18,9 +18,10 @@ methods to the same tuned endpoints. Read the
 
 ## Environment
 
-Run commands from `/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn`.
-This isolated worktree is on branch `exp/gnn-repair`. The original checkout and
-its uncommitted files remain at `/home/wge3/ms_thesis`.
+Run commands from `/home/wge3/ms_thesis/gcn_bezier_conn`.
+Integration targets `main`. The primary checkout has unrelated pending work on
+`exp/spectral-mc-pocs`; preserve it. See [handoff](handoff.md) for integration and
+artifact relocation state.
 
 The working interpreter is:
 
@@ -37,7 +38,7 @@ Despite its name, the `py312` environment currently contains Python 3.14. The se
 No installation is needed from this source directory. For the commands below:
 
 ```bash
-cd /home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn
+cd /home/wge3/ms_thesis/gcn_bezier_conn
 PY=/home/wge3/miniconda3/envs/py312/bin/python
 $PY -m gcn_mc --help
 ```
@@ -64,9 +65,11 @@ $PY -m gcn_mc run \
 `--architecture` accepts `gcn`, `mlp`, `graphsage`, or `gat`. The reference
 preset resolves width, depth, dropout, endpoint epochs, endpoint learning rate,
 weight decay, normalization, residual connections, input projection, attention
-heads, and checkpoint selection separately for each dataset. The supported
-reference datasets are Cora, Roman-empire, squirrel, and chameleon. Reference
-endpoints select the epoch with highest validation accuracy.
+heads, and checkpoint selection separately for each dataset. All 15 thesis-loader datasets are supported. See
+[extended profiles](docs/extended_dataset_profiles.md) for pinned recipes and
+local fallbacks. Pinned recipes select validation accuracy; local fallback
+recipes select validation loss. The [six-method matrix](docs/six_method_matrix.md)
+adds aligned Bézier fitting and posthoc REPAIR.
 
 Explicit CLI values override the resolved profile. The available overrides are
 `--hidden-channels`, `--depth`, `--dropout`, `--epochs`, `--lr`,

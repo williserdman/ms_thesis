@@ -54,12 +54,13 @@ def main(argv=None):
     runner.add_argument("--no-plots", action="store_true")
     plotter = commands.add_parser("plot", help="Plot saved report.json without retraining.")
     plotter.add_argument("report")
-    repair_runner = commands.add_parser("repair", help="Compare alignment and REPAIR on an existing run's linear paths.")
+    repair_runner = commands.add_parser("repair", help="Compare alignment and REPAIR using saved endpoints.")
     repair_runner.add_argument("--source", required=True, help="Original connectivity report.json.")
     repair_runner.add_argument("--output", required=True, help="New or empty output directory.")
     repair_runner.add_argument("--thesis-root", help="Original thesis loader checkout; defaults to the source report's recorded location.")
     repair_runner.add_argument("--device", default="cpu")
     repair_runner.add_argument("--threads", type=int, default=1)
+    repair_runner.add_argument("--include-bezier", action="store_true", help="Also fit an aligned Bézier control and apply posthoc REPAIR to its samples.")
     repair_runner.add_argument("--no-plots", action="store_true")
     args = parser.parse_args(argv)
     if args.command == "plot":
@@ -71,7 +72,7 @@ def main(argv=None):
         if args.threads < 1:
             parser.error("--threads must be positive")
         from .repair_experiment import run_repair
-        report = run_repair(args.source, args.output, thesis_root=args.thesis_root, device=args.device, threads=args.threads)
+        report = run_repair(args.source, args.output, thesis_root=args.thesis_root, device=args.device, threads=args.threads, include_bezier=args.include_bezier)
         print(f"Report: {report}")
         if not args.no_plots:
             from .plotting import plot_report

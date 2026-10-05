@@ -221,6 +221,8 @@ def repair_gcn(
     aligned: GCN,
     graph,
     alpha: float,
+    *,
+    path_model: GCN | None = None,
 ) -> tuple[GCN, dict]:
     """Interpolate aligned endpoints and sequentially repair hidden moments."""
     _validate_model(reference)
@@ -240,7 +242,11 @@ def repair_gcn(
     elif alpha == 1.0:
         repaired = copy.deepcopy(aligned).eval()
     else:
-        repaired = interpolate_models(reference, aligned, alpha)
+        repaired = (
+            interpolate_models(reference, aligned, alpha)
+            if path_model is None
+            else copy.deepcopy(_validate_model(path_model))
+        )
 
     layers: dict[str, dict[str, float]] = {}
     for index in range(len(repaired.convs) - 1):

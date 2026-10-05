@@ -127,12 +127,33 @@ class ReferenceRunnerTests(unittest.TestCase):
 
                 repair_output = Path(folder) / "repair"
                 with patch("gcn_mc.repair_experiment.load_graph", return_value=(graph, metadata)):
-                    repaired_path = run_repair(report_path, repair_output)
+                    repaired_path = run_repair(report_path, repair_output, include_bezier=True)
                 repaired = json.loads(repaired_path.read_text())
+                self.assertEqual(set(repaired["methods"]), {
+                    "linear", "bezier", "aligned", "repaired", "aligned_bezier", "repaired_bezier",
+                })
                 repaired_dataset = repaired["datasets"][0]
                 self.assertEqual(repaired_dataset["config"], dataset["config"])
                 self.assertEqual(repaired_dataset["source"], dataset["source"])
                 pair = repaired_dataset["pairs"][0]
+                self.assertEqual(len(pair["aligned_history"]), 2)
+                aligned_checkpoint = torch.load(
+                    repair_output / pair["aligned_checkpoint"], weights_only=True
+                )
+                self.assertIn("control", aligned_checkpoint)
+                self.assertEqual(aligned_checkpoint["endpoint_seeds"], [0, 1])
+                aligned_model = build_model(aligned_checkpoint["model_config"]).eval()
+                aligned_model.load_state_dict(aligned_checkpoint["state_dict"])
+                with torch.no_grad():
+                    aligned_curve_replay = metrics(path_logits(
+                        model, graph, endpoints[0], clone_parameters(aligned_model),
+                        0.5, aligned_checkpoint["control"],
+                    ), graph)
+                for split in ("train", "val", "test"):
+                    self.assertAlmostEqual(
+                        aligned_curve_replay[split]["loss"],
+                        pair["aligned_bezier"]["splits"][split]["loss"][1], places=6,
+                    )
                 self.assertEqual(
                     set(pair["source_replay"]), {"linear", "bezier"}
                 )
@@ -157,6 +178,22 @@ class ReferenceRunnerTests(unittest.TestCase):
                             pair["repaired"]["splits"][split][metric][1],
                             places=6,
                         )
+                bezier_midpoint = load_repaired_model(
+                    repair_output / pair["repaired_bezier_midpoint_checkpoint"]
+                )
+                with torch.no_grad():
+                    bezier_replay = metrics(bezier_midpoint(graph.x, graph.edge_index), graph)
+                for split in ("train", "val", "test"):
+                    for metric in ("loss", "accuracy"):
+                        self.assertAlmostEqual(
+                            bezier_replay[split][metric],
+                            pair["repaired_bezier"]["splits"][split][metric][1], places=6,
+                        )
+                        for endpoint_index in (0, -1):
+                            self.assertAlmostEqual(
+                                pair["repaired_bezier"]["splits"][split][metric][endpoint_index],
+                                pair["aligned"]["splits"][split][metric][endpoint_index], places=6,
+                            )
 
 
 if __name__ == "__main__":

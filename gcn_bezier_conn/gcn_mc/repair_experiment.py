@@ -14,13 +14,14 @@ import torch
 import torch_geometric
 
 from .data import load_graph
-from .experiment import aggregate_pairs, cpu_state, metrics
+from .experiment import Config, aggregate_pairs, cpu_state, fit_curve, metrics
 from .model import build_model
 from .paths import calibrate_batchnorm, clone_parameters, interpolate, summarize_path
 from .repair_adapter import align_gcn, hidden_statistics, repair_gcn
 
 
 METHODS = ("linear", "aligned", "repaired", "bezier")
+BEZIER_METHODS = METHODS + ("aligned_bezier", "repaired_bezier")
 
 
 def _load_checkpoint(source_dir, relative, model_config, split_hash, device):
@@ -96,8 +97,9 @@ def _empty_path(ts):
     return {"t": list(ts), "splits": {split: {"loss": [], "accuracy": []} for split in ("train", "val", "test")}}
 
 
-def run_repair(source, output, *, thesis_root=None, device="cpu", threads=1):
-    """Reevaluate the source grid without training endpoints or Bézier controls."""
+def run_repair(source, output, *, thesis_root=None, device="cpu", threads=1, include_bezier=False):
+    """Reuse endpoints and optionally fit and repair an aligned Bézier path."""
+    methods = BEZIER_METHODS if include_bezier else METHODS
     torch.set_num_threads(threads)
     if device.startswith("cuda") and not torch.cuda.is_available():
         raise RuntimeError("CUDA requested but unavailable.")
@@ -121,7 +123,7 @@ def run_repair(source, output, *, thesis_root=None, device="cpu", threads=1):
     report = copy.deepcopy(baseline)
     report.update({
         "experiment": "gnn_repair",
-        "methods": list(METHODS),
+        "methods": list(methods),
         "scope": "Saved endpoint comparison: channel alignment and sequential REPAIR on linear paths; existing Bézier comparator.",
         "source_report": str(source),
         "source_report_sha256": hashlib.sha256(source_bytes).hexdigest(),
@@ -135,7 +137,7 @@ def run_repair(source, output, *, thesis_root=None, device="cpu", threads=1):
         "thesis_root": str(Path(thesis_root or Path(baseline["datasets"][0]["data"]["loader"]).parents[2]).expanduser().resolve()),
     })
     report["protocol"]["repair"] = {
-        "methods": list(METHODS),
+        "methods": list(methods),
         "training": "No retraining or curve fitting; original endpoint and control checkpoints reused.",
         "source_replay": "Source linear and Bézier paths require loss errors <=2e-5 and at most one correct-prediction difference per split; original source metrics are retained verbatim.",
         "alignment": "Hungarian matching of training-node hidden correlations; hidden channels only; full-graph logit invariance checked.",
@@ -148,6 +150,14 @@ def run_repair(source, output, *, thesis_root=None, device="cpu", threads=1):
         "path_interpretation": "The repaired path is not a straight weight-space segment. Bézier receives no REPAIR.",
         "variance_ratio": "Mean training-node channel variance divided by the t-weighted mean endpoint channel variances. Null if denominator is zero.",
     }
+    if include_bezier:
+        report["scope"] = "Saved endpoints: raw, aligned, and posthoc-repaired linear and quadratic Bézier paths."
+        report["protocol"]["repair"].update({
+            "training": "Original endpoints and raw Bézier controls reused. A separate aligned Bézier control is fitted with the source dataset's effective curve settings and pair seed.",
+            "normalization": "Unrepaired interiors use full-graph, label-free BatchNorm calibration. Each repaired linear or aligned Bézier interior calibrates its base once, then freezes native buffers during sequential corrections.",
+            "path_interpretation": "Align endpoint B, fit the aligned Bézier control, then apply REPAIR to each sampled model. REPAIR is posthoc, never part of curve optimization. Targets remain the aligned endpoint means and standard deviations.",
+            "method_names": {"linear": "Raw linear", "aligned": "Aligned linear", "repaired": "Aligned linear + REPAIR", "bezier": "Raw Bézier", "aligned_bezier": "Aligned Bézier", "repaired_bezier": "Aligned Bézier + REPAIR"},
+        })
     import repair.core
     report["repair_implementation"] = {
         "core": str(Path(repair.core.__file__).resolve()),
@@ -207,8 +217,18 @@ def run_repair(source, output, *, thesis_root=None, device="cpu", threads=1):
             ts = original_pair["linear"]["t"]
             if ts != original_pair["bezier"]["t"] or ts[0] != 0 or ts[-1] != 1:
                 raise ValueError("Both source paths must use the same endpoint-inclusive grid.")
-            pair = {"seed_a": sa, "seed_b": sb, "curve_seed": original_pair["curve_seed"], "alignment": alignment, "calibration": [], "hidden_variance": {method: {} for method in METHODS}}
-            pair.update({method: _empty_path(ts) for method in METHODS})
+            pair = {"seed_a": sa, "seed_b": sb, "curve_seed": original_pair["curve_seed"], "alignment": alignment, "calibration": [], "hidden_variance": {method: {} for method in methods}}
+            pair.update({method: _empty_path(ts) for method in methods})
+            aligned_control = None
+            if include_bezier:
+                effective_config = Config(**original.get("config", baseline["config"]))
+                effective_config.device = device
+                effective_config.threads = threads
+                aligned_control, pair["aligned_history"] = fit_curve(
+                    copy.deepcopy(a), graph, state_a, state_aligned,
+                    effective_config, original_pair["curve_seed"],
+                )
+                pair["bezier_calibration"] = []
             endpoint_variance_a = _moment_variances(statistics(a, graph))
             endpoint_variance_b = _moment_variances(statistics(b, graph))
             for t in ts:
@@ -228,6 +248,19 @@ def run_repair(source, output, *, thesis_root=None, device="cpu", threads=1):
                     "repaired": repaired,
                     "bezier": _materialize_original(a, graph, state_a, state_b, t, curve["control"]),
                 }
+                if include_bezier:
+                    # Leave the base uncalibrated: the repair adapter calibrates once.
+                    bezier_base = _materialize(a, state_a, state_aligned, t, aligned_control)
+                    repaired_bezier, bezier_diagnostics = repair_model(
+                        a, aligned, graph, t, path_model=bezier_base,
+                    )
+                    pair["bezier_calibration"].append({"t": t, "diagnostics": bezier_diagnostics})
+                    models["aligned_bezier"] = (
+                        copy.deepcopy(a).eval() if t == 0 else
+                        copy.deepcopy(aligned).eval() if t == 1 else
+                        _materialize_original(a, graph, state_a, state_aligned, t, aligned_control)
+                    )
+                    models["repaired_bezier"] = repaired_bezier
                 for method, model in models.items():
                     with torch.no_grad():
                         measured = metrics(model(graph.x, graph.edge_index), graph)
@@ -240,7 +273,7 @@ def run_repair(source, output, *, thesis_root=None, device="cpu", threads=1):
                         values["mean_variance"].append(variance)
                         values["endpoint_variance_baseline"].append(endpoint_baseline)
                         values["variance_ratio"].append(variance / endpoint_baseline if endpoint_baseline > 0 else None)
-            for method in METHODS:
+            for method in methods:
                 for values in pair[method]["splits"].values():
                     values.update(summarize_path(ts, values["loss"]))
                     values["min_accuracy"] = min(values["accuracy"])
@@ -250,37 +283,41 @@ def run_repair(source, output, *, thesis_root=None, device="cpu", threads=1):
             pair["checkpoint"] = f"{metadata['name']}/curve_{sa}_{sb}.pt"
             shutil.copy2(source.parent / original_pair["checkpoint"], output / pair["checkpoint"])
             pair["aligned_checkpoint"] = f"{metadata['name']}/aligned_{sa}_{sb}.pt"
-            torch.save({"model_config": original["model"], "state_dict": cpu_state(aligned.state_dict()), "seed": sb, "alignment": alignment, "split_sha256": metadata["split_sha256"]}, output / pair["aligned_checkpoint"])
-            midpoint, _ = repair_model(a, aligned, graph, 0.5)
-            pair["repaired_midpoint_checkpoint"] = f"{metadata['name']}/repaired_{sa}_{sb}_midpoint.pt"
-            midpoint_checkpoint = {"model_config": original["model"], "state_dict": cpu_state(midpoint.state_dict()), "endpoint_seeds": [sa, sb], "alpha": 0.5, "split_sha256": metadata["split_sha256"]}
-            if is_reference:
-                midpoint_checkpoint["repair_format"] = "reference-affine-v1"
-            torch.save(midpoint_checkpoint, output / pair["repaired_midpoint_checkpoint"])
-            replay_model = load_repaired_model(torch.load(output / pair["repaired_midpoint_checkpoint"], map_location=device, weights_only=True), device)
-            with torch.no_grad():
-                replay_metrics = metrics(replay_model(graph.x, graph.edge_index), graph)
-                midpoint_metrics = metrics(midpoint(graph.x, graph.edge_index), graph)
-            loss_errors = [abs(replay_metrics[s]["loss"] - midpoint_metrics[s]["loss"]) for s in ("train", "val", "test")]
-            accuracy_errors = [abs(replay_metrics[s]["accuracy"] - midpoint_metrics[s]["accuracy"]) for s in ("train", "val", "test")]
-            pair["midpoint_replay_max_loss_error"] = max(loss_errors)
-            pair["midpoint_replay_max_accuracy_error"] = max(accuracy_errors)
-            if 0.5 in ts:
-                midpoint_index = ts.index(0.5)
-                for split in ("train", "val", "test"):
-                    source_loss = pair["repaired"]["splits"][split]["loss"][midpoint_index]
-                    source_accuracy = pair["repaired"]["splits"][split]["accuracy"][midpoint_index]
-                    pair["midpoint_replay_max_loss_error"] = max(
-                        pair["midpoint_replay_max_loss_error"], abs(replay_metrics[split]["loss"] - source_loss))
-                    pair["midpoint_replay_max_accuracy_error"] = max(
-                        pair["midpoint_replay_max_accuracy_error"], abs(replay_metrics[split]["accuracy"] - source_accuracy))
-            if pair["midpoint_replay_max_loss_error"] > 2e-5 or pair["midpoint_replay_max_accuracy_error"] > 1e-6:
-                raise ValueError("The saved repaired midpoint checkpoint does not reproduce.")
+            aligned_checkpoint = {"model_config": original["model"], "state_dict": cpu_state(aligned.state_dict()), "seed": sb, "alignment": alignment, "split_sha256": metadata["split_sha256"]}
+            if include_bezier:
+                aligned_checkpoint.update({"control": cpu_state(aligned_control), "endpoint_seeds": [sa, sb], "curve_seed": original_pair["curve_seed"], "curve_history": pair["aligned_history"], "path_family": "aligned_bezier"})
+            torch.save(aligned_checkpoint, output / pair["aligned_checkpoint"])
+            midpoint_methods = ("repaired", "repaired_bezier") if include_bezier else ("repaired",)
+            for method in midpoint_methods:
+                kwargs = {}
+                if method == "repaired_bezier":
+                    kwargs["path_model"] = _materialize(a, state_a, state_aligned, 0.5, aligned_control)
+                midpoint, _ = repair_model(a, aligned, graph, 0.5, **kwargs)
+                checkpoint_key = f"{method}_midpoint_checkpoint"
+                pair[checkpoint_key] = f"{metadata['name']}/{method}_{sa}_{sb}_midpoint.pt"
+                checkpoint = {"model_config": original["model"], "state_dict": cpu_state(midpoint.state_dict()), "endpoint_seeds": [sa, sb], "alpha": 0.5, "split_sha256": metadata["split_sha256"], "path_family": method}
+                if is_reference:
+                    checkpoint["repair_format"] = "reference-affine-v1"
+                torch.save(checkpoint, output / pair[checkpoint_key])
+                replay_model = load_repaired_model(torch.load(output / pair[checkpoint_key], map_location=device, weights_only=True), device)
+                with torch.no_grad():
+                    replay_metrics = metrics(replay_model(graph.x, graph.edge_index), graph)
+                    midpoint_metrics = metrics(midpoint(graph.x, graph.edge_index), graph)
+                _assert_replay(midpoint_metrics, replay_metrics, f"Saved {method} midpoint")
+                prefix = "midpoint" if method == "repaired" else "repaired_bezier_midpoint"
+                for metric, tolerance in (("loss", 2e-5), ("accuracy", 1e-6)):
+                    errors = [abs(replay_metrics[s][metric] - midpoint_metrics[s][metric]) for s in ("train", "val", "test")]
+                    if 0.5 in ts:
+                        index = ts.index(0.5)
+                        errors.extend(abs(replay_metrics[s][metric] - pair[method]["splits"][s][metric][index]) for s in ("train", "val", "test"))
+                    pair[f"{prefix}_replay_max_{metric}_error"] = max(errors)
+                    if max(errors) > tolerance:
+                        raise ValueError(f"The saved {method} midpoint does not reproduce its recorded path.")
             dataset["pairs"].append(pair)
-            print("  test barriers: " + ", ".join(f"{method}={pair[method]['splits']['test']['barrier']:.6f}" for method in METHODS), flush=True)
-        dataset["summary"] = aggregate_pairs(dataset["pairs"], methods=METHODS)
+            print("  test barriers: " + ", ".join(f"{method}={pair[method]['splits']['test']['barrier']:.6f}" for method in methods), flush=True)
+        dataset["summary"] = aggregate_pairs(dataset["pairs"], methods=methods)
         report["datasets"].append(dataset)
         report["elapsed_seconds"] = time.perf_counter() - started
         (output / "report.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
-    (output / "config.json").write_text(json.dumps({"source": str(source), "thesis_root": str(thesis_root) if thesis_root else None, "device": device, "threads": threads}, indent=2) + "\n")
+    (output / "config.json").write_text(json.dumps({"source": str(source), "thesis_root": str(thesis_root) if thesis_root else None, "device": device, "threads": threads, "include_bezier": include_bezier}, indent=2) + "\n")
     return output / "report.json"
