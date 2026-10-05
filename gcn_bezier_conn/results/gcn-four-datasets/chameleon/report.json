@@ -10638,7 +10638,7 @@
     "repaired",
     "bezier"
   ],
-  "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/dataset-sweep-20260918/chameleon/baseline/report.json",
+  "source_report": "/home/wge3/ms_thesis/gcn_bezier_conn/runs/dataset-sweep-20260918/chameleon/baseline/report.json",
   "source_report_sha256": "7fa170c979d154b9ea5d1d3be7dffea0449b2dd4854a31ed45a2cfd644fd0624",
   "source_environment": {
     "python": "3.14.0",

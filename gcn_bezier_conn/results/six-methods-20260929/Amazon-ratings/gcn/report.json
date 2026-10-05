@@ -112032,7 +112032,7 @@
     "aligned_bezier",
     "repaired_bezier"
   ],
-  "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/Amazon-ratings/gcn/report.json",
+  "source_report": "/home/wge3/ms_thesis/gcn_bezier_conn/runs/six-methods-20260929/baselines/Amazon-ratings/gcn/report.json",
   "source_report_sha256": "70099e82e1c71903bd18cd5d1193f8677cf454a843c1855c4fcd11da05ed50ef",
   "source_environment": {
     "python": "3.14.0",

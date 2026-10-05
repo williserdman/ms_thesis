@@ -19304,7 +19304,7 @@
     "aligned_bezier",
     "repaired_bezier"
   ],
-  "source_report": "/home/wge3/ms_thesis/.worktrees/gnn-repair/gcn_bezier_conn/runs/six-methods-20260929/baselines/actor/gcn/report.json",
+  "source_report": "/home/wge3/ms_thesis/gcn_bezier_conn/runs/six-methods-20260929/baselines/actor/gcn/report.json",
   "source_report_sha256": "5dc759965f161f0f8e1efed41dc2a0e71ef57cd09a3c1fad505339a4eb7ac67e",
   "source_environment": {
     "python": "3.14.0",
