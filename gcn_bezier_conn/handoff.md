@@ -6,7 +6,8 @@ Updated: 2026-10-05. Integration target: `main`.
 
 The user requested a handoff in this project folder, merging the completed
 alignment/Bézier/REPAIR study into `main`, and cleanup of the session worktree.
-Integration is in progress; final merge/push verification follows this document.
+The study is merged into `main`. Its session worktree and local feature branch
+are removed. Raw artifacts are preserved in the permanent project folder.
 The primary checkout has unrelated pending work on `exp/spectral-mc-pocs`.
 Preserve that work and all other experiment worktrees.
 
@@ -21,7 +22,11 @@ All 60 model/dataset configurations completed and passed the archive audit:
 15 thesis-loader datasets, GCN/MLP/GraphSAGE/GAT, three seed pairs per
 configuration, 21 path points, and 200 steps per Bézier control. Slurm array
 `3922820` and audit `3922821` completed with exit code 0. The project suite
-passed all 50 tests again before integration.
+passed all 50 tests before and after integration; the five existing root tests
+also passed. The relocated archive audit passed all 60 configurations, and
+repaired linear/Bézier midpoint checkpoints replayed with maximum loss and
+accuracy errors of `5.97e-8`. Verification logs are in
+`runs/integration-20261005/`.
 
 Start with [results and graphics](results/six-methods-20260929/README.md),
 [summary JSON](results/six-methods-20260929/summary.json), and
@@ -58,14 +63,15 @@ model. Use validation for selection and reserve test metrics for evaluation.
 ## Artifact preservation and relocation
 
 The session worktree was `/home/wge3/ms_thesis/.worktrees/gnn-repair`.
-Before removing it, move all ignored `gcn_bezier_conn/runs/` artifacts into the
-permanent folder. Keep every existing legacy run. Preserve the earlier legacy
-source under `runs/legacy-source-20261005/` for historical replay.
+Its 3,400 run files and 17 Optuna studies were moved into the permanent folder.
+All 342 files from the earlier legacy runs remain. Earlier legacy source is
+archived under `runs/legacy-source-20261005/` for historical replay.
+The temporary main integration checkout is removed after publication.
 
 Operational `source_report` references are relocated to the permanent folder;
-source baseline bytes and SHA-256 values remain unchanged. Preserve original
-analysis JSON and the relocation mapping under `runs/` and rerun the archive
-audit after relocation. Historical cache and implementation metadata may still
+source baseline bytes and SHA-256 values remain unchanged. Original analysis
+JSON is in `runs/relocation-originals-20261005/`; the relocation mapping is
+`runs/artifact-relocation-20261005.json`. The archive audit passed after relocation. Historical cache and implementation metadata may still
 record the former worktree path; treat that as provenance, not an active path.
 Do not rewrite baseline reports or delete Optuna `study.sqlite3`/`best.json`.
 

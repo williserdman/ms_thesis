@@ -19,7 +19,7 @@ methods to the same tuned endpoints. Read the
 ## Environment
 
 Run commands from `/home/wge3/ms_thesis/gcn_bezier_conn`.
-Integration targets `main`. The primary checkout has unrelated pending work on
+The completed study is merged into `main`. The primary checkout has unrelated pending work on
 `exp/spectral-mc-pocs`; preserve it. See [handoff](handoff.md) for integration and
 artifact relocation state.
 
